@@ -1,0 +1,29 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { exams } from '../../lib/exam-data';
+import { examText as t } from '../../i18n/exams';
+import { translations } from '../../i18n';
+import '../../styles/image-tools.css';
+---
+
+<Layout
+  title={t.libraryTitle}
+  description={t.libraryDescription}
+  breadcrumb={translations().nav.exams}
+>
+  <section class="tool-heading">
+    <p class="eyebrow">{t.eyebrow}</p>
+    <h1>{t.libraryIntro}</h1>
+    <p class="lead">{t.libraryBody}</p>
+  </section>
+  <div class="tool-library">
+    {exams.map((exam) => (
+      <a class="tool-library-card" href={`/resize-photo-signature-${exam.slug}/`}>
+        <p class="unverified-label">{exam.verified ? t.recordVerified : t.recordUnknown}</p>
+        <h2>{exam.name}</h2>
+        <p>{exam.content?.en?.intro || t.intro(exam.name)}</p>
+        <span>{t.open} ↗</span>
+      </a>
+    ))}
+  </div>
+</Layout>

@@ -1,0 +1,23 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { guides } from '../../lib/guides';
+import { guideText as t } from '../../i18n/guides';
+import '../../styles/image-tools.css';
+---
+
+<Layout title={t.title} description={t.description} breadcrumb={t.title}>
+  <section class="tool-heading">
+    <p class="eyebrow">{t.eyebrow}</p>
+    <h1>{t.title}</h1>
+    <p class="lead">{t.intro}</p>
+  </section>
+  <div class="tool-library">
+    {guides.map((g) => (
+      <a class="tool-library-card" href={`/guides/${g.slug}/`}>
+        <h2>{g.title}</h2>
+        <p>{g.summary}</p>
+        <span>{t.open} ↗</span>
+      </a>
+    ))}
+  </div>
+</Layout>

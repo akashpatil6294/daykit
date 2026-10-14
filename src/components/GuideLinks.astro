@@ -1,0 +1,19 @@
+---
+import { guides } from '../lib/guides';
+import { guideText as t } from '../i18n/guides';
+const { path } = Astro.props;
+const related = guides.filter((g) => g.links.includes(path));
+---
+
+{related.length > 0 && (
+  <section class="related-tools">
+    <h2>{t.related}</h2>
+    <ul>
+      {related.map((g) => (
+        <li>
+          <a href={`/guides/${g.slug}/`}>{g.title}</a>
+        </li>
+      ))}
+    </ul>
+  </section>
+)}

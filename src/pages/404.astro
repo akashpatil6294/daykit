@@ -1,0 +1,16 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { translations } from '../i18n';
+const t = translations();
+---
+
+<Layout title={t.notFound.title} description={t.notFound.description} noindex>
+  <section class="not-found">
+    <p class="eyebrow">404</p>
+    <h1>{t.notFound.heading}</h1>
+    <p>{t.notFound.body}</p>
+    <a class="button primary" href="/">
+      {t.ui.back}
+    </a>
+  </section>
+</Layout>

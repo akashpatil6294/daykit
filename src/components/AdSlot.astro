@@ -1,0 +1,20 @@
+---
+import { translations } from '../i18n';
+import { ads } from '../config/ads';
+interface Props {
+  size: 'leaderboard' | 'in-content' | 'sidebar' | 'sticky-mobile';
+}
+const { size } = Astro.props;
+const t = translations();
+---
+
+<!-- Sizes are reserved by CSS before first paint; never collapse an unfilled slot. -->
+<aside
+  class:list={['ad-slot', `ad-${size}`]}
+  data-ad-slot={ads.slots[size] || undefined}
+  aria-label={`${t.ui.ad}: ${t.ui.adReserved}`}
+>
+  <span>
+    {t.ui.ad} <span aria-hidden="true">·</span> {t.ui.adReserved}
+  </span>
+</aside>

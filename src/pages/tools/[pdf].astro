@@ -1,0 +1,86 @@
+---
+import GuideLinks from '../../components/GuideLinks.astro';
+import Layout from '../../layouts/Layout.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import PdfTool from '../../components/pdf-tools/PdfTool';
+import DocumentTool from '../../components/pdf-tools/DocumentTool';
+import { pdfSlugs } from '../../data/pdf-tools';
+import { pdfPages } from '../../i18n/pdf-pages';
+import { pdfText as t } from '../../i18n/pdf-tools';
+import '../../styles/image-tools.css';
+import '../../styles/pdf-tools.css';
+export function getStaticPaths() {
+  return pdfSlugs.map((slug) => ({ params: { pdf: slug }, props: { slug } }));
+}
+const { slug } = Astro.props;
+const page = pdfPages[slug];
+const legacy = ['merge-pdf','split-pdf','reorder-pdf','images-to-pdf','pdf-to-images','compress-pdf'].includes(slug);
+const faq = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: page.faq.map((f) => ({
+    '@type': 'Question',
+    name: f.question,
+    acceptedAnswer: { '@type': 'Answer', text: f.answer },
+  })),
+};
+const app = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: page.title,
+  description: page.description,
+  url: new URL(`/tools/${slug}/`, Astro.site).href,
+  applicationCategory: 'UtilitiesApplication',
+  operatingSystem: 'Web browser',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'INR' },
+};
+---
+
+<Layout title={page.title} description={page.description} breadcrumb={page.title}>
+  <script type="application/ld+json" set:html={JSON.stringify(faq).replace(/</g, '\\u003c')} />
+  <script type="application/ld+json" set:html={JSON.stringify(app).replace(/</g, '\\u003c')} />
+  <section class="tool-heading">
+    <p class="eyebrow">{t.eyebrow}</p>
+    <h1>{page.title}</h1>
+    <p class="lead">{page.intro}</p>
+  </section>
+  {legacy ? <PdfTool mode={slug} client:load /> : <DocumentTool mode={slug} client:load />}
+  <noscript>
+    <p>{t.noScript}</p>
+  </noscript>
+  <AdSlot size="leaderboard" />
+  <article class="tool-guide" data-guide>
+    {page.sections.map((s) => (
+      <section>
+        <h2>{s.heading}</h2>
+        <p>{s.text}</p>
+      </section>
+    ))}
+    <h2>{t.instructions}</h2>
+    <ol>
+      {page.steps.map((s) => (
+        <li>{s}</li>
+      ))}
+    </ol>
+    <h2>{t.faq}</h2>
+    {page.faq.map((f) => (
+      <details>
+        <summary>{f.question}</summary>
+        <p>{f.answer}</p>
+      </details>
+    ))}
+  </article>
+  <section class="related-tools">
+    <h2>{t.related}</h2>
+    <ul>
+      {pdfSlugs
+        .filter((s) => s !== slug)
+        .map((s) => (
+          <li>
+            <a href={`/tools/${s}/`}>{pdfPages[s].title}</a>
+          </li>
+        ))}
+    </ul>
+  </section>
+  <GuideLinks path={Astro.url.pathname} />
+</Layout>

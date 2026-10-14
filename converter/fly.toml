@@ -1,0 +1,47 @@
+# fly.toml — Daykit /converter service (FastAPI + LibreOffice + OCRmyPDF)
+#
+# Drop-in config for the converter Docker service in this directory.
+# App name "daykit-converter" is a placeholder: `fly launch --no-deploy`
+# will keep it or rename it — either way keep this file next to the Dockerfile.
+#
+# After first deploy, set the secret (never commit the origin):
+#   fly secrets set PUBLIC_SITE_URL=https://<your-site-origin>
+# Then rebuild the Astro site with:
+#   PUBLIC_CONVERTER_URL=https://<app-name>.fly.dev/convert
+
+app = "daykit-converter"
+primary_region = "bom" # Mumbai — closest to the Indian audience; change freely
+
+kill_signal = "SIGTERM"
+kill_timeout = "10s"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  CONVERTER_ENGINE = "local"
+  CONVERTER_CONCURRENCY = "2"
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = "stop"   # $0 when idle; cold start runs LibreOffice once
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [http_service.concurrency]
+    type = "requests"
+    soft_limit = 2 # mirrors CONVERTER_CONCURRENCY=2; extra gets 429 from the app
+    hard_limit = 4
+
+  [[http_service.checks]]
+    grace_period = "120s" # LibreOffice first-init on cold start is slow
+    interval = "30s"
+    method = "GET"
+    path = "/healthz"
+    timeout = "5s"
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 2
+  memory = "2gb"

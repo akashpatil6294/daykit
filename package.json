@@ -1,0 +1,55 @@
+{
+  "name": "daykit",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "check": "astro check",
+    "build": "astro check && astro build && node scripts/converter-manifest.mjs && node scripts/localize.mjs",
+    "translate": "node scripts/translate.mjs",
+    "preview": "astro preview",
+    "test": "node --test tests/*.test.mjs && vitest run",
+    "test:converter": "python3 scripts/converter-quality.py",
+    "format": "prettier --write src data tests astro.config.mjs package.json README.md",
+    "test:images": "node tests/image-tools-browser.mjs",
+    "test:exams": "node tests/exam-browser.mjs",
+    "audit:mobile": "node tests/lighthouse.mjs"
+  },
+  "dependencies": {
+    "@astrojs/react": "latest",
+    "@pdf-lib/fontkit": "^1.1.1",
+    "@tailwindcss/vite": "latest",
+    "astro": "latest",
+    "docx": "^9.10.0",
+    "exceljs": "^4.4.0",
+    "fast-xml-parser": "^5.11.2",
+    "fast-xml-validator": "^1.4.2",
+    "fflate": "^0.8.3",
+    "heic-to": "^1.6.6",
+    "marked": "^18.1.1",
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^6.4.299",
+    "pptxgenjs": "^4.0.1",
+    "react": "latest",
+    "react-dom": "latest",
+    "tailwindcss": "latest"
+  },
+  "devDependencies": {
+    "@astrojs/check": "latest",
+    "@axe-core/playwright": "^4.13.0",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "lighthouse": "^13.5.0",
+    "linkedom": "^0.18.13",
+    "mammoth": "^1.13.0",
+    "prettier": "^3.9.10",
+    "prettier-plugin-astro": "^1.1.1",
+    "typescript": "latest",
+    "vitest": "^5.0.4"
+  },
+  "overrides": {
+    "image-size": "^2.0.4",
+    "uuid": "^11.1.1"
+  }
+}

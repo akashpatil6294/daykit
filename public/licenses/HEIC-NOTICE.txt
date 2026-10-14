@@ -1,0 +1,11 @@
+Daykit HEIC decoding uses heic-to 1.6.6 by Hopper Gee, licensed under LGPL-3.0-or-later.
+License notice: /licenses/heic-to-LICENSE.txt
+Library source and build instructions: https://github.com/hoppergee/heic-to/tree/v1.6.6
+Published source package: https://registry.npmjs.org/heic-to/-/heic-to-1.6.6.tgz
+Underlying decoder: libheif 1.23.6, https://github.com/strukturag/libheif
+Full LGPL text: https://www.gnu.org/licenses/lgpl-3.0.html
+Full GPL text incorporated by the LGPL: https://www.gnu.org/licenses/gpl-3.0.html
+
+The library is unmodified, emitted as a separate decoder JavaScript module by the build.
+To replace it, install your compatible heic-to version and run npm run build.
+No decoder or image conversion service is contacted during file processing.

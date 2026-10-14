@@ -1,0 +1,26 @@
+[
+  {
+    "id": "square",
+    "width": 600,
+    "height": 600,
+    "verified": false,
+    "source_url": null,
+    "last_verified": null
+  },
+  {
+    "id": "portrait",
+    "width": 420,
+    "height": 540,
+    "verified": false,
+    "source_url": null,
+    "last_verified": null
+  },
+  {
+    "id": "small",
+    "width": 350,
+    "height": 450,
+    "verified": false,
+    "source_url": null,
+    "last_verified": null
+  }
+]

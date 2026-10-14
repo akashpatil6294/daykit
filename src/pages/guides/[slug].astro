@@ -1,0 +1,91 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import { guides } from '../../lib/guides';
+import { guideText as t } from '../../i18n/guides';
+import '../../styles/image-tools.css';
+export function getStaticPaths() {
+  return guides.map((guide) => ({ params: { slug: guide.slug }, props: { guide } }));
+}
+const { guide: g } = Astro.props;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: g.title,
+  description: g.summary,
+  datePublished: g.published,
+  dateModified: g.updated,
+  author: { '@type': 'Organization', name: g.author },
+  publisher: { '@type': 'Organization', name: 'Daykit' },
+  inLanguage: 'en',
+  mainEntityOfPage: new URL(`/guides/${g.slug}/`, Astro.site).href,
+};
+---
+
+<Layout title={g.title} description={g.summary} breadcrumb={g.title}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema).replace(/</g, '\\u003c')} />
+  <header class="tool-heading">
+    <p class="eyebrow">{t.eyebrow}</p>
+    <h1>{g.title}</h1>
+    <p class="lead">{g.summary}</p>
+    <p>
+      {t.author} <span data-no-translate>{g.author}</span> · {t.published}{' '}
+      <time datetime={g.published}>{g.published}</time> · {t.updated}{' '}
+      <time datetime={g.updated}>{g.updated}</time>
+    </p>
+  </header>
+  <p class="translated-guide-notice notice">{t.english}</p>
+  <nav class="tool-guide" aria-label={t.contents}>
+    <h2>{t.contents}</h2>
+    <ul data-guide-body lang="en">
+      {g.headings.map((h) => (
+        <li>
+          <a href={`#${h.id}`}>{h.text}</a>
+        </li>
+      ))}
+      <li>
+        <a href="#questions">Questions and answers</a>
+      </li>
+    </ul>
+  </nav>
+  <AdSlot size="leaderboard" />
+  <article class="tool-guide" data-guide-body lang="en">
+    <div set:html={g.html} />
+    <section id="questions">
+      <h2>Questions and answers</h2>
+      {g.faq.map((f) => (
+        <details>
+          <summary>{f.question}</summary>
+          <p>{f.answer}</p>
+        </details>
+      ))}
+    </section>
+  </article>
+  <section class="related-tools">
+    <h2>{t.related}</h2>
+    <ul>
+      {guides
+        .filter((other) => other.slug !== g.slug)
+        .slice(0, 4)
+        .map((other) => (
+          <li>
+            <a href={`/guides/${other.slug}/`}>{other.title}</a>
+          </li>
+        ))}
+    </ul>
+  </section>
+</Layout>
+<style>
+  .translated-guide-notice {
+    display: none;
+  }
+  :global(html:not([lang='en'])) .translated-guide-notice {
+    display: block;
+  }
+  .tool-guide :global(h2) {
+    scroll-margin-top: 30px;
+  }
+  .tool-guide :global(p) {
+    line-height: 1.8;
+  }
+</style>

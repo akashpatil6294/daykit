@@ -1,0 +1,41 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { pdfCatalog } from '../../data/pdf-tools';
+import { pdfText } from '../../i18n/pdf-tools';
+import { pdfPages } from '../../i18n/pdf-pages';
+import { toolCatalog } from '../../data/tools';
+import { toolPages } from '../../i18n/tool-pages';
+import { imageTools as t } from '../../i18n/image-tools';
+import { translations } from '../../i18n';
+import '../../styles/image-tools.css';
+---
+
+<Layout
+  title={t.libraryTitle}
+  description={t.libraryDescription}
+  breadcrumb={translations().nav.tools}
+>
+  <section class="tool-heading">
+    <p class="eyebrow">{t.eyebrow}</p>
+    <h1>{t.libraryIntro}</h1>
+    <p class="lead">{t.libraryBody}</p>
+  </section>
+  {(['from-pdf','to-pdf','edit'] as const).map(group => <section><h2>{pdfText.groups[group]}</h2><div class="tool-library">
+    {pdfCatalog.filter(tool=>tool.group===group).map(({slug}) => (
+      <a class="tool-library-card" href={`/tools/${slug}/`}>
+        <h3>{pdfPages[slug].title}</h3>
+        <p>{pdfPages[slug].intro}</p>
+        <span>{t.available} ↗</span>
+      </a>
+    ))}
+  </div></section>)}
+  <section><h2>{pdfText.groups.images}</h2><div class="tool-library">
+    {toolCatalog.map((tool) => (
+      <a class="tool-library-card" href={`/tools/${tool.slug}/`}>
+        <h3>{toolPages[tool.mode].title}</h3>
+        <p>{toolPages[tool.mode].intro}</p>
+        <span>{t.available} ↗</span>
+      </a>
+    ))}
+  </div></section>
+</Layout>

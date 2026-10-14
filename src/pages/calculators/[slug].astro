@@ -1,0 +1,103 @@
+---
+import GuideLinks from '../../components/GuideLinks.astro';
+import Layout from '../../layouts/Layout.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import Calculator from '../../components/calculators/Calculator';
+import { calculatorSlugs } from '../../data/calculators';
+import { calculatorPages } from '../../i18n/calculator-pages';
+import { calculatorText as t } from '../../i18n/calculators';
+import { toolCatalog } from '../../data/tools';
+import { toolPages } from '../../i18n/tool-pages';
+import '../../styles/image-tools.css';
+import '../../styles/calculators.css';
+export function getStaticPaths() {
+  return calculatorSlugs.map((slug) => ({ params: { slug }, props: { slug } }));
+}
+const { slug } = Astro.props;
+const page = calculatorPages[slug];
+const faq = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: page.faq.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: { '@type': 'Answer', text: item.answer },
+  })),
+};
+---
+
+<Layout title={page.title} description={page.description} breadcrumb={page.title}>
+  <script type="application/ld+json" set:html={JSON.stringify(faq).replace(/</g, '\\u003c')} />
+  <section class="tool-heading">
+    <p class="eyebrow">{t.eyebrow}</p>
+    <h1>{page.title}</h1>
+    <p class="lead">{page.intro}</p>
+  </section>
+  <p class="calc-disclaimer">{t.disclaimer}</p>
+  <Calculator slug={slug} client:load />
+  <noscript>
+    <p class="notice">{t.noScript}</p>
+  </noscript>
+  <AdSlot size="leaderboard" />
+  <article class="tool-guide" data-calculator-guide>
+    <section>
+      <h2>{t.formula}</h2>
+      <p class="formula-box">{page.formula}</p>
+    </section>
+    <section>
+      <h2>{t.example}</h2>
+      <p>{page.example}</p>
+    </section>
+    {page.sections.map((section) => (
+      <section>
+        <h2>{section.heading}</h2>
+        <p>{section.text}</p>
+      </section>
+    ))}
+    <section>
+      <h2>{t.faq}</h2>
+      {page.faq.map((item) => (
+        <details>
+          <summary>{item.question}</summary>
+          <p>{item.answer}</p>
+        </details>
+      ))}
+    </section>
+    {page.sources.length > 0 && (
+      <section>
+        <h2>{t.sources}</h2>
+        <ul>
+          {page.sources.map((source) => (
+            <li>
+              <a class="inline-link" href={source.url}>
+                {source.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+  </article>
+  <section class="related-tools">
+    <h2>{t.related}</h2>
+    <ul>
+      {calculatorSlugs
+        .filter((other) => other !== slug)
+        .slice(0, 4)
+        .map((other) => (
+          <li>
+            <a href={`/calculators/${other}/`}>{calculatorPages[other].title} ↗</a>
+          </li>
+        ))}
+    </ul>
+    <h2>{t.tools}</h2>
+    <ul>
+      {toolCatalog.slice(0, 3).map((tool) => (
+        <li>
+          <a href={`/tools/${tool.slug}/`}>{toolPages[tool.mode].title} ↗</a>
+        </li>
+      ))}
+    </ul>
+  </section>
+  <GuideLinks path={Astro.url.pathname} />
+</Layout>

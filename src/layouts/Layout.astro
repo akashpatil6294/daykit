@@ -1,0 +1,163 @@
+---
+import '../styles/global.css';
+import { translations, defaultLocale } from '../i18n';
+import { categoryKeys, legalKeys } from '../data/site';
+import CookieConsent from '../components/CookieConsent';
+import AdIntegration from '../components/AdIntegration.astro';
+import { guideText } from '../i18n/guides';
+interface Props {
+  title: string;
+  description: string;
+  breadcrumb?: string;
+  noindex?: boolean;
+}
+const { title, description, breadcrumb, noindex = false } = Astro.props;
+const t = translations();
+const pagePath = Astro.url.pathname === '/404/' ? '/404.html' : Astro.url.pathname;
+const canonical = new URL(pagePath, Astro.site);
+const languageNames = {
+  en: 'English',
+  hi: 'हिन्दी',
+  kn: 'ಕನ್ನಡ',
+  ta: 'தமிழ்',
+  te: 'తెలుగు',
+  mr: 'मराठी',
+  bn: 'বাংলা',
+};
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: t.site.name,
+  url: Astro.site?.href,
+  inLanguage: defaultLocale,
+};
+const crumbs = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: t.nav.home, item: Astro.site?.href },
+    { '@type': 'ListItem', position: 2, name: breadcrumb, item: canonical.href },
+  ],
+};
+---
+
+<!doctype html>
+<html lang={defaultLocale}>
+  <head>
+    <meta charset="UTF-8" />
+    <AdIntegration />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} | {t.site.name}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {Object.entries(languageNames).map(([locale]) => (
+      <link
+        rel="alternate"
+        hreflang={locale}
+        href={new URL(locale === 'en' ? pagePath : `/${locale}${pagePath}`, Astro.site)}
+      />
+    ))}
+    <link rel="alternate" hreflang="x-default" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#f8f9f5" />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    <meta property="og:title" content={`${title} | ${t.site.name}`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={t.site.name} />
+    <script type="application/ld+json" set:html={JSON.stringify(schema).replace(/</g, '\\u003c')} />
+    {breadcrumb && (
+      <script
+        type="application/ld+json"
+        set:html={JSON.stringify(crumbs).replace(/</g, '\\u003c')}
+      />
+    )}
+  </head>
+  <body>
+    <a class="skip-link" href="#main">
+      {t.ui.skip}
+    </a>
+    <header class="site-header">
+      <div class="shell header-inner">
+        <a href="/" class="brand">
+          <span class="brand-mark" aria-hidden="true">
+            d<span>✳</span>
+          </span>
+          {t.site.name}
+          <span class="brand-dot">.</span>
+        </a>
+        <nav aria-label={t.ui.navigation}>
+          {categoryKeys.map((key) => (
+            <a
+              href={`/${key}/`}
+              aria-current={Astro.url.pathname === `/${key}/` ? 'page' : undefined}
+            >
+              {t.nav[key]}
+            </a>
+          ))}
+        </nav>
+        <a href="/about/" class="header-about">
+          {t.nav.about}
+          <span aria-hidden="true"> ↗</span>
+        </a>
+        <label class="language-control">
+          <span class="sr-only">{t.ui.language}</span>
+          <select id="language-switcher" aria-label={t.ui.language} data-no-translate>
+            {Object.entries(languageNames).map(([locale, name]) => (
+              <option
+                data-locale={locale}
+                value={locale === 'en' ? pagePath : `/${locale}${pagePath}`}
+                selected={locale === 'en'}
+              >
+                {name}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+    </header>
+    <main id="main" class="shell" tabindex="-1">
+      {breadcrumb && (
+        <nav class="breadcrumbs" aria-label={t.ui.breadcrumbs}>
+          <a href="/">{t.nav.home}</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">{breadcrumb}</span>
+        </nav>
+      )}
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="shell footer-inner">
+        <div>
+          <a class="brand" href="/">
+            {t.site.name}
+            <span class="brand-dot">.</span>
+          </a>
+          <p>{t.site.tagline}</p>
+          <small>{t.ui.copyright}</small>
+        </div>
+        <div>
+          <nav aria-label={t.ui.footer}>
+            <a href="/guides/">{guideText.title}</a>
+            {legalKeys.map((key) => (
+              <a href={`/${key}/`}>{t.nav[key]}</a>
+            ))}
+          </nav>
+          <button class="text-button" id="privacy-settings">
+            {t.ui.settings}
+          </button>
+        </div>
+      </div>
+    </footer>
+    <CookieConsent client:load />
+    <script>
+      document.getElementById('language-switcher')?.addEventListener('change', (event) => {
+        window.location.assign((event.target as HTMLSelectElement).value);
+      });
+      document
+        .getElementById('privacy-settings')
+        ?.addEventListener('click', () => window.dispatchEvent(new Event('daykit:privacy')));
+    </script>
+  </body>
+</html>

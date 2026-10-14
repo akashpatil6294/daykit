@@ -1,0 +1,11 @@
+Daykit converter dependencies
+
+docx: see /licenses/docx.txt
+pptxgenjs: see /licenses/pptxgenjs.txt
+exceljs: see /licenses/exceljs.txt
+mammoth: see /licenses/mammoth.txt
+@pdf-lib/fontkit: see /licenses/pdf-lib-fontkit.txt
+fast-xml-parser: see /licenses/fast-xml-parser.txt
+fast-xml-validator: see /licenses/fast-xml-validator.txt
+Noto fonts: SIL Open Font License, see /licenses/Noto-PDF-OFL.txt
+PDF.js, pdf-lib, fflate and HEIC decoder notices are also distributed in /licenses/.

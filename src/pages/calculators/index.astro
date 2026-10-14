@@ -1,0 +1,25 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { calculatorSlugs } from '../../data/calculators';
+import { calculatorPages } from '../../i18n/calculator-pages';
+import { calculatorText as t } from '../../i18n/calculators';
+import '../../styles/image-tools.css';
+---
+
+<Layout title={t.indexTitle} description={t.indexDescription} breadcrumb={t.indexTitle}>
+  <section class="tool-heading">
+    <p class="eyebrow">{t.eyebrow}</p>
+    <h1>{t.indexIntro}</h1>
+    <p class="lead">{t.indexBody}</p>
+  </section>
+  <p class="notice">{t.disclaimer}</p>
+  <div class="tool-library">
+    {calculatorSlugs.map((slug) => (
+      <a class="tool-library-card" href={`/calculators/${slug}/`}>
+        <h2>{calculatorPages[slug].title}</h2>
+        <p>{calculatorPages[slug].description}</p>
+        <span>{t.open} ↗</span>
+      </a>
+    ))}
+  </div>
+</Layout>

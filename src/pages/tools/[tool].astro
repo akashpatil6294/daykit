@@ -1,0 +1,93 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import GuideLinks from '../../components/GuideLinks.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import ImageTool from '../../components/image-tools/ImageTool';
+import { toolCatalog } from '../../data/tools';
+import { toolPages } from '../../i18n/tool-pages';
+import { imageTools as t } from '../../i18n/image-tools';
+import '../../styles/image-tools.css';
+export function getStaticPaths() {
+  return toolCatalog.map((tool) => ({ params: { tool: tool.slug }, props: { tool } }));
+}
+const { tool } = Astro.props;
+const page = toolPages[tool.mode];
+const faq = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: page.faq.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: { '@type': 'Answer', text: item.answer },
+  })),
+};
+const application = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: page.title,
+  description: page.description,
+  url: new URL(`/tools/${tool.slug}/`, Astro.site).href,
+  applicationCategory: 'MultimediaApplication',
+  operatingSystem: 'Web browser',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'INR' },
+};
+---
+
+<Layout title={page.title} description={page.description} breadcrumb={page.title}>
+  <script type="application/ld+json" set:html={JSON.stringify(faq).replace(/</g, '\\u003c')} />
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(application).replace(/</g, '\\u003c')}
+  />
+  <section class="tool-heading">
+    <p class="eyebrow">{t.eyebrow}</p>
+    <h1>{page.title}</h1>
+    <p class="lead">{page.intro}</p>
+  </section>
+  <ImageTool mode={tool.mode} client:load />
+  <noscript>
+    <p class="notice">{t.noScript}</p>
+  </noscript>
+  <AdSlot size="leaderboard" />
+  <article class="tool-guide" data-guide>
+    {page.sections.map((section) => (
+      <section>
+        <h2>{section.heading}</h2>
+        <p>{section.text}</p>
+      </section>
+    ))}
+    <section>
+      <h2>{t.instructions}</h2>
+      <ol>
+        {page.steps.map((step) => (
+          <li>{step}</li>
+        ))}
+      </ol>
+    </section>
+    <section>
+      <h2>{t.faq}</h2>
+      {page.faq.map((item) => (
+        <details>
+          <summary>{item.question}</summary>
+          <p>{item.answer}</p>
+        </details>
+      ))}
+    </section>
+  </article>
+  <section class="related-tools">
+    <h2>{t.related}</h2>
+    <ul>
+      {toolCatalog
+        .filter((item) => item.slug !== tool.slug)
+        .map((item) => (
+          <li>
+            <a href={`/tools/${item.slug}/`}>
+              {toolPages[item.mode].title}
+              <span aria-hidden="true"> ↗</span>
+            </a>
+          </li>
+        ))}
+    </ul>
+  </section>
+  <GuideLinks path={Astro.url.pathname} />
+</Layout>

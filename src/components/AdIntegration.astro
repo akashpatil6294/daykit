@@ -1,0 +1,11 @@
+---
+import { ads } from '../config/ads';
+if (ads.enabled)
+  throw new Error(
+    'Ad activation needs an approved account, certified CMP and reviewed integration in AdIntegration.astro. No ad script is implemented yet.',
+  );
+---
+
+<!-- AD SCRIPT INSERTION POINT: after approval and CMP integration, insert the
+     account-provided loader here and use src/config/ads.ts for publisher/slot IDs.
+     This placeholder intentionally loads no advertising code. -->

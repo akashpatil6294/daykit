@@ -1,0 +1,157 @@
+---
+import GuideLinks from '../components/GuideLinks.astro';
+import Layout from '../layouts/Layout.astro';
+import AdSlot from '../components/AdSlot.astro';
+import ExamTool from '../components/image-tools/ExamTool';
+import { exams } from '../lib/exam-data';
+import { examText as t } from '../i18n/exams';
+import { imageTools } from '../i18n/image-tools';
+import '../styles/image-tools.css';
+export function getStaticPaths() {
+  return exams.map((exam) => ({ params: { exam: exam.slug }, props: { exam } }));
+}
+const { exam } = Astro.props;
+const faq = t.faq(exam.name);
+// Spec values transcribe the official English notification; they are data, not UI copy,
+// so the template wraps real values in data-no-translate spans (see below).
+const cellText = (value: unknown): string | null => {
+  if (value === null || value === undefined) return null;
+  const text = Array.isArray(value) ? value.join(', ') : String(value);
+  return text || null;
+};
+const rows = [
+  [t.width, exam.photo_spec.width, exam.signature_spec.width],
+  [t.height, exam.photo_spec.height, exam.signature_spec.height],
+  [t.unit, exam.photo_spec.unit, exam.signature_spec.unit],
+  [t.minimum, exam.photo_spec.min_kb, exam.signature_spec.min_kb],
+  [t.maximum, exam.photo_spec.max_kb, exam.signature_spec.max_kb],
+  [t.formats, exam.photo_spec.formats, exam.signature_spec.formats],
+  [t.background, exam.photo_spec.background, exam.signature_spec.background],
+  [t.rules, exam.photo_spec.rules, exam.signature_spec.rules],
+] as const;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: { '@type': 'Answer', text: item.answer },
+  })),
+};
+---
+
+<Layout
+  title={t.title(exam.name)}
+  description={t.description(exam.name)}
+  breadcrumb={t.title(exam.name)}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(schema).replace(/</g, '\\u003c')} />
+  <section class="tool-heading">
+    <p class="eyebrow">{t.eyebrow}</p>
+    <h1>{t.title(exam.name)}</h1>
+    <p class="lead">{exam.content?.en?.intro || t.intro(exam.name)}</p>
+  </section>
+  <aside class:list={['exam-verification', { unverified: !exam.verified }]}>
+    <h2>{exam.verified ? t.verified : t.unverified}</h2>
+    <p>{exam.verified ? t.verifiedHelp : t.warning(exam.name)}</p>
+    <dl>
+      <div>
+        <dt>{t.lastVerified}</dt>
+        <dd>
+          {exam.last_verified ? (
+            <time datetime={exam.last_verified}>{exam.last_verified}</time>
+          ) : (
+            t.never
+          )}
+        </dd>
+      </div>
+      <div>
+        <dt>{t.source}</dt>
+        <dd>
+          {exam.source_url ? (
+            <a href={exam.source_url} rel="noopener noreferrer">
+              {t.source}
+              <span aria-hidden="true"> ↗</span>
+            </a>
+          ) : (
+            t.missingSource
+          )}
+        </dd>
+      </div>
+    </dl>
+  </aside>
+  <section class="exam-specs">
+    <h2>{t.table}</h2>
+    <div class="table-scroll">
+      <table>
+        <caption class="sr-only">
+          <span data-no-translate>{exam.name}</span>—{t.table}
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col">{t.property}</th>
+            <th scope="col">{t.photo}</th>
+            <th scope="col">{t.signature}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map(([label, photo, signature]) => (
+            <tr>
+              <th scope="row">{label}</th>
+              <td>
+                {((text) =>
+                  text === null ? t.unknown : <span data-no-translate>{text}</span>)(cellText(photo))}
+              </td>
+              <td>
+                {((text) =>
+                  text === null ? t.unknown : <span data-no-translate>{text}</span>)(
+                  cellText(signature),
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <ExamTool exam={exam} client:load />
+  <noscript>
+    <p class="notice">{imageTools.noScript}</p>
+  </noscript>
+  <AdSlot size="leaderboard" />
+  <article class="tool-guide">
+    <section>
+      <h2>{t.stepsTitle}</h2>
+      <ol>
+        {t.steps(exam.name).map((step) => (
+          <li>{step}</li>
+        ))}
+      </ol>
+    </section>
+    <section>
+      <h2>{t.faqTitle}</h2>
+      {faq.map((item) => (
+        <details>
+          <summary>{item.question}</summary>
+          <p>{item.answer}</p>
+        </details>
+      ))}
+    </section>
+  </article>
+  <section class="related-tools">
+    <h2>{t.related}</h2>
+    <ul>
+      {exams
+        .filter((item) => item.slug !== exam.slug)
+        .map((item) => (
+          <li>
+            <a href={`/resize-photo-signature-${item.slug}/`}>
+              <span data-no-translate>{item.name}</span>
+              <span aria-hidden="true"> ↗</span>
+            </a>
+          </li>
+        ))}
+    </ul>
+  </section>
+  <GuideLinks path={Astro.url.pathname} />
+</Layout>

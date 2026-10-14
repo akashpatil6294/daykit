@@ -1,0 +1,44 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { legalKeys } from '../data/site';
+import { translations } from '../i18n';
+import { pdfText } from '../i18n/pdf-tools';
+export function getStaticPaths() {
+  return legalKeys.map((page) => ({ params: { page } }));
+}
+const key = Astro.params.page as (typeof legalKeys)[number];
+const t = translations();
+const page = t.pages[key];
+const email = import.meta.env.PUBLIC_CONTACT_EMAIL?.trim();
+---
+
+<Layout title={page.title} description={page.description} breadcrumb={t.nav[key]}>
+  <article class="prose-page">
+    <p class="eyebrow">{t.site.name}</p>
+    <h1>{page.title}</h1>
+    <p class="lead">{page.intro}</p>
+    {import.meta.env.PUBLIC_CONVERTER_URL && ['about','privacy'].includes(key) && <aside class="notice"><h2>{pdfText.remote}</h2><p>{pdfText.remotePrivacy}</p></aside>}
+    {key !== 'about' && (
+      <aside class="notice">
+        <strong>{t.ui.draft}</strong>
+        <p>{t.ui.draftBody}</p>
+      </aside>
+    )}
+    {key === 'contact' && email ? (
+      <section>
+        <h2>{t.contact.title}</h2>
+        <p>{t.contact.body}</p>
+        <a class="inline-link" href={`mailto:${email}`}>
+          {t.contact.configured}: {email}
+        </a>
+      </section>
+    ) : (
+      page.sections.map((section) => (
+        <section>
+          <h2>{section.title}</h2>
+          <p>{section.body}</p>
+        </section>
+      ))
+    )}
+  </article>
+</Layout>
