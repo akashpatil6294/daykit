@@ -282,8 +282,17 @@ def looks_like_ooxml(data: bytes) -> bool:
 def sanity_check_office(data: bytes, mode: str) -> None:
     if not looks_like_ooxml(data):
         raise ConversionError('invalid', 'file is not a supported Office document')
-    if b'vbaProject.bin' in data:
-        raise ConversionError('macros', 'macro-enabled Office files are not accepted')
+    with zipfile.ZipFile(__import__('io').BytesIO(data)) as archive:
+        entries = archive.infolist()
+        if len(entries) > 10000 or sum(item.file_size for item in entries) > 200 * 1024 * 1024:
+            raise ConversionError('too-large', 'expanded Office archive exceeds limits')
+        for item in entries:
+            name = item.filename.replace('\\', '/')
+            if name.startswith('/') or '..' in name.split('/') or ':' in name:
+                raise ConversionError('invalid', 'unsafe Office archive path')
+            if name.lower().endswith('vbaproject.bin'):
+                raise ConversionError('macros', 'macro-enabled Office files are not accepted')
+
 
 
 class Engine(abc.ABC):
@@ -309,6 +318,8 @@ class LocalEngine(Engine):
         if mode in ('word-to-pdf', 'powerpoint-to-pdf', 'excel-to-pdf'):
             sanity_check_office(data, mode)
             out = libreoffice_pdf(src, tmp)
+            with open_pdf(out.read_bytes()) as rendered:
+                assert_page_limit(rendered, MAX_PAGES)
         else:
             doc = open_pdf(data)
             try:

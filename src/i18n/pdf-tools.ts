@@ -3,11 +3,11 @@ export const pdfText = localize({
   eyebrow: 'DOCUMENT TOOLS',
   privacy: 'Processed in your browser. Nothing is uploaded.',
   uploadNotice:
-    'This tool uploads your file to our conversion service and deletes it immediately after conversion. It is not processed in your browser.',
+    'This tool uploads your file to our conversion service and attempts to delete temporary files when processing finishes. It is not processed in your browser.',
   choose: 'Choose files or drop them here',
   help: 'Choose the format shown for this tool. Maximum 50 MB total, 50 files and 100 pages. Office tools accept DOCX, PPTX or XLSX only.',
   helpUpload:
-    'Choose the format shown for this tool. Maximum 25 MB and 100 pages. Your file is uploaded to the converter and deleted right after.',
+    'Choose the format shown for this tool. Maximum 25 MB and 100 pages. Your file is uploaded to the converter and cleaned up when processing finishes.',
   files: 'Selected files',
   remove: 'Remove',
   up: 'Move up',
@@ -84,9 +84,9 @@ export const pdfText = localize({
   metadataQuality:
     'Removes document-level information and XMP. This is not redaction or complete anonymization: page text, annotations, attachments and embedded images may still contain personal information.',
   remote: 'Upload and convert',
-  remoteConsent: 'This file is sent to our converter and deleted right after.',
+  remoteConsent: 'This file is sent to our converter and cleaned up when processing finishes.',
   remotePrivacy:
-    'Conversion uploads your file to our converter for processing. It is deleted immediately after the response. If the converter is unreachable, this tool cannot convert in your browser instead.',
+    'Conversion uploads your file to our converter for processing. Temporary files are cleaned up when processing finishes; interruptions may delay deletion. If the converter is unreachable, this tool cannot convert in your browser instead.',
   instructions: 'How to use this tool',
   faq: 'Frequently asked questions',
   related: 'Related tools',

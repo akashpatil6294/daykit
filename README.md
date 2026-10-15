@@ -35,9 +35,9 @@ The build runs Astro/TypeScript diagnostics, then generates `dist/`. Tests inspe
 
 ## Environment
 
-`PUBLIC_SITE_URL` is the canonical origin, defaulting to localhost for development. Set it to the final HTTPS domain **before building for deployment**. Canonicals, OpenGraph URLs, sitemap and robots derive from it. Do not deploy public production with a localhost origin.
+`PUBLIC_SITE_URL` is the canonical origin, defaulting to https://daykit.pages.dev. Set it to the final HTTPS domain **before building for deployment**. Canonicals, OpenGraph URLs, sitemap and robots derive from it. Do not deploy public production with a localhost origin.
 
-`PUBLIC_CONTACT_EMAIL` adds the working email link on Contact. Complete operator identity, jurisdiction, actual hosting data practices and policy review before public launch. Current policy pages explicitly describe the development version and missing details, not a claim of legal compliance.
+`PUBLIC_CONTACT_EMAIL` overrides the public contact address (default: akashpatil6294@gmail.com). Operator details live in `src/config/operator.ts`. Provider retention, international transfers, licensing and jurisdiction-specific terms still require human review. See `LAUNCH-REVIEW.md`.
 
 ## Ad reservations
 
@@ -48,7 +48,7 @@ The build runs Astro/TypeScript diagnostics, then generates `dist/`. Tests inspe
 <AdSlot size="sticky-mobile" />
 ```
 
-Leaderboards reserve 728×112 pixels on desktop and 320×122 on mobile; in-content slots reserve 336×302 (mobile 300×272); sidebar slots reserve 300×622. These heights include label space. Widths shrink for narrow viewports without changing heights. Sticky-mobile reserves 320×72 in normal flow and sticks at the viewport bottom only below 601px; it is hidden on larger screens. It is available for future templates but intentionally not placed on every page. Future creatives must fit the reserved space. Never collapse unfilled slots after paint. No AdSense script or ad requests are installed.
+Leaderboards reserve 728×112 pixels on desktop and 320×122 on mobile; in-content slots reserve 336×302 (mobile 300×272); sidebar slots reserve 300×622. These heights include label space. Widths shrink for narrow viewports without changing heights. Sticky-mobile reserves 320×72 in normal flow and sticks at the viewport bottom only below 601px; it is hidden on larger screens. It is available for future templates but intentionally not placed on every page. Future creatives must fit the reserved space. Never collapse unfilled slots after paint. No AdSense script or ad requests are installed. Disabled slots are omitted at build time; the dimensions below apply only to future enabled slots.
 
 The consent UI overlays content rather than inserting layout space. Both choices currently only save a local preference: they do not enable ads or analytics. Before activating ads for EEA, UK or Switzerland visitors, integrate a Google-certified CMP; this custom banner is not a certified CMP. See https://support.google.com/adsense/answer/13554116 .
 
@@ -131,3 +131,7 @@ The `/converter` service (which replaces the old disabled `converter-service/` r
 - **LibreOffice** (system package): MPL-2.0 / LGPL.
 
 Switching `CONVERTER_ENGINE` to a managed API (Adobe, ConvertAPI, CloudConvert) removes these libraries from the deployment and with them the copyleft obligations — see `converter/README.md`.
+
+## Genesis frontend
+
+The shared styles use the Genesis editorial reference: General Sans headings, DM Sans body, neutral surfaces, indigo actions, 12px cards and 6px buttons. Primary buttons use the darker reference indigo for accessible white-text contrast. Fonts load from Fontshare and Google Fonts, disclosed in the privacy policy. Mobile navigation uses an accessible disclosure button.

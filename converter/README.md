@@ -3,8 +3,8 @@
 High-fidelity conversion behind one endpoint, used by the six Daykit
 conversion tools (PDF→Word, PDF→PowerPoint, PDF→Excel, Word→PDF,
 PowerPoint→PDF, Excel→PDF). The static site calls it only after an
-explicit consent checkbox; files are deleted immediately after the
-response.
+explicit consent checkbox. Temporary job files are cleaned up after processing;
+interruptions or filesystem failures can delay deletion.
 
 ## Endpoints
 
@@ -19,7 +19,7 @@ response.
 ## Engines
 
 `converter/engines.py` defines the `Engine` adapter interface.
-`LocalEngine` (default, `CONVERTER_ENGINE=local`) converts in-process:
+`LocalEngine` (default, `CONVERTER_ENGINE=local`) converts in an isolated worker process:
 
 - Office→PDF: headless LibreOffice
 - PDF→DOCX: pdf2docx (layout-preserving)
@@ -150,3 +150,47 @@ AGPL obligations for PyMuPDF and the GPL obligations for pdf2docx.
 Read the "Converter service licences" section of the repo-root README
 before hosting; switching to a managed engine removes those libraries
 from the deployment.
+
+## Job isolation and deployment verification
+
+Each job uses a separate Python worker process. On Linux (including Render),
+a timeout kills the entire process group before releasing its concurrency slot
+and deleting the temporary directory. The stale-folder sweep excludes active jobs.
+On Windows, timeout termination only guarantees the Python worker is stopped;
+validate the Linux container before deploying. Office ZIP archives are bounded to
+10,000 entries and 200 MiB expanded data, and unsafe member paths are rejected.
+Office-to-PDF output is checked against the same PDF page limit.
+
+The dependency file is version-pinned but not hash-locked. Docker installs it
+normally; it no longer silently falls back after a failed hash-verification attempt.
+A fully hashed lock and image vulnerability scanning remain deployment work.
+
+## Verified test environment (16 October 2026)
+
+See `../BACKEND-VERIFICATION.md` for this continuation's measured results and
+review/deployment commands. Test the Linux image rather than assuming the Windows
+host has its dependencies. The existing Dockerfile installs LibreOffice; the host
+needs a separate installation. `pdf2docx` was already declared correctly.
+
+OCRmyPDF 16.7 requires pikepdf's `Pdf.check()` API; pikepdf 10 removed it.
+`requirements.txt` now pins pikepdf 9.11.0, and the build checks the API exists.
+Keep the scanned-PDF service test when updating either package. `pip check` alone
+does not detect this API incompatibility. Direct dependency versions are pinned,
+but transitive dependencies and the base image still need a reproducible lock and
+ongoing security updates.
+
+For optional Windows-host testing (not required when testing in Docker):
+
+```powershell
+py -3.12 -m venv converter/.venv
+converter/.venv/Scripts/python -m pip install -r converter/requirements.txt
+winget install --id TheDocumentFoundation.LibreOffice --exact
+$env:Path = "C:\Program Files\LibreOffice\program;" + $env:Path
+Set-Location converter
+.venv/Scripts/python -m pytest test_service.py -q
+```
+
+OCR also needs Tesseract and Ghostscript installed and on PATH for host tests.
+The Docker image includes these. No host package or system installation was
+performed by this continuation. On Windows, prefer Docker for process-group
+termination guarantees and production parity.

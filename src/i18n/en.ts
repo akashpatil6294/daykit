@@ -30,7 +30,7 @@ export const en = localize({
     settings: 'Cookie preferences',
     phase: 'The beginning of something useful',
     noAccount: 'No account needed to explore',
-    local: 'Designed for on-device file processing',
+    local: 'Local tools, clear upload choices',
     free: 'Built around free access',
     copyright: 'Daykit. Made for everyday curiosity.',
     draft: 'Launch information pending',
@@ -52,7 +52,7 @@ export const en = localize({
     collectionIntro: 'Image and PDF tools, ten calculators and practical guides are ready.',
     noteTitle: 'Your files belong with you.',
     noteBody:
-      'Image and PDF tools process files in your browser. Your files are never uploaded to our servers. Keep originals and review downloaded results before using them.',
+      'Image tools and most PDF tools run in your browser. Office/PDF conversions upload files to the configured converter with your consent. Keep originals and review downloaded results.',
     noteLink: 'Our approach to privacy',
     preview: 'Explore the collection',
     previewTitle: 'Less busywork. More possibilities.',
@@ -116,13 +116,13 @@ export const en = localize({
         },
         {
           title: 'Thoughtful by design',
-          body: 'Our approach is mobile-first and keyboard-accessible. Image and PDF processing happens on your device. Advertising has reserved space to keep pages steady, but no advertising script is active.',
+          body: 'Image tools and most PDF tools process files on your device. The six Office/PDF conversion tools upload files to the separately hosted converter after your consent, when that service is configured. Review converted files and calculator results before relying on them. No advertising or analytics script is active.',
         },
       ],
     },
     contact: {
       title: 'Contact Daykit',
-      description: 'Contact information and launch status for Daykit.',
+      description: 'Contact Akash Patil about Daykit tools, feedback and privacy questions.',
       intro: 'A place for questions, ideas and feedback.',
       sections: [
         {
@@ -134,7 +134,7 @@ export const en = localize({
     privacy: {
       title: 'Privacy Policy',
       description:
-        'How this development version of Daykit handles privacy preferences, files and planned services.',
+        'How Daykit handles files, browser storage, hosting and privacy questions.',
       intro: 'Understand what this version does with your information.',
       sections: [
         {
@@ -147,19 +147,19 @@ export const en = localize({
         },
         {
           title: 'Files and local processing',
-          body: 'Most image and PDF processing runs on your device using browser workers and local rendering; for those tools, selected files are not uploaded or stored by the site. The six conversion tools (PDF to Word, PowerPoint and Excel; Word, PowerPoint and Excel to PDF) are different: after you tick the consent checkbox, your file is uploaded to our conversion service, converted, and deleted immediately after the response. The service keeps no copy and never logs file names or contents. Text-only tools such as PDF to text remain browser-only. Working data and previews remain in browser memory during the task. Downloads are saved by your browser and remain on your device until you remove them. Image decoders, PDF libraries and fonts are served as site assets; they do not send your documents to a conversion service. Calculations also run locally. Translation drafts are produced while authoring public site copy, not from visitor files.',
+          body: 'Most image and PDF processing runs on your device using browser workers and local rendering; for those tools, selected files are not uploaded or stored by the site. The six conversion tools (PDF to Word, PowerPoint and Excel; Word, PowerPoint and Excel to PDF) are different: after you tick the consent checkbox, your file is uploaded to our conversion service, converted in a temporary job folder, and scheduled for cleanup when processing finishes. Cleanup also attempts to remove stale folders. Failures or interrupted service operation may delay deletion; no absolute deletion deadline is promised. Application code does not intentionally log document names or contents; infrastructure logging is controlled separately. Text-only tools such as PDF to text remain browser-only. Working data and previews remain in browser memory during the task. Downloads are saved by your browser and remain on your device until you remove them. Image decoders, PDF libraries and fonts are served as site assets; they do not send your documents to a conversion service. Calculations also run locally. Translation drafts are produced while authoring public site copy, not from visitor files.',
         },
         {
           title: 'Hosting and optional services',
-          body: 'The hosting provider may process network information, such as IP addresses, to deliver and secure the site. The selected provider, retention practices and operator contact details must be documented before launch. The optional conversion service is a separate deployment run by the operator: it rate-limits requests, holds files only in temporary storage during conversion, and deletes them immediately after the response. This version has no accounts and no backend database connection.',
+          body: 'Cloudflare Pages hosts the frontend; the conversion service is hosted separately on Render. These providers receive network information such as IP addresses and request metadata to deliver and secure requests. Provider log retention, processing locations and international transfers have not yet been confirmed by the operator. The converter uses IP addresses for short-lived in-memory rate limiting; its configured server command disables access logs. No accounts or application database are implemented. General Sans loads from Fontshare; DM Sans and JetBrains Mono load from Google Fonts, so those providers receive font requests and network metadata, but not your documents.',
         },
         {
           title: 'Advertising and your choices',
-          body: 'The reserved advertisement boxes are empty. No AdSense script is installed. Before advertising is enabled for visitors in the EEA, UK or Switzerland, a Google-certified consent management platform must be integrated. This development banner is not that platform.',
+          body: 'Advertising is disabled and empty ad boxes are not displayed. No AdSense script is installed. The saved privacy preference does not activate any tracking. Before advertising is enabled for visitors in the EEA, UK or Switzerland, a Google-certified consent management platform must be integrated. This development banner is not that platform.',
         },
         {
           title: 'Requests and updates',
-          body: 'Contact details for privacy requests are pending. Before launch, the operator must publish a contact address and explain applicable access, correction, deletion and complaint procedures, as well as any international data transfers.',
+          body: 'Contact the operator using the email above for privacy questions, access, correction, deletion or complaints. Describe the request without attaching sensitive documents. Applicable rights and provider practices depend on your circumstances and require operator review; this policy does not claim universal legal compliance.',
         },
       ],
     },
@@ -174,7 +174,7 @@ export const en = localize({
         },
         {
           title: 'Responsible use',
-          body: 'Use the site lawfully. Do not attempt to disrupt it, bypass access controls or submit content you do not have permission to use.',
+          body: 'Use the site lawfully. You remain responsible for documents you submit and must have permission to process them. Do not disrupt the service, bypass limits or access controls, or upload malicious content. You retain rights in your documents. Third-party software remains subject to its own licenses, published in the site license notices.',
         },
         {
           title: 'Check important results',
@@ -182,7 +182,7 @@ export const en = localize({
         },
         {
           title: 'Operator and applicable terms',
-          body: 'Operator identity, jurisdiction, dispute procedures and any limitations permitted by applicable law must be completed before public launch. Nothing here is intended to override rights that cannot lawfully be excluded.',
+          body: 'Daykit is operated by Akash Patil, an individual developer in India. The service is supplied as available, without a promise of uninterrupted operation or error-free output. To the extent permitted by applicable law, the operator does not accept responsibility for losses from reliance on unreviewed results. Nothing here excludes rights or liabilities that cannot lawfully be excluded. Contact the operator about concerns; jurisdiction and dispute provisions require qualified legal review.',
         },
       ],
     },
@@ -210,7 +210,7 @@ export const en = localize({
   contact: {
     configured: 'Send us an email',
     title: 'Get in touch',
-    body: 'Use the email link below for questions, ideas or feedback. Your email provider will handle the message.',
+    body: 'Use the email link below for tool problems, accessibility issues, feedback, licensing or privacy questions. Include the tool name and a description of the problem; do not attach sensitive documents. Daykit is maintained by an individual developer, so responses may take time. Your email provider handles the message; this page does not submit a form.',
   },
   notFound: {
     title: 'Page not found',

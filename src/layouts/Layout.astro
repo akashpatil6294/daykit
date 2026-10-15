@@ -46,6 +46,8 @@ const crumbs = {
   <head>
     <meta charset="UTF-8" />
     <AdIntegration />
+    <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,600&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600&family=JetBrains+Mono&display=swap" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title} | {t.site.name}</title>
     <meta name="description" content={description} />
@@ -59,7 +61,7 @@ const crumbs = {
     ))}
     <link rel="alternate" hreflang="x-default" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <meta name="theme-color" content="#f8f9f5" />
+    <meta name="theme-color" content="#fafafa" />
     {noindex && <meta name="robots" content="noindex, follow" />}
     <meta property="og:title" content={`${title} | ${t.site.name}`} />
     <meta property="og:description" content={description} />
@@ -87,7 +89,7 @@ const crumbs = {
           {t.site.name}
           <span class="brand-dot">.</span>
         </a>
-        <nav aria-label={t.ui.navigation}>
+        <nav id="main-navigation" aria-label={t.ui.navigation}>
           {categoryKeys.map((key) => (
             <a
               href={`/${key}/`}
@@ -101,6 +103,7 @@ const crumbs = {
           {t.nav.about}
           <span aria-hidden="true"> ↗</span>
         </a>
+        <button class="menu-toggle" aria-expanded="false" aria-controls="main-navigation">Menu</button>
         <label class="language-control">
           <span class="sr-only">{t.ui.language}</span>
           <select id="language-switcher" aria-label={t.ui.language} data-no-translate>
@@ -152,6 +155,12 @@ const crumbs = {
     </footer>
     <CookieConsent client:load />
     <script>
+      document.querySelector('.menu-toggle')?.addEventListener('click', (event) => {
+        const button = event.currentTarget as HTMLButtonElement;
+        const open = button.getAttribute('aria-expanded') !== 'true';
+        button.setAttribute('aria-expanded', String(open));
+        document.getElementById('main-navigation')?.toggleAttribute('data-open', open);
+      });
       document.getElementById('language-switcher')?.addEventListener('change', (event) => {
         window.location.assign((event.target as HTMLSelectElement).value);
       });

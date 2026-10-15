@@ -19,8 +19,8 @@
   display: flex;
   flex-direction: column;
   padding: 27px;
-  background: #edf1e5;
-  border: 1px solid #d3dcca;
+  background: #fafafa;
+  border: 1px solid #e8e8ec;
   border-radius: 12px;
 }
 .tool-library-card h2 {
@@ -28,7 +28,7 @@
 }
 .tool-library-card p {
   font-size: 14px;
-  color: #52614d;
+  color: #6b6b6b;
   flex: 1;
 }
 .tool-library-card span {
@@ -36,12 +36,12 @@
   font-weight: 650;
 }
 .tool-library-card:hover {
-  background: #e4edd9;
+  background: #fafafa;
 }
 .image-tool {
-  background: #fffefb;
-  border: 1px solid #d4ddce;
-  border-radius: 14px;
+  background: #ffffff;
+  border: 1px solid #e8e8ec;
+  border-radius: 12px;
   padding: 26px;
 }
 .tool-status {
@@ -57,28 +57,28 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #49733c;
+  background: #6b6b6b;
   flex-shrink: 0;
 }
 .working-dot {
   background: #a77929;
 }
 .image-upload {
-  border: 1px dashed #8ba07c;
+  border: 1px dashed #6b6b6b;
   border-radius: 10px;
-  background: #f4f7ed;
+  background: #ffffff;
   text-align: center;
   padding: 28px 16px;
 }
 .image-upload.is-over {
-  background: #e2eccf;
-  border-color: #214d3b;
+  background: #e8e8ec;
+  border-color: #0a0a0a;
 }
 .upload-symbol {
   display: block;
   font-size: 32px;
   line-height: 1.2;
-  color: #48643b;
+  color: #6b6b6b;
   margin-bottom: 12px;
 }
 .image-upload label {
@@ -88,17 +88,17 @@
 }
 .image-upload p {
   font-size: 12px;
-  color: #57664e;
+  color: #6b6b6b;
   margin: 10px 0 17px;
 }
 .image-upload input {
   max-width: 100%;
   font-size: 13px;
-  color: #35482e;
+  color: #0a0a0a;
   min-height: 44px;
 }
 .image-upload input::file-selector-button {
-  background: #214d3b;
+  background: #0a0a0a;
   color: white;
   padding: 12px 16px;
   border: 0;
@@ -136,9 +136,9 @@
   display: block;
   width: 100%;
   height: 45px;
-  border: 1px solid #adbca3;
+  border: 1px solid #e8e8ec;
   border-radius: 6px;
-  background: #fffefb;
+  background: #ffffff;
   padding: 10px;
   margin-top: 7px;
   font: inherit;
@@ -148,7 +148,7 @@
   width: 100%;
   height: 28px;
   margin-top: 8px;
-  accent-color: #315c3c;
+  accent-color: #0a0a0a;
   cursor: pointer;
 }
 .image-settings output {
@@ -163,7 +163,7 @@
   min-height: 32px;
 }
 .image-settings input[type='checkbox'] {
-  accent-color: #315c3c;
+  accent-color: #0a0a0a;
   width: 18px;
   height: 18px;
 }
@@ -174,7 +174,7 @@
 }
 .field-help {
   font-size: 12px;
-  color: #56644f;
+  color: #6b6b6b;
   line-height: 1.7;
   margin: 10px 0 17px;
 }
@@ -191,7 +191,7 @@
   padding: 8px 10px;
 }
 .image-error {
-  background: #fff0eb;
+  background: #ffffff;
   border: 1px solid #d8a99a;
   color: #873b24;
   border-radius: 8px;
@@ -221,9 +221,9 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  border: 1px solid #e0e3d8;
+  border: 1px solid #e8e8ec;
   border-radius: 8px;
-  background: repeating-conic-gradient(#edf0e7 0% 25%, #f9faf6 0% 50%) 50%/18px 18px;
+  background: repeating-conic-gradient(#fafafa 0% 25%, #ffffff 0% 50%) 50%/18px 18px;
 }
 .preview-box img {
   width: 100%;
@@ -232,12 +232,12 @@
 }
 .image-preview > p {
   font-size: 12px;
-  color: #52614a;
+  color: #6b6b6b;
   margin: 12px 0 0;
   overflow-wrap: anywhere;
 }
 .image-result {
-  border-top: 1px solid #d4ddce;
+  border-top: 1px solid #e8e8ec;
   margin-top: 25px;
   padding-top: 24px;
   display: flex;
@@ -264,8 +264,8 @@
   overflow: hidden;
   max-width: 100%;
   max-height: 500px;
-  background: #eef1e8;
-  border: 1px solid #9caf8c;
+  background: #fafafa;
+  border: 1px solid #6b6b6b;
   touch-action: none;
   cursor: grab;
   user-select: none;
@@ -318,7 +318,7 @@
 .tool-guide li {
   font-size: 15px;
   line-height: 1.85;
-  color: #4e5e50;
+  color: #6b6b6b;
 }
 .tool-guide ol {
   list-style: decimal;
@@ -330,7 +330,7 @@
 }
 .tool-guide details {
   padding: 17px 0;
-  border-bottom: 1px solid #d6decf;
+  border-bottom: 1px solid #e8e8ec;
 }
 .tool-guide summary {
   cursor: pointer;
@@ -342,7 +342,7 @@
   margin: 14px 0 0;
 }
 .related-tools {
-  border-top: 1px solid #d6decf;
+  border-top: 1px solid #e8e8ec;
   padding: 35px 0 65px;
 }
 .related-tools h2 {
@@ -363,7 +363,7 @@
 input:focus-visible,
 select:focus-visible,
 summary:focus-visible {
-  outline: 3px solid #427150;
+  outline: 3px solid #6b6b6b;
   outline-offset: 3px;
 }
 fieldset:disabled {
@@ -373,8 +373,8 @@ button:disabled {
   cursor: wait;
 }
 .exam-verification {
-  border: 1px solid #bdccb1;
-  background: #eff4e7;
+  border: 1px solid #e8e8ec;
+  background: #fafafa;
   border-radius: 10px;
   padding: 25px;
   margin-bottom: 30px;
@@ -425,10 +425,10 @@ button:disabled {
 .exam-specs td {
   padding: 15px;
   text-align: left;
-  border: 1px solid #d5decf;
+  border: 1px solid #e8e8ec;
 }
 .exam-specs thead th {
-  background: #eaf0e2;
+  background: #fafafa;
 }
 .exam-specs tbody th {
   font-weight: 600;
@@ -493,3 +493,8 @@ button:disabled {
     height: 240px;
   }
 }
+
+.tool-library-card { background: #fff; transition: transform .2s, box-shadow .2s; }
+.tool-library-card:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 8px 30px #00000014; }
+
+input[type="range"], input[type="checkbox"], progress { accent-color: #6366f1; }

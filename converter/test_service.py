@@ -170,3 +170,116 @@ def test_scanned_pdf():
     else:
         assert r.status_code == 422
         assert r.json()['detail'] == 'ocr-unavailable'
+
+
+def test_office_archive_path_rejected():
+    from converter.engines import sanity_check_office, ConversionError
+    import pytest
+    data = io.BytesIO()
+    with zipfile.ZipFile(data, 'w') as archive:
+        archive.writestr('[Content_Types].xml', '<Types/>')
+        archive.writestr('../outside.xml', 'unsafe')
+    with pytest.raises(ConversionError) as error:
+        sanity_check_office(data.getvalue(), 'word-to-pdf')
+    assert error.value.code == 'invalid'
+
+
+def test_ocr_header_is_exposed():
+    from converter.main import cors_headers
+    assert cors_headers(ORIGIN)['Access-Control-Expose-Headers'] == 'X-OCR-Applied'
+
+
+def test_conversion_timeout_reaps_worker_before_cleanup(monkeypatch):
+    import asyncio
+    from starlette.datastructures import UploadFile
+    import converter.main as service
+    import pytest
+    from fastapi import HTTPException
+
+    class Worker:
+        returncode = None
+        pid = 123456789
+        killed = False
+        async def wait(self):
+            if not self.killed:
+                await asyncio.sleep(10)
+            self.returncode = -9
+            return self.returncode
+        def kill(self):
+            self.killed = True
+
+    worker = Worker()
+    async def spawn(*args, **kwargs):
+        return worker
+    monkeypatch.setattr(service.asyncio, 'create_subprocess_exec', spawn)
+    monkeypatch.setattr(service, 'JOB_TIMEOUT', 0.01)
+    if os.name != 'nt':
+        monkeypatch.setattr(service.os, 'killpg', lambda *args: worker.kill())
+    async def run():
+        monkeypatch.setattr(service, 'slots', asyncio.Semaphore(1))
+        before = set(service.TMP_ROOT.iterdir())
+        with pytest.raises(HTTPException) as error:
+            await service.convert(UploadFile(filename='file.pdf', file=io.BytesIO(b'%PDF')), 'pdf-to-word', 'editable')
+        assert error.value.status_code == 504
+        assert worker.killed and worker.returncode == -9
+        assert not service.slots.locked()
+        assert not service.active_jobs
+        assert set(service.TMP_ROOT.iterdir()) == before
+    asyncio.run(run())
+
+
+def test_malformed_pdf_rejected_without_details():
+    response = client.post('/convert', files={'file': ('invalid.pdf', b'not a PDF')},
+                           data={'mode': 'pdf-to-word'}, headers={'Origin': ORIGIN})
+    assert response.status_code == 422
+    assert response.json() == {'detail': 'corrupt'}
+
+
+def test_missing_origin_rejected():
+    response = client.post('/convert', files={'file': ('invalid.pdf', b'file')},
+                           data={'mode': 'pdf-to-word'})
+    assert response.status_code == 403
+
+
+def test_concurrency_rejects_when_all_slots_busy(monkeypatch):
+    import asyncio
+    import converter.main as service
+    monkeypatch.setattr(service, 'slots', asyncio.Semaphore(0))
+    response = post('text-heavy.pdf', 'pdf-to-word')
+    assert response.status_code == 429
+    assert response.headers['access-control-allow-origin'] == ORIGIN
+
+
+def test_rate_limit_rejects_before_conversion(monkeypatch):
+    import converter.main as service
+    monkeypatch.setattr(service, 'RATE_LIMIT', 0)
+    assert post('text-heavy.pdf', 'pdf-to-word').status_code == 429
+
+
+def test_real_worker_timeout_and_cleanup(monkeypatch):
+    import asyncio
+    from fastapi import HTTPException
+    from starlette.datastructures import UploadFile
+    import converter.main as service
+    import pytest
+    original_spawn = asyncio.create_subprocess_exec
+    processes = []
+    async def spawn(*args, **kwargs):
+        # A real OS process ensures timeout and reaping are not only mock-tested.
+        process = await original_spawn(service.sys.executable, '-c',
+                                      'import time; time.sleep(10)', **kwargs)
+        processes.append(process)
+        return process
+    monkeypatch.setattr(service.asyncio, 'create_subprocess_exec', spawn)
+    monkeypatch.setattr(service, 'JOB_TIMEOUT', 0.05)
+    async def run():
+        monkeypatch.setattr(service, 'slots', asyncio.Semaphore(1))
+        before = set(service.TMP_ROOT.iterdir())
+        with pytest.raises(HTTPException) as error:
+            await service.convert(UploadFile(filename='fixture.pdf', file=io.BytesIO(b'%PDF')),
+                                  'pdf-to-word', 'editable')
+        assert error.value.status_code == 504
+        assert len(processes) == 1 and processes[0].returncode is not None
+        assert not service.slots.locked() and not service.active_jobs
+        assert set(service.TMP_ROOT.iterdir()) == before
+    asyncio.run(run())

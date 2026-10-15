@@ -17,6 +17,9 @@ from __future__ import annotations
 import asyncio
 import os
 import shutil
+import signal
+import sys
+import json
 import tempfile
 import time
 from collections import deque
@@ -39,8 +42,8 @@ CONCURRENCY = int(os.environ.get('CONVERTER_CONCURRENCY', '2'))
 TMP_ROOT = Path(os.environ.get('CONVERTER_TMP', tempfile.gettempdir())) / 'daykit-converter'
 TMP_ROOT.mkdir(parents=True, exist_ok=True)
 
-origins = [o.rstrip('/') for o in os.environ.get('CORS_ORIGINS', '').split(',') if o.strip()]
-site_url = os.environ.get('PUBLIC_SITE_URL', '').rstrip('/')
+origins = [o.strip().rstrip('/') for o in os.environ.get('CORS_ORIGINS', '').split(',') if o.strip()]
+site_url = os.environ.get('PUBLIC_SITE_URL', '').strip().rstrip('/')
 if site_url and site_url not in origins:
     origins.append(site_url)
 
@@ -62,7 +65,7 @@ async def lifespan(app: FastAPI):
             try:
                 for child in TMP_ROOT.iterdir():
                     try:
-                        if child.stat().st_mtime < cutoff:
+                        if child not in active_jobs and child.stat().st_mtime < cutoff:
                             shutil.rmtree(child, ignore_errors=True)
                     except FileNotFoundError:
                         pass
@@ -78,6 +81,7 @@ app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None, lifespan=lifespan
 engine = make_engine()
 recent: dict[str, deque[float]] = {}
 slots = asyncio.Semaphore(CONCURRENCY)
+active_jobs: set[Path] = set()
 
 ERROR_STATUS = {
     'too-large': 413,
@@ -125,6 +129,7 @@ def cors_headers(origin: str | None) -> dict[str, str]:
             'Access-Control-Allow-Methods': 'POST, OPTIONS',
             'Access-Control-Allow-Headers': 'Content-Type',
             'Cache-Control': 'no-store',
+            'Access-Control-Expose-Headers': 'X-OCR-Applied',
         }
     return {}
 
@@ -183,20 +188,45 @@ async def convert(
     if len(data) > MAX_BYTES:
         raise HTTPException(413, 'File too large')
     job = Path(tempfile.mkdtemp(prefix='job-', dir=TMP_ROOT))
+    active_jobs.add(job)
     try:
-
-        def run() -> tuple[bytes, str, bool]:
-            return engine.convert(data, mode, fidelity, job)
-
-        try:
-            async with slots:
-                out, media, ocr = await asyncio.get_running_loop().run_in_executor(None, run)
-        except ConversionError as exc:
-            raise HTTPException(ERROR_STATUS.get(exc.code, 422), exc.code)
+        (job / 'request.bin').write_bytes(data)
+        if slots.locked():
+            raise HTTPException(429, 'converter busy')
+        async with slots:
+            process = await asyncio.create_subprocess_exec(
+                sys.executable, '-m', 'converter.worker', str(job), mode, fidelity,
+                stdout=asyncio.subprocess.DEVNULL, stderr=asyncio.subprocess.DEVNULL,
+                start_new_session=os.name != 'nt',
+            )
+            try:
+                await asyncio.wait_for(process.wait(), timeout=JOB_TIMEOUT)
+            except (TimeoutError, asyncio.CancelledError) as exc:
+                # Render runs Linux: kill the entire job group, including Office/OCR.
+                if os.name != 'nt':
+                    try:
+                        os.killpg(process.pid, signal.SIGKILL)
+                    except ProcessLookupError:
+                        pass
+                elif process.returncode is None:
+                    process.kill()
+                await process.wait()
+                if isinstance(exc, asyncio.CancelledError):
+                    raise
+                raise HTTPException(504, 'conversion timed out')
+            if process.returncode != 0:
+                raise HTTPException(500, 'conversion failed')
+            result = json.loads((job / 'result.json').read_text())
+            if 'error' in result:
+                code = result['error']
+                raise HTTPException(ERROR_STATUS.get(code, 422), code)
+            out = (job / 'output.bin').read_bytes()
+            media, ocr = result['media'], result['ocr']
         headers = {'Cache-Control': 'no-store'}
         if ocr:
             headers['X-OCR-Applied'] = 'true'
         # Bytes are fully in memory; the tmp dir is gone before the response.
         return Response(content=out, media_type=media, headers=headers)
     finally:
+        active_jobs.discard(job)
         shutil.rmtree(job, ignore_errors=True)

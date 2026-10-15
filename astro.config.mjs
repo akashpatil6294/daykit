@@ -5,7 +5,7 @@ import { loadEnv } from 'vite';
 
 const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
 export default defineConfig({
-  site: env.PUBLIC_SITE_URL || 'http://localhost:4321',
+  site: env.PUBLIC_SITE_URL || 'https://daykit.pages.dev',
   output: 'static',
   trailingSlash: 'always',
   integrations: [react()],

@@ -9,7 +9,7 @@ const t = translations();
 ---
 
 <!-- Sizes are reserved by CSS before first paint; never collapse an unfilled slot. -->
-<aside
+{ads.enabled && <aside
   class:list={['ad-slot', `ad-${size}`]}
   data-ad-slot={ads.slots[size] || undefined}
   aria-label={`${t.ui.ad}: ${t.ui.adReserved}`}
@@ -17,4 +17,4 @@ const t = translations();
   <span>
     {t.ui.ad} <span aria-hidden="true">·</span> {t.ui.adReserved}
   </span>
-</aside>
+</aside>}

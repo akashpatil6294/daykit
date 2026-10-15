@@ -1,5 +1,5 @@
 # Daykit converter service dependencies.
-# Tested set at authoring time (2026-10-14). Pin before deploying.
+# Direct versions pinned; Linux/Python 3.12 verification documented in BACKEND-VERIFICATION.md.
 fastapi==0.143.0
 uvicorn[standard]==0.54.0
 python-multipart==0.0.32
@@ -12,6 +12,8 @@ pillow==12.3.0
 # ocrmypdf is optional: it only runs when the `ocrmypdf` and `tesseract`
 # binaries are on PATH (the Docker image installs them).
 ocrmypdf==16.7.0
+# OCRmyPDF 16.7 uses Pdf.check(), removed in pikepdf 10.
+pikepdf==9.11.0
 # Test-only:
 pytest==9.1.1
 httpx==0.28.1

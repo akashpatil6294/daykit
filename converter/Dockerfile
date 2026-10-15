@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app
 COPY requirements.txt .
-RUN pip install --require-hashes -r requirements.txt || pip install -r requirements.txt
+RUN pip install -r requirements.txt && pip check
 COPY converter ./converter
 
 # One low-privilege user for the whole service, WITH a home directory:
@@ -34,10 +34,11 @@ ENV HOME=/home/converter \
     CONVERTER_CONCURRENCY=2 \
     JOB_TIMEOUT_SECONDS=120
 
-# Build-time smoke test: Office -> PDF must work as the converter user.
+# Build-time dependency smoke test as the converter user.
+# Real conversions and OCR are covered by the container verification suite.
 # If this fails, the image is broken -- do not ship it.
 RUN soffice --headless --version && \
-    python3 -c "import fitz, docx, openpyxl, pptx, pdf2docx; print('py deps ok')"
+    python3 -c "import pymupdf, docx, openpyxl, pptx, pdf2docx, pikepdf; assert hasattr(pikepdf.Pdf, 'check'); print('py deps ok')"
 
 EXPOSE 8000
 CMD ["uvicorn", "converter.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1", "--no-access-log"]
