@@ -1,5 +1,5 @@
 import { pageFromItems, guardMemory, type DocumentModel } from './pdf-text-model';
-import { pageSelection } from '.../pdf-protocol';
+import { pageSelection } from '../pdf-protocol';
 import type { PDFDocumentProxy } from 'pdfjs-dist';
 export async function extractModel(
   pdf: PDFDocumentProxy,
