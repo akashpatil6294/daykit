@@ -1,3 +1,1 @@
-# Advertising is not enabled. No sellers are currently authorized here.
-# After approval, replace these comments with the exact ads.txt record supplied
-# by your AdSense account. Do not publish a made-up publisher ID.
+google.com, pub-5625418813515014, DIRECT, f08c47fec0942fa0
