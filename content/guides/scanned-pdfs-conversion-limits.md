@@ -1,10 +1,16 @@
 ---
-{"title":"Scanned PDFs and what conversion can and cannot recover","summary":"Recognize missing text layers, use the converter's OCR where available, choose visual output and separate useful PDF edits from redaction or signature verification.","author":"Daykit editorial","published":"2026-10-14","updated":"2026-10-14","faq":[{"question":"Does the converter handle scanned PDFs?","answer":"The six conversion tools run OCR on scanned PDFs first and tell you when it was applied. Review the recognized text for errors."},{"question":"Which output keeps a scanned page visible?","answer":"Use PDF image output or exact-look slides in PDF to PowerPoint. These preserve a rendering without claiming editable text."},{"question":"Can a visible signature image verify a scanned certificate?","answer":"No. A picture of a signature is not identity verification or a cryptographic document signature."}]}
+{"title":"Scanned PDFs and what conversion can and cannot recover","summary":"Recognize missing text layers, use the converter's OCR where available, choose visual output and separate useful PDF edits from redaction or signature verification.","author":"Akash Patil","published":"2026-10-14","updated":"2026-10-21","faq":[{"question":"Does the converter handle scanned PDFs?","answer":"The six conversion tools run OCR on scanned PDFs first and tell you when it was applied. Review the recognized text for errors."},{"question":"Which output keeps a scanned page visible?","answer":"Use PDF image output or exact-look slides in PDF to PowerPoint. These preserve a rendering without claiming editable text."},{"question":"Can a visible signature image verify a scanned certificate?","answer":"No. A picture of a signature is not identity verification or a cryptographic document signature."}]}
 ---
+
+
+## Separate OCR success from accuracy
+
+The verified scanned-PDF integration request returned a DOCX of 197,822 bytes and the X-OCR-Applied response header. That proves the fixture passed through OCR, not that all characters in every scan will be correct. Compare identifiers, amounts and mixed-script text with the original image.
+
 
 ## A readable page may still be only a picture
 
-A scan can look clear to a person while containing no encoded words for software to extract. The PDF container simply holds the page image. Some scanners add a separate recognized text layer, but that layer is not guaranteed and can contain mistakes. Before converting, the six Daykit conversion tools check whether a PDF has a text layer at all. When it does not, the file passes through optical character recognition on the conversion service first, and the tool tells you when OCR was applied. A blank page or an unusual font encoding can also produce no usable text, so inspect the visible page before deciding what to do next.
+A scan can look clear to a person while containing no encoded words for software to extract. The PDF container simply holds the page image. Some scanners add a separate recognized text layer, but that layer is not guaranteed and can contain mistakes. Before converting, the six PDF Converter conversion tools check whether a PDF has a text layer at all. When it does not, the file passes through optical character recognition on the conversion service first, and the tool tells you when OCR was applied. A blank page or an unusual font encoding can also produce no usable text, so inspect the visible page before deciding what to do next.
 
 ## OCR recovers words, not certainty
 
@@ -12,7 +18,7 @@ The [PDF to Word tool](/tools/pdf-to-word/) rebuilds layout-preserving DOCX file
 
 ## Conversion uploads your file with consent
 
-The six conversion tools upload your file to the conversion service after you tick the consent checkbox — "This file is sent to our converter and deleted right after". The service deletes it immediately after the response and never logs file names or contents. Uploads are limited to 25 MB and 100 pages. If the converter is unreachable, the tools show an error instead of silently producing a lower-quality browser result.
+The six conversion tools upload your file to the conversion service after you tick the consent checkbox — "This file is sent to our converter and cleaned up when processing finishes." The service converts your file in an isolated temporary directory and schedules cleanup after processing finishes; interruptions can delay deletion. Hosting request logs are managed separately. Uploads are limited to 25 MB and 100 pages. If the converter is unreachable, the tools show an error instead of silently producing a lower-quality browser result.
 
 ## Choose a visual copy when editing is unnecessary
 

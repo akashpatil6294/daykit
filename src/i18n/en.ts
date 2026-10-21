@@ -1,7 +1,7 @@
 import { localize } from './runtime';
 export const en = localize({
   site: {
-    name: 'Daykit',
+    name: 'PDF Converter',
     tagline: 'Useful tools for everyday tasks.',
     description: 'Free image and PDF tools, everyday calculators and practical guides.',
   },
@@ -24,28 +24,25 @@ export const en = localize({
     footer: 'Footer navigation',
     ad: 'Advertisement',
     adReserved: 'Reserved ad space',
-    soon: 'Coming soon',
+    soon: 'Tools',
     explore: 'Explore',
     back: 'Back to home',
     settings: 'Cookie preferences',
-    phase: 'The beginning of something useful',
+    phase: 'Practical guides included',
     noAccount: 'No account needed to explore',
     local: 'Local tools, clear upload choices',
     free: 'Built around free access',
-    copyright: 'Daykit. Made for everyday curiosity.',
-    draft: 'Launch information pending',
-    draftBody:
-      'This site is in development. The operator’s identity, jurisdiction and contact details must be completed before public launch.',
+    copyright: 'PDF Converter. Made for everyday curiosity.',
   },
   home: {
     title: 'Free image and PDF tools, calculators & exam resources',
     description:
-      'Meet Daykit: free image and PDF tools, everyday calculators, exam photo workspaces and practical guides.',
-    eyebrow: 'YOUR EVERYDAY INTERNET BREAK',
-    headline: 'Make light work.',
-    headlineAccent: 'Make room for more.',
+      'Meet PDF Converter: free image and PDF tools, everyday calculators, exam photo workspaces and practical guides.',
+    eyebrow: 'PDF, IMAGES AND EVERYDAY CALCULATIONS',
+    headline: 'PDF and image tools.',
+    headlineAccent: 'Clear results, fewer steps.',
     intro:
-      'A handy corner of the internet for the things you need to do—and the little breaks in between.',
+      'Merge, split and edit PDFs, resize images, and use calculators with explained assumptions. Choose a tool, process your file and review the download.',
     primary: 'Discover the tools',
     secondary: 'Exam photo & signature tools',
     collection: 'A little help, in every direction.',
@@ -72,7 +69,7 @@ export const en = localize({
       description:
         'Ten everyday calculators with transparent formulas, editable example inputs and clear explanations of their limits.',
       short: 'From everyday numbers to bigger plans. Clear answers, with the working.',
-      items: ['Everyday maths', 'Planning tools', 'Unit conversions'],
+      items: ['Everyday maths', 'Planning tools', 'Loan estimates'],
       icon: '=',
     },
     exams: {
@@ -85,10 +82,10 @@ export const en = localize({
     },
   },
   category: {
-    eyebrow: 'IN THE WORKS',
-    heading: 'Good things take a little groundwork.',
-    body: 'This collection is being built. The items below describe planned features, not currently available services.',
-    planned: 'On the drawing board',
+    eyebrow: 'TOOL COLLECTION',
+    heading: 'Choose a task to get started.',
+    body: 'Choose an available tool and review its instructions and limitations.',
+    planned: 'Tool information',
   },
   consent: {
     title: 'A small note on privacy',
@@ -102,17 +99,17 @@ export const en = localize({
   },
   pages: {
     about: {
-      title: 'About Daykit',
-      description: 'Learn about Daykit’s free file tools, calculators and exam resources.',
+      title: 'About PDF Converter',
+      description: 'Learn about PDF Converter’s free file tools, calculators and exam resources.',
       intro: 'Useful things. Breathing room. All in one place.',
       sections: [
         {
           title: 'An everyday companion',
-          body: 'Daykit is being built as a free collection of practical file tools, calculators and exam resources. Our primary audience is India, with visitors from the US, UK and elsewhere welcome too.',
+          body: 'PDF Converter is run by Akash Patil, an independent developer in Bengaluru, India. It exists to make routine document and image preparation easier without requiring an account. Tools are accompanied by instructions so you can understand what changes and check the result.',
         },
         {
-          title: 'Building the collection',
-          body: 'Image resizing, cropping, PDF and Office conversion, PDF editing and ten calculators are available now, supported by practical guides.',
+          title: 'Tools and guidance',
+          body: 'The tool directory provides image resizing, cropping, format conversion and PDF editing, alongside ten calculators and practical guides. Office/PDF conversion tools appear only when the separately hosted conversion service passes its publication check.',
         },
         {
           title: 'Thoughtful by design',
@@ -121,41 +118,45 @@ export const en = localize({
       ],
     },
     contact: {
-      title: 'Contact Daykit',
-      description: 'Contact Akash Patil about Daykit tools, feedback and privacy questions.',
+      title: 'Contact PDF Converter',
+      description: 'Contact Akash Patil about PDF Converter tools, feedback and privacy questions.',
       intro: 'A place for questions, ideas and feedback.',
       sections: [
         {
-          title: 'Contact availability',
-          body: 'A public contact address has not been configured yet. A working email address will be listed here before public launch. This page does not collect or submit messages.',
+          title: 'Contact the developer',
+          body: 'Email pdfconverter.help@gmail.com about bugs, privacy requests or corrections. Include the relevant page and a description without attaching sensitive documents. This page has no contact form.',
         },
       ],
     },
     privacy: {
       title: 'Privacy Policy',
       description:
-        'How Daykit handles files, browser storage, hosting and privacy questions.',
+        'How PDF Converter handles files, browser storage, hosting and privacy questions.',
       intro: 'Understand what this version does with your information.',
       sections: [
         {
           title: 'Current scope',
-          body: 'This development version provides local image, PDF and Office tools, calculators and educational guides. Advertising, analytics and accounts are not active. This policy must be reviewed and updated when new services are enabled.',
+          body: 'This website provides image and PDF tools, calculators and educational guides. Six Office/PDF conversion tools are published only when the configured server passes a build-time health check. Advertising, analytics and accounts are not active. This policy must be reviewed and updated when new services are enabled.',
         },
         {
           title: 'Privacy preferences',
-          body: 'When you choose an option in the privacy banner, we store that choice and a timestamp in your browser’s local storage for up to 180 days. This keeps the banner from asking on every visit. You can reopen Cookie preferences in the footer or clear your browser storage.',
+          body: 'No cookie banner, advertising loader or analytics script is active. An earlier version stored a privacy choice in local storage; you can remove that old entry through your browser settings. Current tools use browser memory for selected files, previews and calculations. No account is required.',
         },
         {
           title: 'Files and local processing',
-          body: 'Most image and PDF processing runs on your device using browser workers and local rendering; for those tools, selected files are not uploaded or stored by the site. The six conversion tools (PDF to Word, PowerPoint and Excel; Word, PowerPoint and Excel to PDF) are different: after you tick the consent checkbox, your file is uploaded to our conversion service, converted in a temporary job folder, and scheduled for cleanup when processing finishes. Cleanup also attempts to remove stale folders. Failures or interrupted service operation may delay deletion; no absolute deletion deadline is promised. Application code does not intentionally log document names or contents; infrastructure logging is controlled separately. Text-only tools such as PDF to text remain browser-only. Working data and previews remain in browser memory during the task. Downloads are saved by your browser and remain on your device until you remove them. Image decoders, PDF libraries and fonts are served as site assets; they do not send your documents to a conversion service. Calculations also run locally. Translation drafts are produced while authoring public site copy, not from visitor files.',
+          body: 'Most image and PDF processing runs on your device using browser workers and local rendering; for those tools, selected files are not uploaded or stored by the site. The six conversion tools (PDF to Word, PowerPoint and Excel; Word, PowerPoint and Excel to PDF) are different: after you tick the consent checkbox, your file is uploaded to our conversion service, converted in a temporary job folder, and scheduled for cleanup when processing finishes. Cleanup also attempts to remove stale folders. Failures or interrupted service operation may delay deletion; no absolute deletion deadline is promised. Application code does not intentionally log document names or contents; infrastructure logging is controlled separately. Working data and previews remain in browser memory during the task. Downloads are saved by your browser and remain on your device until you remove them. Image decoders and PDF libraries are served as site assets; they do not send your documents to a conversion service. Calculations also run locally. The published interface is English only.',
         },
         {
           title: 'Hosting and optional services',
-          body: 'Cloudflare Pages hosts the frontend; the conversion service is hosted separately on Render. These providers receive network information such as IP addresses and request metadata to deliver and secure requests. Provider log retention, processing locations and international transfers have not yet been confirmed by the operator. The converter uses IP addresses for short-lived in-memory rate limiting; its configured server command disables access logs. No accounts or application database are implemented. General Sans loads from Fontshare; DM Sans and JetBrains Mono load from Google Fonts, so those providers receive font requests and network metadata, but not your documents.',
+          body: 'Cloudflare Pages hosts the frontend; the conversion service is hosted separately on Render. These providers receive network information such as IP addresses and request metadata to deliver and secure requests. Provider log retention, processing locations and international transfers have not been confirmed by the operator. The converter uses IP addresses for short-lived in-memory rate limiting; its configured server command disables access logs. No accounts or application database are implemented. General Sans loads from Fontshare; DM Sans and JetBrains Mono load from Google Fonts, so those providers receive font requests and network metadata, but not your documents.',
         },
         {
           title: 'Advertising and your choices',
-          body: 'Advertising is disabled and empty ad boxes are not displayed. No AdSense script is installed. The saved privacy preference does not activate any tracking. Before advertising is enabled for visitors in the EEA, UK or Switzerland, a Google-certified consent management platform must be integrated. This development banner is not that platform.',
+          body: 'Advertising is disabled and empty ad boxes are not displayed. No AdSense script is installed. If advertising is introduced, this policy and the consent controls will be updated first. For any future advertising for visitors in the EEA, UK or Switzerland, a Google-certified consent management platform must be integrated. No advertising consent banner is currently displayed.',
+        },
+        {
+          title: 'Children and retention',
+          body: 'The service is intended for general document tasks, not to collect information from children. A parent or guardian should supervise use involving a child’s documents and contact the operator with concerns. Downloads remain on your device until you remove them. Conversion files use temporary storage and cleanup is attempted after processing; service interruptions can delay it. Provider log retention has not been verified, so no fixed retention or complete-erasure guarantee is made.',
         },
         {
           title: 'Requests and updates',
@@ -165,12 +166,12 @@ export const en = localize({
     },
     terms: {
       title: 'Terms of Use',
-      description: 'Development-stage terms for using Daykit’s tools and calculators.',
-      intro: 'A few ground rules for using Daykit.',
+      description: 'Terms for using PDF Converter’s file tools, calculators and guides.',
+      intro: 'A few ground rules for using PDF Converter.',
       sections: [
         {
-          title: 'Development-stage service',
-          body: 'Daykit is currently a preview. Features may be added, changed or removed. No guarantee is made about availability or suitability for a particular purpose.',
+          title: 'Service availability',
+          body: 'Features may change and maintenance can interrupt access. No guarantee is made about availability or suitability for a particular purpose.',
         },
         {
           title: 'Responsible use',
@@ -182,14 +183,14 @@ export const en = localize({
         },
         {
           title: 'Operator and applicable terms',
-          body: 'Daykit is operated by Akash Patil, an individual developer in India. The service is supplied as available, without a promise of uninterrupted operation or error-free output. To the extent permitted by applicable law, the operator does not accept responsibility for losses from reliance on unreviewed results. Nothing here excludes rights or liabilities that cannot lawfully be excluded. Contact the operator about concerns; jurisdiction and dispute provisions require qualified legal review.',
+          body: 'PDF Converter is operated by Akash Patil, an independent developer in Bengaluru, India. The service is supplied as available, without a promise of uninterrupted operation or error-free output. To the extent permitted by applicable law, the operator does not accept responsibility for losses from reliance on unreviewed results. Nothing here excludes rights or liabilities that cannot lawfully be excluded. Contact the operator about concerns; these Terms are governed by the laws of India, subject to applicable law and rights that cannot be excluded.',
         },
       ],
     },
     disclaimer: {
       title: 'Disclaimer',
       description:
-        'Important limits of Daykit’s calculators, exam resources, guides and local file tools.',
+        'Important limits of PDF Converter’s calculators, exam resources, guides and local file tools.',
       intro: 'Useful assistance starts with clear limits.',
       sections: [
         {
@@ -198,11 +199,11 @@ export const en = localize({
         },
         {
           title: 'Sources and verification',
-          body: 'Exam specifications, rates and other changeable reference data are maintained separately from the interface. Entries that have not been checked carry verified: false. Seeded exam specifications are blank and unverified. Calculator rates are editable examples, not current offers or guaranteed returns.',
+          body: 'Exam specifications, rates and other changeable reference data are maintained separately from the interface. Verification status and source dates are shown on each exam record. Unverified records are excluded from search indexing and navigation. Calculator rates are editable examples, not current offers or guaranteed returns.',
         },
         {
           title: 'No affiliation claimed',
-          body: 'Daykit does not claim endorsement by examination bodies, government agencies or third-party services. References to those organizations are informational.',
+          body: 'PDF Converter does not claim endorsement by examination bodies, government agencies or third-party services. References to those organizations are informational.',
         },
       ],
     },
@@ -210,11 +211,11 @@ export const en = localize({
   contact: {
     configured: 'Send us an email',
     title: 'Get in touch',
-    body: 'Use the email link below for tool problems, accessibility issues, feedback, licensing or privacy questions. Include the tool name and a description of the problem; do not attach sensitive documents. Daykit is maintained by an individual developer, so responses may take time. Your email provider handles the message; this page does not submit a form.',
+    body: 'Use the email link below for tool problems, accessibility issues, feedback, licensing or privacy questions. Include the tool name and a description of the problem; do not attach sensitive documents. PDF Converter is maintained by an individual developer, so responses may take time. Your email provider handles the message; this page does not submit a form.',
   },
   notFound: {
     title: 'Page not found',
-    description: 'This Daykit page could not be found. Return home to explore the site.',
+    description: 'This PDF Converter page could not be found. Return home to explore the site.',
     heading: 'A little off the beaten path.',
     body: 'This page may have moved, or the address may be mistyped.',
   },

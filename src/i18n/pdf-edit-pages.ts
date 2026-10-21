@@ -127,7 +127,7 @@ export const editPdfPages = {
     sections: [
       {
         heading: 'Use a short label with a clear purpose',
-        text: 'A watermark can help distinguish a draft from the version you intend to submit. Enter a short phrase, choose a vertical position and adjust opacity before creating the PDF. The browser draws that text onto each selected page using a basic embedded font. This implementation supports the font’s Latin character repertoire and reports unsupported characters instead of silently losing them. A one hundred character limit keeps the stamp bounded, but a much shorter label is usually easier to read. Do not use a watermark to imply institutional approval, certification or ownership that you do not have. It is simply visible text added to your own working copy.',
+        text: 'A watermark can help distinguish a working copy from the version you intend to submit. Enter a short phrase, choose a vertical position and adjust opacity before creating the PDF. The browser draws that text onto each selected page using a basic embedded font. This implementation supports the font’s Latin character repertoire and reports unsupported characters instead of silently losing them. A one hundred character limit keeps the stamp bounded, but a much shorter label is usually easier to read. Do not use a watermark to imply institutional approval, certification or ownership that you do not have. It is simply visible text added to your own working copy.',
       },
       {
         heading: 'Balance visibility with the underlying document',

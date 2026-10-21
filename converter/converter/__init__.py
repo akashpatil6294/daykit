@@ -1,1 +1,1 @@
-"""Daykit converter service: high-fidelity Office/PDF conversion."""
+"""PDF Converter converter service: high-fidelity Office/PDF conversion."""

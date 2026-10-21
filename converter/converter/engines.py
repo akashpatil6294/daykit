@@ -147,7 +147,7 @@ def libreoffice_pdf(src: Path, tmp: Path) -> Path:
         # Log the real stderr server-side so the failure can be diagnosed;
         # the client only sees the generic code.
         err = proc.stderr.decode('utf-8', 'replace').strip()[-2000:]
-        print(f'[daykit] libreoffice failed (rc={proc.returncode}): {err}', flush=True)
+        print(f'[pdf-converter] libreoffice failed (rc={proc.returncode}): {err}', flush=True)
         raise ConversionError('conversion-failed', 'LibreOffice could not convert this document')
     return out
 

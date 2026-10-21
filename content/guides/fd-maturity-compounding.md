@@ -1,6 +1,12 @@
 ---
-{"title":"Check an FD maturity estimate by rate, frequency and term","summary":"Use a worked fixed-deposit example to understand nominal compounding, partial periods and why a generic estimate may differ from an institution's maturity quote.","author":"Daykit editorial","published":"2026-10-13","updated":"2026-10-13","faq":[{"question":"Are the displayed FD rates current bank rates?","answer":"No. They are editable examples marked unverified. Obtain current terms directly from the institution and check how the quoted rate is defined."},{"question":"Does the estimate include tax or early-withdrawal adjustments?","answer":"No. It models gross growth under the entered constant nominal rate. Taxes, penalties, payout options and institution-specific rules need separate consideration."},{"question":"Why can a bank quote differ from this calculator?","answer":"Day counts, rounding, incomplete compounding periods and payout conventions can differ. Compare the assumptions before deciding that either calculation is wrong."}]}
+{"title":"Check an FD maturity estimate by rate, frequency and term","summary":"Use a worked fixed-deposit example to understand nominal compounding, partial periods and why a generic estimate may differ from an institution's maturity quote.","author":"Akash Patil","published":"2026-10-13","updated":"2026-10-21","faq":[{"question":"Are the displayed FD rates current bank rates?","answer":"No. They are editable examples marked unverified. Obtain current terms directly from the institution and check how the quoted rate is defined."},{"question":"Does the estimate include tax or early-withdrawal adjustments?","answer":"No. It models gross growth under the entered constant nominal rate. Taxes, penalties, payout options and institution-specific rules need separate consideration."},{"question":"Why can a bank quote differ from this calculator?","answer":"Day counts, rounding, incomplete compounding periods and payout conventions can differ. Compare the assumptions before deciding that either calculation is wrong."}]}
 ---
+
+
+## A frequency check with fixed inputs
+
+For an illustrative principal of 10,000 at 6 percent for one year, annual compounding gives 10,600 before tax. Monthly compounding uses 10,000 times (1 + 0.06/12) to the twelfth power. Use the same principal and duration when comparing frequencies; neither example is a bank offer.
+
 A fixed-deposit maturity estimate is a calculation under a set of terms. The principal, quoted rate, compounding frequency and duration all matter. A generic calculator is useful for understanding those inputs, but it should not be confused with an institution's current offer or a personalized net-of-tax quote.
 
 Use the [FD calculator](/calculators/fd/) with a rate you have deliberately chosen for a hypothetical scenario or checked from a relevant source. The initial value shown on the page is an example. The tool supports monthly, quarterly, half-yearly and yearly compounding under a nominal-rate model, and it explains the assumptions behind the result.
@@ -31,7 +37,7 @@ Read whether an institution's rate is nominal or effective and whether interest 
 
 ## Pay attention to incomplete periods
 
-Daykit expresses the month-based term using fractional exponents when it does not align with a whole compounding period. A real institution can use different rules for an incomplete quarter or an exact number of days. The difference can become visible even when principal and headline rate match.
+PDF Converter expresses the month-based term using fractional exponents when it does not align with a whole compounding period. A real institution can use different rules for an incomplete quarter or an exact number of days. The difference can become visible even when principal and headline rate match.
 
 For a real quote, compare the opening date, maturity date, compounding rules and rounding convention. Do not silently change the rate to force a match. Understanding the convention difference is more useful than producing an unexplained number that happens to resemble the quote.
 

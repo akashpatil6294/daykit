@@ -1,4 +1,4 @@
-Daykit converter dependencies
+PDF Converter converter dependencies
 
 docx: see /licenses/docx.txt
 pptxgenjs: see /licenses/pptxgenjs.txt

@@ -15,8 +15,8 @@ const schema = {
   description: g.summary,
   datePublished: g.published,
   dateModified: g.updated,
-  author: { '@type': 'Organization', name: g.author },
-  publisher: { '@type': 'Organization', name: 'Daykit' },
+  author: { '@type': 'Person', name: 'Akash Patil' },
+  publisher: { '@type': 'Organization', name: 'PDF Converter' },
   inLanguage: 'en',
   mainEntityOfPage: new URL(`/guides/${g.slug}/`, Astro.site).href,
 };
@@ -30,7 +30,7 @@ const schema = {
     <p class="lead">{g.summary}</p>
     <p>
       {t.author} <span data-no-translate>{g.author}</span> · {t.published}{' '}
-      <time datetime={g.published}>{g.published}</time> · {t.updated}{' '}
+      <time datetime={g.published}>{g.published}</time> · Last reviewed:{' '}
       <time datetime={g.updated}>{g.updated}</time>
     </p>
   </header>

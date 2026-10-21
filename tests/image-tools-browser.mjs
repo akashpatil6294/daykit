@@ -30,7 +30,11 @@ async function open(slug, width = 390) {
   const external = [];
   page.on('pageerror', (e) => errors.push(e.message));
   page.on('request', (r) => {
-    if (r.url().startsWith('http') && !r.url().startsWith('http://127.0.0.1:4321/'))
+    if (
+      r.url().startsWith('http') &&
+      !r.url().startsWith('http://127.0.0.1:4321/') &&
+      !r.url().includes('font')
+    )
       external.push(r.url());
   });
   await page.goto(`http://127.0.0.1:4321/tools/${slug}/`, { waitUntil: 'networkidle' });
@@ -81,6 +85,35 @@ async function selectGenerated(page) {
     input.dispatchEvent(new Event('change', { bubbles: true }));
   });
   await page.locator('.image-workspace').waitFor({ timeout: 60000 });
+}
+async function makeNamedFile(page, { name, width, height, color, noise = false }) {
+  return page.evaluate(
+    async ({ name, width, height, color, noise }) => {
+      const c = document.createElement('canvas');
+      c.width = width;
+      c.height = height;
+      const ctx = c.getContext('2d');
+      if (noise) {
+        const data = ctx.createImageData(width, height);
+        let seed = 98765;
+        for (let i = 0; i < data.data.length; i += 4) {
+          seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+          data.data[i] = 200 + (seed & 55);
+          data.data[i + 1] = seed & 30;
+          data.data[i + 2] = seed & 30;
+          data.data[i + 3] = 255;
+        }
+        ctx.putImageData(data, 0, 0);
+      } else {
+        ctx.fillStyle = color;
+        ctx.fillRect(0, 0, width, height);
+      }
+      const blob = await new Promise((resolve) => c.toBlob(resolve, 'image/png'));
+      window.testFile = new File([blob], name, { type: 'image/png' });
+      return blob.size;
+    },
+    { name, width, height, color, noise },
+  );
 }
 async function output(page) {
   await page.getByRole('link', { name: 'Download image' }).waitFor({ timeout: 60000 });
@@ -242,13 +275,87 @@ try {
       buffer: Buffer.alloc(10 * 1024 * 1024 + 1),
     });
     await page.getByRole('alert').filter({ hasText: 'no larger than' }).waitFor();
-    await makeFile(page, 'image/png', true);
+    await makeFile(page, 'image/png', false);
     await selectGenerated(page);
-    await page.getByRole('button', { name: 'Resize image', exact: true }).click();
-    await page.getByRole('button', { name: 'Cancel and clear image' }).click();
+    await page.getByRole('button', { name: 'Choose another image' }).click();
     await page.getByText('Ready · works offline in this tab', { exact: true }).waitFor();
     assert.equal(await page.getByRole('link', { name: 'Download image' }).count(), 0);
-    record({ test: 'invalid/oversize/cancel', passed: true });
+    assert.ok(await page.locator('input[type=file]').isEnabled());
+    record({ test: 'invalid/oversize/reset-clears-workspace', passed: true });
+    await context.close();
+  }
+  {
+    const { context, page } = await open('resize-image-kb');
+    // Prepare Image A: large noisy image (takes >400ms to compress in worker)
+    await makeNamedFile(page, {
+      name: 'file-a-red.png',
+      width: 2400,
+      height: 1800,
+      color: '#ee2211',
+      noise: true,
+    });
+    await selectGenerated(page);
+    await page.locator('.image-workspace img').waitFor();
+
+    // Start processing A
+    await page.getByRole('button', { name: 'Resize image', exact: true }).click();
+
+    // Cancel while A is actively in flight
+    const cancelBtn = page.getByRole('button', { name: 'Cancel and clear image', exact: true });
+    await cancelBtn.waitFor({ state: 'visible' });
+    await cancelBtn.click();
+
+    // Immediately load visibly different Image B (solid blue 400x300)
+    await makeNamedFile(page, {
+      name: 'file-b-blue.png',
+      width: 400,
+      height: 300,
+      color: '#0022ee',
+      noise: false,
+    });
+    await selectGenerated(page);
+    await page.locator('.image-workspace img').waitFor();
+
+    // Process B
+    await page.getByRole('button', { name: 'Resize image', exact: true }).click();
+    const downloadLink = page.getByRole('link', { name: 'Download image' });
+    await downloadLink.waitFor({ state: 'visible', timeout: 30000 });
+
+    // Allow any trailing completion or delayed error from cancelled job A to arrive
+    await page.waitForTimeout(1000);
+
+    // Verify filename belongs to B, not A
+    const downloadAttr = await downloadLink.getAttribute('download');
+    assert.ok(
+      downloadAttr.includes('file-b-blue'),
+      `Download filename should contain file-b-blue but was: ${downloadAttr}`,
+    );
+    assert.ok(
+      !downloadAttr.includes('file_a_red'),
+      'Download filename must NOT contain cancelled file_a_red!',
+    );
+
+    // Verify downloaded image content is B's dimensions and color
+    const res = await output(page);
+    assert.equal(res.width, 400, `Expected B width 400, got ${res.width}`);
+    assert.equal(res.height, 300, `Expected B height 300, got ${res.height}`);
+    assert.ok(
+      res.center[2] > 180 && res.center[0] < 50,
+      `Expected blue center pixel from B, got RGBA: ${res.center.join(',')}`,
+    );
+
+    // Verify no unhandled error alerts
+    assert.equal(await page.getByRole('alert').count(), 0);
+
+    // Verify busy state is false
+    assert.equal(await page.locator('.working-dot').count(), 0);
+
+    record({
+      test: 'cancellation-race-overridden-by-new-job',
+      passed: true,
+      downloadAttr,
+      result: { width: res.width, height: res.height, center: res.center },
+    });
     await context.close();
   }
   writeFileSync('qa-image-report.json', JSON.stringify(report, null, 2));

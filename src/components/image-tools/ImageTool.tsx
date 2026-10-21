@@ -54,6 +54,7 @@ export default function ImageTool({
   const [x, setX] = useState(50);
   const [y, setY] = useState(50);
   const drag = useRef<{ x: number; y: number; startX: number; startY: number } | null>(null);
+  const currentJobId = useRef(0);
   function release() {
     urls.current.forEach((url) => URL.revokeObjectURL(url));
     urls.current = [];
@@ -67,9 +68,10 @@ export default function ImageTool({
       return null;
     });
   }
-  function reset() {
+  function retry() {
     worker.current?.terminate();
     clearTimeout(timer.current);
+    timer.current = undefined;
     release();
     file.current = null;
     setInfo(null);
@@ -80,11 +82,24 @@ export default function ImageTool({
     setStatus(t.preparing);
     setGeneration((value) => value + 1);
   }
-  function startTimeout() {
+  function reset() {
+    const cancelledJob = currentJobId.current;
+    currentJobId.current += 1;
+    clearTimeout(timer.current);
+    timer.current = undefined;
+    send({ type: 'cancel', jobId: cancelledJob });
+    release();
+    file.current = null;
+    setInfo(null);
+    setResult(null);
+    setBusy(false);
+    setError('');
+    setStatus(t.ready);
+  }
+  function startTimeout(jobId: number) {
     clearTimeout(timer.current);
     timer.current = setTimeout(() => {
-      worker.current?.terminate();
-      setReady(false);
+      if (currentJobId.current !== jobId) return;
       setBusy(false);
       setError(t.timeout);
     }, 90000);
@@ -97,13 +112,33 @@ export default function ImageTool({
     worker.current = instance;
     instance.onmessage = (event: MessageEvent<WorkerReply>) => {
       const reply = event.data;
-      if (reply.type === 'progress') return;
-      clearTimeout(timer.current);
-      setBusy(false);
+      if (reply.type === 'init-error') {
+        clearTimeout(timer.current);
+        timer.current = undefined;
+        setBusy(false);
+        setReady(false);
+        setError(t.errors[reply.code as keyof typeof t.errors] || t.errors.worker);
+        return;
+      }
       if (reply.type === 'ready') {
+        clearTimeout(timer.current);
+        timer.current = undefined;
+        setBusy(false);
         setReady(true);
         setStatus(t.ready);
+        return;
       }
+      // CRITICAL: Reject stale replies BEFORE changing any state,
+      // clearing timers, creating object URLs, or showing errors!
+      if (reply.jobId !== currentJobId.current) {
+        return;
+      }
+      if (reply.type === 'progress') {
+        return;
+      }
+      clearTimeout(timer.current);
+      timer.current = undefined;
+      setBusy(false);
       if (reply.type === 'loaded') {
         const preview = URL.createObjectURL(reply.preview);
         urls.current.push(preview);
@@ -150,15 +185,17 @@ export default function ImageTool({
     };
     instance.onerror = () => {
       clearTimeout(timer.current);
+      timer.current = undefined;
       instance.terminate();
       setBusy(false);
       setReady(false);
       setError(t.errors.worker);
     };
-    startTimeout();
+    startTimeout(currentJobId.current);
     instance.postMessage({ type: 'init', heic: mode === 'heic-to-jpg' } satisfies WorkerRequest);
     return () => {
       clearTimeout(timer.current);
+      timer.current = undefined;
       instance.terminate();
       release();
     };
@@ -175,8 +212,9 @@ export default function ImageTool({
     file.current = next;
     setBusy(true);
     setStatus(t.loading);
-    startTimeout();
-    send({ type: 'load', file: next, kind: tool.kind });
+    const jobId = ++currentJobId.current;
+    startTimeout(jobId);
+    send({ type: 'load', jobId, file: next, kind: tool.kind });
   }
   function changeWidth(value: number) {
     clearResult();
@@ -201,7 +239,8 @@ export default function ImageTool({
     }
     setBusy(true);
     setStatus(t.processing);
-    startTimeout();
+    const jobId = ++currentJobId.current;
+    startTimeout(jobId);
     const settings: ImageSettings = {
       mode: exam ? 'exam' : mode,
       width,
@@ -215,7 +254,7 @@ export default function ImageTool({
       minKB: Number.isNaN(minKB) ? 0 : minKB,
       fit: exam?.kind === 'signature' ? 'contain' : 'crop',
     };
-    send({ type: 'process', settings });
+    send({ type: 'process', jobId, settings });
   }
   const crop =
     info && dimensionsValid(width, height)
@@ -231,7 +270,7 @@ export default function ImageTool({
       </div>
       <ErrorState message={error} />
       {!ready && error && (
-        <button className="button secondary" onClick={reset}>
+        <button className="button secondary" onClick={retry}>
           {t.retry}
         </button>
       )}

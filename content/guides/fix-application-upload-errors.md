@@ -1,6 +1,12 @@
 ---
-{"title":"Diagnose application upload errors one condition at a time","summary":"Use the portal's exact error message to distinguish format, dimensions, bytes, PDF structure and session problems before changing your files.","author":"Daykit editorial","published":"2026-10-13","updated":"2026-10-13","faq":[{"question":"Should I compress every rejected file?","answer":"No. Compression only addresses some size problems. It will not necessarily fix the wrong format, incorrect dimensions, a damaged document or an expired application session."},{"question":"Does an accepted upload mean the application is complete?","answer":"Not necessarily. Review the official workflow, previews, required fields and confirmation steps. Technical acceptance of one attachment is only one part of submission."},{"question":"Can the age calculator confirm eligibility?","answer":"No. It calculates calendar differences under its stated convention. Eligibility depends on the official cutoff, rules and any applicable provisions for the particular application."}]}
+{"title":"Diagnose application upload errors one condition at a time","summary":"Use the portal's exact error message to distinguish format, dimensions, bytes, PDF structure and session problems before changing your files.","author":"Akash Patil","published":"2026-10-13","updated":"2026-10-21","faq":[{"question":"Should I compress every rejected file?","answer":"No. Compression only addresses some size problems. It will not necessarily fix the wrong format, incorrect dimensions, a damaged document or an expired application session."},{"question":"Does an accepted upload mean the application is complete?","answer":"Not necessarily. Review the official workflow, previews, required fields and confirmation steps. Technical acceptance of one attachment is only one part of submission."},{"question":"Can the age calculator confirm eligibility?","answer":"No. It calculates calendar differences under its stated convention. Eligibility depends on the official cutoff, rules and any applicable provisions for the particular application."}]}
 ---
+
+
+## Record the failure before changing the file
+
+Write down the exact upload message, the selected filename and the actual bytes. If the error says format rather than size, another compression pass may be irrelevant. Compare 102,400 bytes with a decimal 100,000-byte ceiling: a file labelled 100 KB locally can exceed that destination’s rule.
+
 “Upload failed” is a symptom, not a diagnosis. The most useful first action is to preserve the exact message and the file you attempted to upload. Changing several properties immediately can erase the evidence of what went wrong. A structured check often resolves the issue faster than repeated compression or repeated attempts with differently named copies.
 
 Start by confirming that you are using the correct application and document field. A photo field, signature field and supporting-document field may accept different file types. Compare the current official instructions with the selected file, not with the settings you remember entering earlier. The downloaded output is the item the portal sees.
@@ -25,7 +31,7 @@ For a PDF size problem, the [PDF compressor](/tools/compress-pdf/) can try a sma
 
 ## Investigate PDF structure separately
 
-A password-protected PDF can be rejected even when it opens on your own device because your viewer remembers a password. If you are authorized to do so, export an unlocked copy through a trusted application. Do not assume that copying or renaming the file removes encryption. Daykit rejects protected files rather than trying to bypass their protection.
+A password-protected PDF can be rejected even when it opens on your own device because your viewer remembers a password. If you are authorized to do so, export an unlocked copy through a trusted application. Do not assume that copying or renaming the file removes encryption. PDF Converter rejects protected files rather than trying to bypass their protection.
 
 If the portal requests only particular pages, use the [split tool](/tools/split-pdf/) to create the appropriate extract. Removing unrequested pages may reduce size without degrading retained page content. Verify that the extract still includes all necessary context, such as continuation pages or declarations. The tool cannot decide what counts as complete evidence.
 

@@ -1,0 +1,263 @@
+{
+  "merge-pdf": {
+    "heading": "Plan the packet before combining files",
+    "paragraphs": [
+      "Suppose an application needs a two-page form, a one-page identity copy and a three-page supporting statement. Put them in that order before merging, then confirm the download contains six pages. A filename such as application-packet.pdf is less ambiguous than combined-final-final.pdf. File order is different from page order inside each source: moving the statement does not rearrange its three pages. If the statement is backward, correct its sequence first and merge the corrected copy.",
+      "Mixed paper sizes can be valid. A landscape table can sit between portrait letters without being cropped into the same shape. Check the table at a readable zoom rather than judging it from its thumbnail. Merging is not a printing-layout tool: it does not make every source A4, add margins, or repair text that was already cut off. If the recipient requires uniform paper dimensions, prepare that in the source application before assembling the packet.",
+      "Check for accidental duplication by comparing the first and last page of each source at the join. A cover sheet included in two attachments can appear twice even when every file was selected only once. Also inspect interactive fields and existing digital signatures; copying pages does not establish the validity of a signed record. Keep signed originals separately when their verification matters.",
+      "What we tested: the saved browser fixture report for merge-pdf records an output of 17,652 bytes. Its recorded maximum interface heartbeat gap was 57 milliseconds. These observations describe that local fixture run only; document complexity, hardware and browser behavior can change both size and responsiveness. They are not a benchmark guarantee for your file."
+    ],
+    "question": "Can overlapping sources repeat pages?",
+    "answer": "Yes. The tool cannot decide whether similar pages are intentional copies. Compare the total with the sum you expected, inspect every join, and remove unwanted copies with the page-deletion tool. Do this before sending a packet whose size or sequence matters to the recipient."
+  },
+  "split-pdf": {
+    "heading": "Extract a range without losing context",
+    "paragraphs": [
+      "Imagine a twelve-page report with the relevant table on page seven and its definitions on page eight. Extracting only page seven can make the table misleading because units or footnotes are missing. Select 7-8 when both pages are needed, then read the exported document by itself. A recipient should not need the original report merely to understand what the extracted numbers mean.",
+      "Use viewer positions. A cover and contents page can make printed page 5 appear at viewer position 7. Test a short selection and open the download to confirm its first page is the intended one. A range describes positions, not chapter labels, bookmarks or Roman numerals. Entering a number outside the source document is an input error, not a request to create blank pages.",
+      "Extraction produces a separate document. It is useful for sharing a section, but it does not make selected information confidential or erase the source from your device. A cropped-looking page can still contain underlying content; selecting fewer pages is not redaction. For records containing private details beside required information, use a dedicated redaction workflow and verify the result independently.",
+      "For multiple selections, write down the expected sequence. The selection 8,3,4 intentionally starts with the eighth source page, then includes pages three and four.",
+      "What we tested: the saved browser fixture report for split-pdf records an output of 1,795 bytes. Its recorded maximum interface heartbeat gap was 25 milliseconds. These observations describe that local fixture run only; document complexity, hardware and browser behavior can change both size and responsiveness. They are not a benchmark guarantee for your file."
+    ],
+    "question": "Why does the first extracted page still say 7?",
+    "answer": "Printed numbers are part of the original page artwork and may remain. The new PDF starts a new sequence but does not rewrite visible labels. If you add new numbers, distinguish them from those already printed so that readers know which sequence you are referring to."
+  },
+  "reorder-pdf": {
+    "heading": "Repair a sequence using recognizable landmarks",
+    "paragraphs": [
+      "For a scanned six-page letter, identify the salutation, continuation paragraphs and signature page. A plausible sequence is not always the filename order produced by a scanner. Use text that continues across pages to confirm the arrangement. If pages two and three were swapped, 1,3,2,4,5,6 corrects that problem without changing the other positions.",
+      "A duplex scan can be more complicated. Some scanners save all fronts followed by all backs, with backs reversed. Do not assume a universal odd-even recipe. Compare at least two front/back pairs against the paper copy and derive the complete sequence before exporting. Rotation is a separate operation: moving an upside-down page into place does not turn it upright. Use rotation for orientation and this tool for reading order.",
+      "After rearrangement, follow references such as see the following page or continued below. Those phrases can become incorrect even if every individual page looks fine. Bookmarks, page labels and a table of contents may also refer to the previous sequence. Reordering cannot rewrite those references. When you control the document, update its authoring source if many references depend on page numbers.",
+      "Keep a short record of the sequence used when several people review the packet. That makes a correction reproducible without asking others to guess which version is current.",
+      "What we tested: the saved browser fixture report for reorder-pdf records an output of 1,795 bytes. Its recorded maximum interface heartbeat gap was 27 milliseconds. These observations describe that local fixture run only; document complexity, hardware and browser behavior can change both size and responsiveness. They are not a benchmark guarantee for your file."
+    ],
+    "question": "Should I reverse every page in a scan?",
+    "answer": "Only if the entire stack is reversed. Interleaved duplex scans need a different arrangement. Identify the first page, final page and a middle continuation before choosing an order. Compare the export with those landmarks, not just with the expected total page count."
+  },
+  "images-to-pdf": {
+    "heading": "Make photographed pages readable",
+    "paragraphs": [
+      "Consider a receipt photographed in three sections. Place images in reading order and ensure each section establishes continuity without repeating an entire paragraph. Combining photographs does not reconstruct a seamless page: the supplied images retain their own content. A properly captured full-length scan may be easier to read than several poorly framed photographs.",
+      "Check orientation and crop before creating the PDF. A dark tabletop around a white letter wastes page space and makes the letter smaller at the same viewing size. Straighten and crop the photograph in an image editor when necessary. This workflow does not remove perspective distortion or infer a rectangular sheet from a tilted camera view. Sharpness matters especially for signatures, invoice totals and serial numbers.",
+      "The PDF is a convenient container, not proof that its text is searchable. A photograph of a paragraph remains an image unless a separate OCR step creates a text layer. Test selection or search if the receiving organization requires searchable documents. Check file size too: placing photographs inside a PDF does not guarantee a smaller attachment. Large source images can still produce a large document.",
+      "Open the download in another viewer if it will be printed or submitted to a portal. Check orientation, margins and fine text at ordinary zoom. Preserve the original photographs until the recipient accepts the PDF.",
+      "What we tested: the saved browser fixture report for images-to-pdf records an output of 9,151 bytes. Its recorded maximum interface heartbeat gap was 27 milliseconds. These observations describe that local fixture run only; document complexity, hardware and browser behavior can change both size and responsiveness. They are not a benchmark guarantee for your file."
+    ],
+    "question": "Can portrait and landscape images share one document?",
+    "answer": "Yes, but inspect the exported pages individually. A wide photograph can be inconvenient to print with portrait letters. Rotate or crop deliberately before assembling the document, and check print preview rather than assuming the printer will choose the intended orientation for every page."
+  },
+  "pdf-to-images": {
+    "heading": "Choose images for the destination",
+    "paragraphs": [
+      "A PDF page can combine text, vectors and photographs. Exporting it as an image captures the visible appearance at a raster resolution. This helps when a slide editor or upload field accepts pictures but not PDFs. It also changes what readers can do: selection, links and form controls are not interactive features of a page picture.",
+      "For a two-page handout, export only the required page first and inspect its smallest label. If it is blurred, a larger raster image may help, but enlarging a scan cannot recover characters absent from the source. A vector diagram often benefits more from increased resolution than a photograph with limited detail. Judge the exported pixels, not merely the PDF viewer zoom level.",
+      "A ZIP download keeps several page images together. Extract it before uploading an individual picture to an image-only form. Check filenames and count after extraction so page ten does not accidentally sort ahead of page two elsewhere. If order matters, use a destination that understands numeric positions or rename copies with leading zeroes.",
+      "Rendering is not a confidentiality tool. Names, stamps and account numbers visible on the page become part of the image. Check the entire frame before sharing. If you need editable wording or a spreadsheet, exporting pictures is the wrong intermediate step because it discards useful structure.",
+      "What we tested: the saved browser fixture report for pdf-to-images records an output of 742,815 bytes. Its recorded maximum interface heartbeat gap was 511 milliseconds. These observations describe that local fixture run only; document complexity, hardware and browser behavior can change both size and responsiveness. They are not a benchmark guarantee for your file."
+    ],
+    "question": "Are clickable PDF links retained?",
+    "answer": "No. The words can appear, but ordinary raster pixels do not carry the original link action. Supply the PDF when recipients need links, searchable text or document structure, unless their destination explicitly requires a picture. Avoid presenting a screenshot as an equivalent accessible document."
+  },
+  "compress-pdf": {
+    "heading": "Decide whether raster compression is acceptable",
+    "paragraphs": [
+      "This compressor renders pages into images inside a new PDF. Decide whether the destination needs only readable appearance or also searchable text, editable forms and accessible structure. A scanned attachment may be suitable; an interactive form or digitally signed agreement may not be. A smaller download is not automatically a better document.",
+      "Try a copy containing a dense page first. Look at small footnotes, thin table rules and faint signatures, not just large headings. Lower quality can make these disappear before the page looks damaged as a thumbnail. If important text is uncomfortable to read, increase quality or reduce the source another way. Removing unnecessary pages can be better than degrading every page heavily.",
+      "For a strict byte ceiling, leave some margin rather than targeting the final byte. The destination may count decimal kilobytes while a tool uses binary units. Check actual downloaded bytes and the portal’s validation. Approaching a target does not guarantee acceptance: format, dimensions and document content can be checked separately.",
+      "Compare the finished PDF with its source page by page. Search for a known word if selectable text matters; raster output does not preserve the source text layer. Keep the original as your archival copy and use the compressed version for the specific submission that needs it.",
+      "What we tested: the saved browser fixture report for compress-pdf records an output of 202,065 bytes. Its recorded maximum interface heartbeat gap was 138 milliseconds. These observations describe that local fixture run only; document complexity, hardware and browser behavior can change both size and responsiveness. They are not a benchmark guarantee for your file."
+    ],
+    "question": "Why did text search stop working?",
+    "answer": "Raster compression replaces page content with images. Letters remain visible pixels, but selectable text and reading structure are not preserved. This is a tradeoff of this compressor. Choose another method when the recipient requires search, accessibility tags or interactive fields, rather than assuming visual similarity preserves those features."
+  },
+  "add-page-numbers": {
+    "heading": "Number the assembled document",
+    "paragraphs": [
+      "Finish merging, deleting and reordering before adding numbers. If a packet starts with an unnumbered cover followed by five pages, decide whether the cover counts in the sequence. Existing printed numbers are page artwork; a new sequence does not detect or remove them. Two labels on the same sheet can be more confusing than no number.",
+      "Place labels where they do not cover footnotes, signatures, stamps or totals. Check portrait and landscape pages separately because an empty corner on one sheet can contain important information on another. A page’s displayed orientation can differ from stored coordinates, so inspect the downloaded first, last and rotated pages rather than relying on one preview.",
+      "Numbering is not a repair for a table of contents. References can still point to old pagination. For a report you authored, updating page fields in the original application may be more appropriate. For a packet assembled from separate records, describe the new sequence as packet pages so readers can distinguish it from each record’s original printed labels. Retain the individual records with their original names until the assembled packet has been checked."
+    ],
+    "question": "Should I number a signed certificate?",
+    "answer": "Check the recipient’s requirements first. Adding visible text changes the PDF and may affect signature validation or acceptance. Preserve the untouched certificate and avoid stamping over seals. A cover sheet or index can identify packet positions without altering the original record itself."
+  },
+  "rotate-pdf": {
+    "heading": "Distinguish rotation from a crooked scan",
+    "paragraphs": [
+      "A page sideways by a quarter turn can be corrected with rotation. A page photographed at a slight angle needs deskewing or perspective correction instead. A ninety-degree turn does not straighten a two-degree tilt. Diagnose the problem using a line of body text rather than the border, which can mislead when the paper was photographed against a dark surface.",
+      "A wide chart may intentionally use landscape orientation. Rotate only pages that are difficult to read as they are. A cover, chart and signature sheet do not have to share one orientation. Compare before and after, especially where a PDF already has an internal rotation flag. Viewers may choose different fitting behavior even when the page itself is correct.",
+      "Open the download outside the tool and check print preview. Automatic printer settings can rotate pages again to fit paper. If submitting to a portal, inspect its preview too. Keep originals for signed or certified documents: changing orientation changes the file, and this tool does not certify an existing digital signature. Rotation improves reading direction but does not repair a bad scan or change what its content says."
+    ],
+    "question": "Will rotation sharpen text?",
+    "answer": "No. It changes orientation, not captured detail. If letters are blurry, obtain a clearer source when possible. Repeated rendering and compression cannot recover missing characters. A sideways sharp scan can improve greatly with rotation; an upright blurry scan needs a different remedy."
+  },
+  "delete-pdf-pages": {
+    "heading": "Identify what should remain",
+    "paragraphs": [
+      "Begin with a list of the required pages. In an eight-page packet, you might retain the first six and remove two duplicate receipts. Confirm the content rather than assuming the final sheets are unnecessary. A mostly blank last page can still contain a required declaration, signature or continuation table.",
+      "Removing a page differs from removing information within it. An account number beside required text remains unless that entire page is excluded or properly redacted. A blank-looking sheet can also contain annotations or low-contrast content. This tool is not a redaction validator and does not provide evidence that confidential information has been erased.",
+      "Read the exported sequence for references such as attachment B or continued on the next page. Check that the referenced material remains. If an index becomes inaccurate, update the source or provide a separate explanation. Preserve the source packet so a mistaken exclusion can be corrected without asking its sender to recreate it. Compare the expected page count with the final download, and inspect the joins where pages were removed: those are the places where a missing continuation is easiest to overlook."
+    ],
+    "question": "Can a downloaded deletion be undone?",
+    "answer": "Reopen the original and repeat the selection correctly. The downloaded PDF is a separate result, not a history of editing choices. Keep source and output under distinct names until the recipient accepts the packet, particularly when an omitted sheet could change its meaning."
+  },
+  "watermark-pdf": {
+    "heading": "Label a copy without obstructing it",
+    "paragraphs": [
+      "A watermark can identify a copy for internal review or a particular application. It is not access control: readers can still copy, photograph or distribute the visible content. Do not put confidential information in the watermark itself, because the label is repeated across every marked page you share.",
+      "Start with a short label and inspect a dense page. A mark that looks subtle on a blank sheet can obscure decimal points, footnotes or signatures elsewhere. Location and opacity depend on the document. Inspect ordinary reading size, and check mixed orientations separately instead of assuming one position works throughout the file.",
+      "Watermarking changes the PDF. Do not alter an original certificate unless the recipient permits that modification and you understand the signature consequences. Keep an unstamped copy and name the marked version by its purpose. If your aim is to prevent unauthorized distribution, access controls and careful sharing are more relevant than a visible mark alone. A watermark should communicate the status of the copy without making the underlying record harder to verify or encouraging readers to treat it as authenticated."
+    ],
+    "question": "Does a watermark establish ownership?",
+    "answer": "No. It is a label placed on a copy. The tool does not verify authorship, register copyright or authenticate a record. Resolve ownership through appropriate permissions and supporting records. A readable watermark may identify an intended use, but it is not legal or technical proof of origin."
+  },
+  "sign-pdf": {
+    "heading": "Understand a drawn signature",
+    "paragraphs": [
+      "A browser-drawn signature is a visual mark placed on a PDF. It is not a certificate-based digital signature, identity verification or proof that the document has not changed. Ask the recipient what method they accept before signing a contract or official form. Some processes require an authenticated service or a handwritten original.",
+      "Read the complete document first. Check the name, date, declaration and boxes beside the signing field. A correctly positioned signature can still be attached to the wrong version. Keep the reviewed source identifiable and compare the downloaded copy with it. Never place another person’s signature without authorization.",
+      "Position the mark inside the intended field and inspect the exported page at normal zoom. An oversized signature can cover surrounding wording; a tiny one can become illegible when printed. Check rotated pages in the actual output rather than relying only on pointer placement. Store the signed result securely and avoid distributing reusable signature images more widely than necessary. If the result is rejected, clarify the accepted signing method rather than repeatedly changing the appearance of the same mark."
+    ],
+    "question": "Does this create a cryptographic signature?",
+    "answer": "No. It adds a signature appearance without issuing a certificate, authenticating a signer or producing an audit trail. It does not supply trusted timestamps. Use a method accepted by the recipient whenever identity verification, legal execution requirements or tamper evidence are necessary."
+  },
+  "pdf-metadata": {
+    "heading": "Review properties separately from page content",
+    "paragraphs": [
+      "A PDF title property can differ from its filename, and viewers sometimes display it in the tab heading. Updating it can make a document recognizable without changing the heading drawn on the page. Author, subject and keyword fields are descriptive too; they do not prove who created the content or owns it.",
+      "When using a template, inspect properties for a previous project title or outdated author label. Replace only values you are entitled to change and avoid inventing attribution. Reopen the export in another viewer and inspect its properties. Different applications expose different fields, so an empty panel does not prove that every metadata structure has been removed.",
+      "Standard metadata editing is not a complete privacy scrub. Comments, embedded attachments, visible text, form values and XMP packets may contain information outside the displayed fields. Use a dedicated sanitization workflow when confidentiality matters and check the result independently. Preserve original records where provenance is important; stripping descriptive information can make an archival document harder to trace. Metadata changes should make a permitted copy clearer, not disguise the origin of a record or imply an authentication the tool never performed."
+    ],
+    "question": "Does clearing author information anonymize a file?",
+    "answer": "No. It only changes the supported fields. Names can remain on pages, in attachments, comments or other metadata. Do not treat an empty author value as an anonymity guarantee. Review every relevant information channel before sharing a document that contains sensitive material."
+  },
+  "resize-image-kb": {
+    "heading": "Measure bytes and readability together",
+    "paragraphs": [
+      "A form asking for 100 KB may count kilobytes differently from your operating system. This tool uses 1,024 bytes per KB, so 100 KB means 102,400 bytes. A destination using decimal units can reject a file near that ceiling. Choose a slightly smaller target when units are unclear and use the portal’s validation as the final check.",
+      "Reducing JPEG quality and reducing dimensions have different effects. Quality changes can introduce blocks around lettering; smaller dimensions can make letters too small to read. Inspect the smallest important detail, such as a signature stroke or serial-number character. Satisfying a byte ceiling while making the document unreadable is not a useful result.",
+      "The recorded image-browser test used a 10,120,279-byte input and produced a 99,840-byte JPEG at 1,800 by 1,400 pixels. A tiny output in that same report was 1,973 bytes at 360 by 280 pixels. These are fixture results from qa-image-report.json, not promises for every photograph. Texture, starting dimensions and the target affect the output. Return to the original picture for each retry instead of repeatedly compressing an already degraded download."
+    ],
+    "question": "Why does the portal show a different KB value?",
+    "answer": "It may divide by 1,000, round its display, or re-encode your upload. Compare actual bytes when possible and leave headroom. The portal may also check file format and dimensions independently. Passing one condition does not establish that the entire submission meets its requirements."
+  },
+  "resize-image-pixels": {
+    "heading": "Distinguish dimensions from resolution labels",
+    "paragraphs": [
+      "A 1,600 by 1,200 image resized to a width of 400 has a proportional height of 300. If a form demands 400 by 400, forcing both dimensions stretches it. Cropping to a square before resizing usually preserves the subject’s proportions better. Check circles and faces for distortion after any unlocked resize.",
+      "DPI or PPI is not the number of pixels. A 400-pixel picture can print at different physical widths depending on scaling. This tool controls raster dimensions, not certified passport print size. Use the destination’s pixel requirements for electronic submission and verify printing separately. A dimension that is technically correct may still be unsuitable if the original image lacked detail.",
+      "Check the downloaded file as well as the preview. Messaging and gallery applications can resize images during sharing and undo your preparation. Upload the actual saved file instead of a screenshot. For text-heavy diagrams, avoid enlargement without a reason: interpolated pixels cannot reconstruct sharper source lettering. Preserve the original so another output size does not require enlarging a previously reduced copy."
+    ],
+    "question": "Should cropping happen before resizing?",
+    "answer": "Crop first when the requested frame has a different shape. Then resize that crop to the specified dimensions. Resizing first and cropping later can leave too few pixels, while forcing unequal proportions distorts the subject. Inspect the final dimensions rather than assuming each step preserved them."
+  },
+  "jpg-to-png": {
+    "heading": "Understand what PNG can preserve",
+    "paragraphs": [
+      "A JPEG saved as PNG avoids another JPEG compression step, but it does not reverse artifacts already in the source. A blocky edge remains blocky even if the new file is larger. Keep the camera or design original when substantial editing is needed; changing format does not recover missing detail.",
+      "PNG helps when a workflow explicitly requires it or when further editing should avoid additional lossy saves. It may be inefficient for photographs with subtle colors. Compare output size against the destination’s limit before selecting it for an attachment. A larger PNG can be completely valid and still be unsuitable for that particular upload. A simple graphic and a photograph of the same dimensions can have very different size behavior.",
+      "JPEG has no ordinary alpha transparency channel. Its converted PNG does not automatically gain a transparent background: white pixels remain white unless a separate editing operation removes them. For a logo, obtain the original transparent asset rather than expecting conversion to distinguish backdrop from artwork. View the download at the same pixel size as the source to compare appearance fairly."
+    ],
+    "question": "Will PNG restore JPEG quality?",
+    "answer": "No. It preserves the decoded source without adding another JPEG compression pass, but cannot recreate lost information. Compare both files at equal zoom. A viewer’s scaling or color handling can make them appear different without the conversion having recovered any actual image detail."
+  },
+  "png-to-jpg": {
+    "heading": "Check transparent edges before flattening",
+    "paragraphs": [
+      "A PNG logo can have transparent pixels around its lettering. JPEG cannot keep that transparency, so this converter flattens the image onto white. That can suit a white document page but produce a rectangle on a dark website. Inspect the output against the background where it will be used.",
+      "JPEG is useful for many photographs but can introduce halos around small text and sharp edges. A screenshot with tiny interface labels may remain more readable as PNG. If the destination insists on JPEG, choose quality that keeps the letters legible and inspect the actual download at full size. A thumbnail can conceal problems that become obvious when printed or magnified.",
+      "Format conversion does not guarantee size reduction. Large dimensions can still create a large JPEG, while a flat graphic may already compress efficiently as PNG. If a form also has a byte ceiling, confirm the flattened appearance first and then use the size tool. Keep the original PNG to avoid losing the transparent version permanently. Do not confuse white appearing in the preview with a verified background suitable for every destination."
+    ],
+    "question": "Can transparency be recovered from the JPEG?",
+    "answer": "Not automatically. After flattening, the file no longer identifies which white pixels were background and which belonged to the artwork. Keep the original PNG so that later edits can use its alpha channel without trying to infer the missing information from a flattened copy."
+  },
+  "webp-to-jpg": {
+    "heading": "Choose a still image deliberately",
+    "paragraphs": [
+      "WebP can include transparency and animation, whereas JPEG represents a still picture without an alpha channel. Check that the exported frame contains the information you need. If an animation shows instructions over time, one frame cannot represent the complete sequence. Retain the original when movement is part of its meaning.",
+      "Transparency is flattened for JPEG output. Inspect soft shadows and antialiased edges, which may have been designed for another backdrop. A pale halo or white rectangle can be a consequence of flattening rather than a broken download. Keep the WebP if you might need the transparent version on a different page or background.",
+      "Downloaded web images may already be strongly compressed. A high-quality JPEG export cannot recreate the photographer’s original detail. Avoid cycling through formats merely to change an extension. Make one conversion from the best available source, inspect decoded dimensions and output bytes, and use the saved file rather than a screenshot. If the destination rejects it, establish whether the complaint is about dimensions, byte size or actual format before trying another conversion."
+    ],
+    "question": "Why does an animated WebP stop moving?",
+    "answer": "JPEG stores one still image and cannot keep an animation timeline. Check the selected image carefully, especially where information appears only in later frames. If the recipient needs the complete sequence, send a supported animation format or provide separate clearly ordered images."
+  },
+  "heic-to-jpg": {
+    "heading": "Make a compatible copy of a phone photograph",
+    "paragraphs": [
+      "HEIC and HEIF cover a family of containers, and support differs across devices and software. A file that opens on a phone may use a feature the browser decoder cannot handle. If decoding fails, export a JPEG from the phone’s photo application. Renaming .heic to .jpg does not change the encoded content.",
+      "A compressed phone photo can expand into a large pixel buffer. This is why both file bytes and decoded dimensions have limits. Close memory-heavy tabs if the device struggles, but do not assume a small file must decode successfully. A reduced copy exported on the phone can be a practical alternative when the original exceeds browser resources.",
+      "Inspect orientation, brightness and color after conversion. High-dynamic-range capture and device processing can appear different in a conventional browser-rendered JPEG. The tool does not promise to retain every depth map, auxiliary image, burst frame or camera metadata field. Keep the HEIC as the archival source and treat the JPEG as a compatibility copy. Check the actual exported picture in the intended destination rather than relying only on successful decoding here."
+    ],
+    "question": "Can I convert by renaming the extension?",
+    "answer": "No. Extensions are labels, not encoders. A renamed HEIC can look selectable in a dialog but still fail when the receiving application decodes it. Use the conversion action or a trusted photo export function and check that the resulting bytes open as a JPEG."
+  },
+  "passport-photo": {
+    "heading": "Separate cropping from official acceptance",
+    "paragraphs": [
+      "A crop frame chooses which pixels remain. It does not verify identity, measure official head proportions or decide whether lighting and background meet an authority’s rules. Read the requirements for the exact application before setting dimensions. Similar passport, visa and exam forms can demand different composition.",
+      "Position the frame so the face and required shoulder area remain visible without cutting off hair or chin. Enlarging a small image can produce the correct dimensions while still lacking usable detail. If there is no space around the head in the source, taking another photograph may work better than forcing it into a frame. Do not infer official acceptance from a successful export.",
+      "Check the JPEG independently. Dimensions, composition and byte size are separate conditions. The cropper does not remove shadows, replace backgrounds or certify a portal’s requirements. Keep an unchanged source in case another destination needs a different frame. When printing, verify physical size and scaling in the print application; a pixel crop alone cannot control the final dimensions on paper. Ask the issuing authority when a rule about appearance or framing is unclear."
+    ],
+    "question": "Does a preset guarantee acceptance?",
+    "answer": "No. A preset is a framing aid, not an official certificate. Confirm the authority’s current rules for background, expression, head position, recency and printing. A successful crop only establishes that the requested image operation completed, not that every application condition has been satisfied."
+  },
+  "pdf-to-word": {
+    "heading": "Inspect formatting and character accuracy after conversion",
+    "paragraphs": [
+      "Converting a PDF to DOCX rebuilds layout, tables and text from the PDF visual and structural elements. It produces an editable document, not the original author private Word source. Form fields, digital signatures and custom script bindings are intentionally not recreated. Check complex page layouts such as multi-column newsletters or rotated headers: a multi-column article can reflow into sequential text blocks rather than parallel table columns.",
+      "Scanned pages require optical character recognition (OCR) before any editable text can be generated. When a scanned PDF is uploaded, the service runs an OCR pass; review names, currency figures, dates and specialized terminology against the visible page image. OCR can misread faint strokes or uncommon fonts. For critical records such as legal agreements or certificates, keep the original PDF as the binding source of truth.",
+      "What we tested: the saved converter benchmark report records that a text-heavy three-page PDF fixture converted to Word with a 0.997 visual and textual similarity score. A multi-column test fixture reflowed across four pages due to column wrap, while a Hindi-Kannada bilingual sample achieved 0.988 similarity. These observations describe local Docker test fixtures only; real-world documents with distinct fonts, embedded images or complex vector art will behave differently and are not guaranteed."
+    ],
+    "question": "Why did my two-column PDF turn into single columns in Word?",
+    "answer": "PDF documents position words with absolute page coordinates, whereas Word documents use continuous flow paragraphs. The converter detects reading order and reconstructs paragraphs sequentially. When columns are not strictly bounded as tables, text may flow in vertical order. Reformat column margins in Word if a side-by-side layout is required."
+  },
+  "pdf-to-powerpoint": {
+    "heading": "Choose between editable objects and exact visual slides",
+    "paragraphs": [
+      "PDF to PowerPoint supports two operational modes: editable presentation mode and exact-look slide mode. In editable mode, text blocks and vector shapes are placed into PowerPoint slide objects that you can select and revise. In exact-look mode, each PDF page is rasterized at high resolution and placed as a visual slide background, preserving layout, fonts and graphics exactly as printed.",
+      "Neither mode can recover presentation metadata that was never in the PDF. Slide transitions, speaker notes, entrance animations and embedded media do not exist in a static PDF and cannot be invented. When converting slides containing charts or infographics, editable mode produces grouped vector shapes and text boxes rather than interactive Excel chart objects.",
+      "What we tested: in the converter fixture tests, a two-page presentation fixture converted to PowerPoint in exact-look mode with a 0.998 visual similarity score. The editable-mode test on a table-heavy presentation fixture achieved a 0.972 similarity score. These measurements describe local benchmark fixtures only; actual layout fidelity depends on font availability, vector complexity and starting resolution."
+    ],
+    "question": "Can I edit text on slides created in exact-look mode?",
+    "answer": "No. Exact-look mode renders each PDF page into a high-resolution raster image so appearance is preserved without font shifts. If you need to rewrite text or change numbers, choose editable mode instead, then verify that the extracted text blocks match your intended reading sequence."
+  },
+  "pdf-to-excel": {
+    "heading": "Verify tabular structure and numerical data",
+    "paragraphs": [
+      "Converting PDF tables to an Excel workbook extracts detected table grids and places each page data onto a separate worksheet. Cells are populated with literal text and numeric values. The tool does not reconstruct underlying Excel formulas, macro code, conditional formatting rules or chart linkages, because a standard PDF contains only rendered characters and lines, not calculation logic.",
+      "Review column alignment and numerical punctuation carefully. A comma in 1,500 can be interpreted as a thousands separator or a decimal marker depending on your regional spreadsheet settings. Blank cells within a merged header can also shift adjacent columns. For invoices, balance sheets or tax statements, compare column totals against the visual PDF before using the exported numbers in subsequent calculations.",
+      "What we tested: in our local conversion fixture suite, a two-page tables test fixture produced a two-sheet XLSX workbook with a 0.974 layout and content similarity score. All cell values remained literal strings and numbers without formula injection. These results describe that specific test fixture only; tables with invisible borders, broken ruling lines or non-standard cell padding require manual review."
+    ],
+    "question": "Why are formula calculations missing from the exported spreadsheet?",
+    "answer": "A PDF stores only the static numbers and text drawn on the page, not the formulas that generated them. The converter extracts the visible values into cells. If you need dynamic calculations, re-enter the required SUM or arithmetic formulas in your spreadsheet application."
+  },
+  "word-to-pdf": {
+    "heading": "Ensure font embedding and pagination match your requirements",
+    "paragraphs": [
+      "Converting a DOCX file to PDF produces a fixed-layout document suitable for formal submission, printing or archiving. The conversion service renders the document using LibreOffice in an isolated container. Word features such as margins, headers, footers, footnotes and table styling are preserved. Older binary .doc files and macro-enabled .docm files are rejected for stability and security.",
+      "Inspect page breaks and pagination after downloading. If your source document relies on local fonts installed only on your computer, the conversion server will substitute similar available system fonts, which can alter line wrapping and push text onto an unwanted extra page. Open the downloaded PDF in a viewer and inspect the final page to confirm that signatures or closing paragraphs have not spilled over.",
+      "What we tested: the local benchmark suite verified a sample DOCX conversion that produced a 24,408-byte PDF with a 1.0 structural match. Conversion completed cleanly within 820 milliseconds on local hardware. These numbers describe a standardized test fixture only; complex Word files with high-resolution imagery or advanced styling will produce different file sizes and processing times."
+    ],
+    "question": "Why did my converted PDF gain an extra blank page at the end?",
+    "answer": "Word documents frequently contain trailing empty paragraph marks after the final sentence or table. On a conversion server where font metrics differ slightly, that trailing paragraph can be pushed onto a new page. Delete unused paragraph marks in your Word editor and convert the updated document."
+  },
+  "powerpoint-to-pdf": {
+    "heading": "Review slide proportions and vector graphics",
+    "paragraphs": [
+      "Converting PowerPoint presentations (PPTX) to PDF renders each slide into a dedicated PDF page. Slide dimensions, background fills, embedded photographs and text layouts are fixed in place, making the presentation shareable across mobile devices and computers without requiring presentation software. Animated transitions, audio clips and video embeds are omitted.",
+      "Aspect ratios are preserved: a 16:9 widescreen presentation produces 16:9 PDF pages, while a standard 4:3 deck produces 4:3 pages. If your recipient intends to print the slides on standard A4 or Letter paper, review the print preview in your PDF reader to ensure margins and slide borders are centered appropriately. High-resolution illustrations are preserved within the 25 MB upload limit.",
+      "What we tested: our test fixture suite converted a sample two-slide PPTX deck to a 24,266-byte PDF with a 1.0 similarity rating. Text styling, geometric shapes and slide backgrounds rendered without distortion. These results reflect a controlled local fixture only; presentations utilizing proprietary cloud fonts or embedded OLE objects may experience font substitution."
+    ],
+    "question": "Will animations and slide transitions work in the exported PDF?",
+    "answer": "No. PDF is a fixed-page electronic document format. Each slide is captured in its final visual resting state. Dynamic transitions, entrance effects and slide audio do not carry over to a PDF."
+  },
+  "excel-to-pdf": {
+    "heading": "Control worksheet print areas and wide table pagination",
+    "paragraphs": [
+      "Converting an Excel workbook (XLSX) to PDF renders each active worksheet into printable pages. Because spreadsheets are continuous grids rather than bounded pages, column widths and print setup determine how tables are split. Set print areas and inspect page breaks in your spreadsheet software before uploading, so wide tables do not break awkwardly across multiple sheets.",
+      "Recalculate your workbook before converting. The conversion engine reads the cached formula calculation results saved in the workbook file; it does not connect to external data feeds or execute custom VBA macros. Ensure date formatting, currency signs and decimal precision appear exactly as you want readers to see them. Password-encrypted spreadsheets are rejected.",
+      "What we tested: local converter integration testing of a standard financial worksheet fixture yielded a 24,758-byte PDF with a 1.0 verification score. All table borders, bold headers and formatted decimal numbers matched the authoring layout. This benchmark represents a single clean fixture; large workbooks with hundreds of rows or multiple charts require deliberate page-by-page review."
+    ],
+    "question": "How can I prevent wide spreadsheet columns from splitting across separate PDF pages?",
+    "answer": "In Excel or your spreadsheet program, open Page Layout and set Fit to 1 page wide before saving. Alternatively, adjust column widths or choose landscape orientation so the table fits within standard page boundaries before converting."
+  }
+}

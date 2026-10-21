@@ -17,7 +17,7 @@ export const newPdfPages = {
       },
       {
         heading: 'Scanned pages and complex layouts',
-        text: 'Scanned PDFs — pages that are pictures of text with no selectable layer — pass through optical character recognition first, and the tool tells you when OCR was applied. OCR can misread unusual fonts, faint print or skewed scans, so check names, dates and amounts character by character. Multi-column pages are reflowed into linear reading order, which changes the visual arrangement even when the words are right. Forms, brochures and dense application paperwork may need minor edits after conversion: tab stops, merged table cells and floating text boxes are the usual casualties. For the best result, convert a clean digital PDF rather than a photo of a printout, and treat the DOCX as an editable draft of the PDF, not a certified copy.',
+        text: 'Scanned PDFs — pages that are pictures of text with no selectable layer — pass through optical character recognition first, and the tool tells you when OCR was applied. OCR can misread unusual fonts, faint print or skewed scans, so check names, dates and amounts character by character. Multi-column pages are reflowed into linear reading order, which changes the visual arrangement even when the words are right. Forms, brochures and dense application paperwork may need minor edits after conversion: tab stops, merged table cells and floating text boxes are the usual casualties. For the best result, convert a clean digital PDF rather than a photo of a printout, and treat the DOCX as an editable working copy of the PDF, not a certified copy.',
       },
     ],
     steps: [
@@ -141,7 +141,7 @@ export const newPdfPages = {
       },
       {
         heading: 'Prepare a supported file',
-        text: 'Choose a DOCX file rather than an older DOC file or a macro-enabled document: open legacy files in trusted office software and save a new DOCX copy first. Password-encrypted packages are rejected — remove the password in Word before uploading if you are authorized to do so. Linked external images are not downloaded by the converter, so pictures must be embedded in the document; check for missing-image placeholders in the output. Resolve tracked changes and accept or reject them before converting, since markup can otherwise leak into the PDF. Complex elements like embedded objects, SmartArt and 3D models may render differently than in Word. Documents with tracked changes, comments or ink annotations should be finalized first: markup and annotation layers can otherwise appear in the PDF unexpectedly.',
+        text: 'Choose a DOCX file rather than an older DOC file or a macro-enabled document: open legacy files in trusted office software and save a new DOCX copy first. Password-encrypted packages are rejected — remove the password in Word before uploading if you are authorized to do so. Linked external images are not downloaded by the converter, so pictures must be embedded in the document; check for missing-image missing-image markers in the output. Resolve tracked changes and accept or reject them before converting, since markup can otherwise leak into the PDF. Complex elements like embedded objects, SmartArt and 3D models may render differently than in Word. Documents with tracked changes, comments or ink annotations should be finalized first: markup and annotation layers can otherwise appear in the PDF unexpectedly.',
       },
     ],
     steps: [

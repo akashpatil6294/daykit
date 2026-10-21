@@ -1,14 +1,20 @@
 ---
-{"title":"Why a converted PDF looks different","summary":"Understand reflow, text reconstruction, fonts and document features before choosing a conversion or editing workflow.","author":"Daykit editorial","published":"2026-10-14","updated":"2026-10-14","faq":[{"question":"Does opening a converted file prove that it is complete?","answer":"No. Successful opening checks the container, not whether all content, structure and appearance survived."},{"question":"Why can a conversion change fonts?","answer":"The original font may be unavailable on the converting system, and the output format may measure or position the same characters differently."},{"question":"Can another edit restore a lost digital signature?","answer":"No. A visible signature image and a cryptographic document signature are different features. Keep the original signed file."}]}
+{"title":"Why a converted PDF looks different","summary":"Understand reflow, text reconstruction, fonts and document features before choosing a conversion or editing workflow.","author":"Akash Patil","published":"2026-10-14","updated":"2026-10-21","faq":[{"question":"Does opening a converted file prove that it is complete?","answer":"No. Successful opening checks the container, not whether all content, structure and appearance survived."},{"question":"Why can a conversion change fonts?","answer":"The original font may be unavailable on the converting system, and the output format may measure or position the same characters differently."},{"question":"Can another edit restore a lost digital signature?","answer":"No. A visible signature image and a cryptographic document signature are different features. Keep the original signed file."}]}
 ---
+
+
+## Inspect a known boundary
+
+Compare a paragraph that crosses a page break and a table with merged cells. These expose layout changes more reliably than a large heading. The current Office-to-PDF service uses LibreOffice; it does not use the retired browser A4 reconstruction described by older versions of this guide.
+
 
 ## Different formats describe different things
 
-A PDF is organized around pages and positioned content. A Word document includes flowing paragraphs and styles. A spreadsheet includes cells, values and formulas. A presentation contains slide objects and a common canvas. Moving between these formats requires decisions about structure that may not exist in the source. The [PDF to Word converter](/tools/pdf-to-word/) therefore creates a reconstructed draft, while [PDF to Excel](/tools/pdf-to-excel/) infers rows and cell boundaries from text positions. Neither tool can retrieve a source authoring file that was never embedded in the PDF. Keep that limitation in mind before judging a result by its visual similarity alone.
+A PDF is organized around pages and positioned content. A Word document includes flowing paragraphs and styles. A spreadsheet includes cells, values and formulas. A presentation contains slide objects and a common canvas. Moving between these formats requires decisions about structure that may not exist in the source. The [PDF to Word converter](/tools/pdf-to-word/) therefore creates a reconstructed working copy, while [PDF to Excel](/tools/pdf-to-excel/) infers rows and cell boundaries from text positions. Neither tool can retrieve a source authoring file that was never embedded in the PDF. Keep that limitation in mind before judging a result by its visual similarity alone.
 
 ## Reflow changes where content lands
 
-Browser-based [Word to PDF](/tools/word-to-pdf/) reads supported body content and lays it out on new A4 pages. Paragraph lengths, table rows and images determine when another page is needed. Original section margins and carefully inserted page breaks are not the governing layout model. Likewise, [Excel to PDF](/tools/excel-to-pdf/) writes stored worksheet values with wrapping rather than reproducing Excel print settings. A useful content copy can therefore have more pages than the source application’s print preview. If an application form requires alignment inside specific boxes, use the original program’s export rather than trying to repair the result with repeated conversions.
+Office-to-PDF conversion uploads supported documents to the configured service and renders them with LibreOffice. Fonts, pagination and advanced Office features can differ from the authoring application. Compare print layout against the source and use native application export when exact visual fidelity is essential.
 
 ## Presentation appearance is a separate choice
 

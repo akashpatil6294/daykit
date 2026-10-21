@@ -14,11 +14,13 @@ export interface ImageSettings {
 }
 export type WorkerRequest =
   | { type: 'init'; heic: boolean }
-  | { type: 'load'; file: File; kind: InputKind }
-  | { type: 'process'; settings: ImageSettings };
+  | { type: 'cancel'; jobId?: number }
+  | { type: 'load'; jobId: number; file: File; kind: InputKind }
+  | { type: 'process'; jobId: number; settings: ImageSettings };
 export type WorkerReply =
   | { type: 'ready' }
-  | { type: 'loaded'; width: number; height: number; preview: Blob }
-  | { type: 'result'; blob: Blob; width: number; height: number; padding: number }
-  | { type: 'progress'; value: number }
-  | { type: 'error'; code: string };
+  | { type: 'init-error'; code: string }
+  | { type: 'loaded'; jobId: number; width: number; height: number; preview: Blob }
+  | { type: 'result'; jobId: number; blob: Blob; width: number; height: number; padding: number }
+  | { type: 'progress'; jobId: number; value: number }
+  | { type: 'error'; jobId: number; code: string };

@@ -1,4 +1,4 @@
-Daykit HEIC decoding uses heic-to 1.6.6 by Hopper Gee, licensed under LGPL-3.0-or-later.
+PDF Converter HEIC decoding uses heic-to 1.6.6 by Hopper Gee, licensed under LGPL-3.0-or-later.
 License notice: /licenses/heic-to-LICENSE.txt
 Library source and build instructions: https://github.com/hoppergee/heic-to/tree/v1.6.6
 Published source package: https://registry.npmjs.org/heic-to/-/heic-to-1.6.6.tgz

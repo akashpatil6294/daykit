@@ -1,6 +1,12 @@
 ---
-{"title":"Choose JPG, PNG, WebP or HEIC for an application image","summary":"Learn what image conversion changes, when transparency matters and why renaming an extension cannot fix an unsupported-format upload.","author":"Daykit editorial","published":"2026-10-13","updated":"2026-10-13","faq":[{"question":"Does PNG always look better than JPG?","answer":"Not necessarily. PNG can preserve the pixels it is given without JPEG-style losses, but converting a damaged JPEG to PNG does not recover missing detail. Source quality remains important."},{"question":"Why did conversion make my file larger?","answer":"Different formats and settings encode the same image differently. A PNG made from a photograph can be larger than its JPEG source without adding visible information."},{"question":"Can I just change .heic to .jpg?","answer":"No. That changes the name, not the encoded image. Use a genuine converter and inspect the exported result before uploading it."}]}
+{"title":"Choose JPG, PNG, WebP or HEIC for an application image","summary":"Learn what image conversion changes, when transparency matters and why renaming an extension cannot fix an unsupported-format upload.","author":"Akash Patil","published":"2026-10-13","updated":"2026-10-21","faq":[{"question":"Does PNG always look better than JPG?","answer":"Not necessarily. PNG can preserve the pixels it is given without JPEG-style losses, but converting a damaged JPEG to PNG does not recover missing detail. Source quality remains important."},{"question":"Why did conversion make my file larger?","answer":"Different formats and settings encode the same image differently. A PNG made from a photograph can be larger than its JPEG source without adding visible information."},{"question":"Can I just change .heic to .jpg?","answer":"No. That changes the name, not the encoded image. Use a genuine converter and inspect the exported result before uploading it."}]}
 ---
+
+
+## An extension is not an encoder
+
+A HEIC renamed photograph.jpg still contains HEIC data. Decode and export it instead. PNG transparency becomes white when converted to JPEG, while a JPEG converted to PNG does not recover lost detail. Decide which tradeoff the receiving form actually permits.
+
 An upload form usually checks more than whether a filename ends with a familiar extension. The bytes inside the file identify how the image is encoded. Renaming an unsupported file can therefore leave the original problem unchanged while making the name misleading. A proper conversion decodes the source and writes a new image in the selected format.
 
 The right choice starts with the destination. If its current instructions require a specific format, use that format and then check the remaining conditions. If several formats are accepted, compare their practical differences rather than assuming one is universally best. Keep an untouched source so that each export can be produced from the clearest available image.
@@ -9,7 +15,7 @@ The right choice starts with the destination. If its current instructions requir
 
 JPEG is commonly used for photographs because quality can be traded for a smaller file. Its compression can change fine details, particularly around sharp edges, text and repeated high-contrast patterns. A moderate reduction may look acceptable, but repeated generations can accumulate artifacts. Export once from a good source whenever possible.
 
-The [PNG-to-JPG converter](/tools/png-to-jpg/) is useful when the destination needs JPEG. Inspect transparent areas because JPEG does not preserve ordinary alpha transparency. Daykit places those regions on white. This can be appropriate for some documents, but it is not a universal rule for official submissions. Check the actual required appearance separately.
+The [PNG-to-JPG converter](/tools/png-to-jpg/) is useful when the destination needs JPEG. Inspect transparent areas because JPEG does not preserve ordinary alpha transparency. PDF Converter places those regions on white. This can be appropriate for some documents, but it is not a universal rule for official submissions. Check the actual required appearance separately.
 
 ## Use PNG when preserving supplied pixels matters
 

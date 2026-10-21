@@ -3,12 +3,12 @@ import assert from 'node:assert/strict';
 import { pageSelection } from '../src/lib/pdf-protocol.ts';
 import fs from 'node:fs';
 import { pdfSlugs } from '../src/data/pdf-tools.ts';
-test('PDF pages include 300 words, steps and three FAQs', () => {
-  for (const slug of pdfSlugs) {
+test('PDF pages include 600 words, steps and four FAQs', () => {
+  for (const slug of pdfSlugs.filter(s=>!JSON.parse(fs.readFileSync('dist/publication.json','utf8')).excludedTools.includes(`/tools/${s}/`))) {
     const html = fs.readFileSync(`dist/tools/${slug}/index.html`, 'utf8');
     const body = html.match(/<article[^>]*data-guide[^>]*>([\s\S]*?)<\/article>/)[1];
-    assert.ok(body.replace(/<[^>]+>/g, ' ').split(/\s+/).length >= 300, slug);
-    assert.equal((body.match(/<details>/g) || []).length, 3);
+    assert.ok(body.replace(/<[^>]+>/g, ' ').split(/\s+/).length >= 600, slug);
+    assert.ok((body.match(/<details>/g) || []).length >= 4);
     assert.ok(body.includes('<ol>'));
     const sections = [...body.matchAll(/<section>([\s\S]*?)<\/section>/g)];
     if (
@@ -21,7 +21,7 @@ test('PDF pages include 300 words, steps and three FAQs', () => {
         'compress-pdf',
       ].includes(slug)
     ) {
-      assert.equal(sections.length, 3);
+      assert.ok(sections.length >= 3);
       assert.ok(
         sections
           .map((m) => m[1])
@@ -36,7 +36,7 @@ test('PDF pages include 300 words, steps and three FAQs', () => {
       ...html.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/gs),
     ].map((m) => JSON.parse(m[1]));
     assert.ok(schemas.some((s) => s['@type'] === 'WebApplication'));
-    assert.equal(schemas.find((s) => s['@type'] === 'FAQPage').mainEntity.length, 3);
+    assert.ok(schemas.find((s) => s['@type'] === 'FAQPage').mainEntity.length >= 4);
     const related = html.match(/<section class="related-tools">([\s\S]*?)<\/section>/)?.[1];
     assert.ok((related?.match(/<a /g) || []).length >= 3, slug);
   }

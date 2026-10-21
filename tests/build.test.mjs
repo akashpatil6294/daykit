@@ -5,6 +5,7 @@ import { toolCatalog } from '../src/data/tools.ts';
 import { calculatorSlugs } from '../src/data/calculators.ts';
 import { pdfSlugs } from '../src/data/pdf-tools.ts';
 const exams = JSON.parse(readFileSync('data/exams.json', 'utf8'));
+const publication = JSON.parse(readFileSync('dist/publication.json', 'utf8'));
 const routes = [
   '',
   'guides',
@@ -23,7 +24,7 @@ const routes = [
   ...toolCatalog.map((tool) => `tools/${tool.slug}`),
   ...exams.map((exam) => `resize-photo-signature-${exam.slug}`),
   ...calculatorSlugs.map((slug) => `calculators/${slug}`),
-];
+].filter(route => !publication.excludedTools.includes('/'+route+'/'));
 test('all public pages have unique SEO, navigation and valid JSON-LD', () => {
   const titles = new Set();
   const descriptions = new Set();
@@ -55,7 +56,7 @@ test('all public pages have unique SEO, navigation and valid JSON-LD', () => {
 });
 test('sitemap, robots and excluded 404 are present', () => {
   const sitemap = readFileSync('dist/sitemap.xml', 'utf8');
-  assert.equal((sitemap.match(/<loc>/g) || []).length, routes.length * 7);
+  assert.equal((sitemap.match(/<loc>/g) || []).length, routes.filter(route=>!publication.noindex.includes('/'+route+'/')).length);
   assert.ok(!sitemap.includes('/404'));
   assert.match(readFileSync('dist/robots.txt', 'utf8'), /Sitemap: https?:\/\/.*\/sitemap.xml/);
   assert.match(readFileSync('dist/404.html', 'utf8'), /noindex, follow/);
@@ -92,7 +93,7 @@ test('built site contains only known categories and no retired routes', () => {
   for (const name of topLevel) {
     assert.ok(locales.has(name) || known(name), `unexpected top-level dist route: ${name}`);
   }
-  for (const locale of ['', 'hi/', 'kn/', 'ta/', 'te/', 'mr/', 'bn/']) {
+  for (const locale of ['']) {
     const home = readFileSync(`dist/${locale}index.html`, 'utf8');
     const pattern = new RegExp(`href="/${locale}([a-z-]+)/"`, 'g');
     const categories = new Set();
@@ -100,7 +101,7 @@ test('built site contains only known categories and no retired routes', () => {
     for (const category of categories) {
       assert.ok(known(category), `home page links to unexpected category: ${category}`);
     }
-    for (const category of ['tools', 'calculators', 'exams', 'guides'])
+    for (const category of ['tools', 'calculators', 'guides'])
       assert.ok(home.includes(`href="/${locale}${category}/"`), `home missing /${locale}${category}/`);
   }
 });
@@ -117,7 +118,7 @@ test('calculators publish 400+ guide words and five FAQs each', () => {
     assert.equal((guide.match(/<details>/g) || []).length, 5);
   }
 });
-test('every image tool has 300+ guide words, steps and matching FAQ structured data', () => {
+test('every image tool has 600+ guide words, steps and matching FAQ structured data', () => {
   for (const tool of toolCatalog) {
     const html = readFileSync(`dist/tools/${tool.slug}/index.html`, 'utf8');
     const guide = html.match(/<article[^>]*data-guide[^>]*>([\s\S]*?)<\/article>/)?.[1];
@@ -126,14 +127,14 @@ test('every image tool has 300+ guide words, steps and matching FAQ structured d
       .replace(/<[^>]*>/g, ' ')
       .split(/\s+/)
       .filter(Boolean).length;
-    assert.ok(words >= 300, `${tool.slug}: ${words} words`);
+    assert.ok(words >= 600, `${tool.slug}: ${words} words`);
     assert.ok(guide.includes('<ol>'));
-    assert.equal((guide.match(/<details>/g) || []).length, 3);
+    assert.ok((guide.match(/<details>/g) || []).length >= 4);
     const schemas = [
       ...html.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/gs),
     ].map((match) => JSON.parse(match[1]));
     assert.ok(schemas.some((schema) => schema['@type'] === 'WebApplication'));
-    assert.equal(schemas.find((schema) => schema['@type'] === 'FAQPage').mainEntity.length, 3);
+    assert.ok(schemas.find((schema) => schema['@type'] === 'FAQPage').mainEntity.length >= 4);
   }
 });
 test('every JSON exam gets a page, transparent specs, instructions, FAQs and a sitemap entry', () => {
@@ -141,14 +142,15 @@ test('every JSON exam gets a page, transparent specs, instructions, FAQs and a s
   for (const exam of exams) {
     const path = `/resize-photo-signature-${exam.slug}/`;
     const html = readFileSync(`dist${path}index.html`, 'utf8');
-    assert.ok(sitemap.includes(path));
+    assert.equal(sitemap.includes(path), exam.verified);
+    if (!exam.verified) assert.match(html, /noindex, follow/);
     assert.ok(html.includes('Photo and signature specifications'));
     assert.ok(
       html.includes(
         exam.verified ? 'Specification record marked verified' : 'Unverified specifications',
       ),
     );
-    assert.ok(html.includes(exam.last_verified || 'Not yet verified'));
+    assert.ok(html.includes(exam.last_verified || 'Unverified'));
     assert.ok(html.includes('<ol>'));
     assert.equal((html.match(/<details>/g) || []).length, 4);
     const table = html.match(/<table>[\s\S]*?<\/table>/)?.[0];

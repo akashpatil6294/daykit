@@ -1,10 +1,10 @@
 ---
 import '../styles/global.css';
 import { translations, defaultLocale } from '../i18n';
-import { categoryKeys, legalKeys } from '../data/site';
-import CookieConsent from '../components/CookieConsent';
+
+import { operator } from '../config/operator';
 import AdIntegration from '../components/AdIntegration.astro';
-import { guideText } from '../i18n/guides';
+
 interface Props {
   title: string;
   description: string;
@@ -15,15 +15,7 @@ const { title, description, breadcrumb, noindex = false } = Astro.props;
 const t = translations();
 const pagePath = Astro.url.pathname === '/404/' ? '/404.html' : Astro.url.pathname;
 const canonical = new URL(pagePath, Astro.site);
-const languageNames = {
-  en: 'English',
-  hi: 'हिन्दी',
-  kn: 'ಕನ್ನಡ',
-  ta: 'தமிழ்',
-  te: 'తెలుగు',
-  mr: 'मराठी',
-  bn: 'বাংলা',
-};
+const navigation = [['/', 'Home'], ['/tools/', 'Tools'], ['/guides/', 'Guides'], ['/about/', 'About'], ['/contact/', 'Contact'], ['/privacy/', 'Privacy'], ['/terms/', 'Terms']];
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
@@ -45,9 +37,6 @@ const crumbs = {
 <html lang={defaultLocale}>
   <head>
     <meta charset="UTF-8" />
-    <!-- Google AdSense Verification Code -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5625418813515014" crossorigin="anonymous"></script>
-    
     <AdIntegration />
     <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,600&display=swap" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600&family=JetBrains+Mono&display=swap" />
@@ -55,13 +44,6 @@ const crumbs = {
     <title>{title} | {t.site.name}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    {Object.entries(languageNames).map(([locale]) => (
-      <link
-        rel="alternate"
-        hreflang={locale}
-        href={new URL(locale === 'en' ? pagePath : `/${locale}${pagePath}`, Astro.site)}
-      />
-    ))}
     <link rel="alternate" hreflang="x-default" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta name="theme-color" content="#fafafa" />
@@ -71,6 +53,7 @@ const crumbs = {
     <meta property="og:url" content={canonical} />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={t.site.name} />
+    <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@type': 'Organization', name: t.site.name, url: Astro.site?.href, email: operator.email, founder: { '@type': 'Person', name: operator.name }, address: { '@type': 'PostalAddress', addressLocality: operator.city, addressCountry: 'IN' } })} />
     <script type="application/ld+json" set:html={JSON.stringify(schema).replace(/</g, '\\u003c')} />
     {breadcrumb && (
       <script
@@ -87,40 +70,20 @@ const crumbs = {
       <div class="shell header-inner">
         <a href="/" class="brand">
           <span class="brand-mark" aria-hidden="true">
-            d<span>✳</span>
+            <img src="/favicon.svg" width="32" height="32" alt="" />
           </span>
           {t.site.name}
           <span class="brand-dot">.</span>
         </a>
         <nav id="main-navigation" aria-label={t.ui.navigation}>
-          {categoryKeys.map((key) => (
-            <a
-              href={`/${key}/`}
-              aria-current={Astro.url.pathname === `/${key}/` ? 'page' : undefined}
-            >
-              {t.nav[key]}
-            </a>
-          ))}
+          {navigation.map(([href,label]) => <a href={href} aria-current={Astro.url.pathname === href ? 'page' : undefined}>{label}</a>)}
         </nav>
         <a href="/about/" class="header-about">
           {t.nav.about}
           <span aria-hidden="true"> ↗</span>
         </a>
         <button class="menu-toggle" aria-expanded="false" aria-controls="main-navigation">Menu</button>
-        <label class="language-control">
-          <span class="sr-only">{t.ui.language}</span>
-          <select id="language-switcher" aria-label={t.ui.language} data-no-translate>
-            {Object.entries(languageNames).map(([locale, name]) => (
-              <option
-                data-locale={locale}
-                value={locale === 'en' ? pagePath : `/${locale}${pagePath}`}
-                selected={locale === 'en'}
-              >
-                {name}
-              </option>
-            ))}
-          </select>
-        </label>
+
       </div>
     </header>
     <main id="main" class="shell" tabindex="-1">
@@ -141,22 +104,18 @@ const crumbs = {
             <span class="brand-dot">.</span>
           </a>
           <p>{t.site.tagline}</p>
-          <small>{t.ui.copyright}</small>
+          <p>{operator.name} · {operator.role}<br />{operator.city}, {operator.country}<br /><a href={`mailto:${operator.email}`}>{operator.email}</a></p><small>© {new Date().getFullYear()} PDF Converter</small>
         </div>
         <div>
           <nav aria-label={t.ui.footer}>
-            <a href="/guides/">{guideText.title}</a>
-            {legalKeys.map((key) => (
-              <a href={`/${key}/`}>{t.nav[key]}</a>
-            ))}
+            {navigation.map(([href,label]) => <a href={href}>{label}</a>)}
+            <a href="/disclaimer/">Disclaimer</a>
           </nav>
-          <button class="text-button" id="privacy-settings">
-            {t.ui.settings}
-          </button>
+
         </div>
       </div>
     </footer>
-    <CookieConsent client:load />
+
     <script>
       document.querySelector('.menu-toggle')?.addEventListener('click', (event) => {
         const button = event.currentTarget as HTMLButtonElement;
@@ -164,12 +123,6 @@ const crumbs = {
         button.setAttribute('aria-expanded', String(open));
         document.getElementById('main-navigation')?.toggleAttribute('data-open', open);
       });
-      document.getElementById('language-switcher')?.addEventListener('change', (event) => {
-        window.location.assign((event.target as HTMLSelectElement).value);
-      });
-      document
-        .getElementById('privacy-settings')
-        ?.addEventListener('click', () => window.dispatchEvent(new Event('daykit:privacy')));
     </script>
   </body>
 </html>

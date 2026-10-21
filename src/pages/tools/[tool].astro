@@ -1,4 +1,5 @@
 ---
+import reviews from '../../data/tool-review.json';
 import Layout from '../../layouts/Layout.astro';
 import GuideLinks from '../../components/GuideLinks.astro';
 import AdSlot from '../../components/AdSlot.astro';
@@ -12,10 +13,12 @@ export function getStaticPaths() {
 }
 const { tool } = Astro.props;
 const page = toolPages[tool.mode];
+const review = (reviews as Record<string, { heading: string; paragraphs: string[]; question: string; answer: string }>)[tool.slug];
+const questions = [...page.faq, ...(review ? [{question: review.question, answer: review.answer}] : [])];
 const faq = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
-  mainEntity: page.faq.map((item) => ({
+  mainEntity: questions.map((item) => ({
     '@type': 'Question',
     name: item.question,
     acceptedAnswer: { '@type': 'Answer', text: item.answer },
@@ -41,6 +44,7 @@ const application = {
   />
   <section class="tool-heading">
     <p class="eyebrow">{t.eyebrow}</p>
+    <p class="quiet">Last reviewed: <time datetime="2026-10-21">21 October 2026</time></p>
     <h1>{page.title}</h1>
     <p class="lead">{page.intro}</p>
   </section>
@@ -50,6 +54,7 @@ const application = {
   </noscript>
   <AdSlot size="leaderboard" />
   <article class="tool-guide" data-guide>
+    {review && <section><h2>{review.heading}</h2>{review.paragraphs.map(p => <p>{p}</p>)}</section>}
     {page.sections.map((section) => (
       <section>
         <h2>{section.heading}</h2>
@@ -66,7 +71,7 @@ const application = {
     </section>
     <section>
       <h2>{t.faq}</h2>
-      {page.faq.map((item) => (
+      {questions.map((item) => (
         <details>
           <summary>{item.question}</summary>
           <p>{item.answer}</p>

@@ -1,5 +1,6 @@
 ---
 import GuideLinks from '../../components/GuideLinks.astro';
+import reviews from '../../data/tool-review.json';
 import Layout from '../../layouts/Layout.astro';
 import AdSlot from '../../components/AdSlot.astro';
 import PdfTool from '../../components/pdf-tools/PdfTool';
@@ -15,10 +16,12 @@ export function getStaticPaths() {
 const { slug } = Astro.props;
 const page = pdfPages[slug];
 const legacy = ['merge-pdf','split-pdf','reorder-pdf','images-to-pdf','pdf-to-images','compress-pdf'].includes(slug);
+const review = (reviews as Record<string, { heading: string; paragraphs: string[]; question: string; answer: string }>)[slug];
+const questions = [...page.faq, ...(review ? [{question: review.question, answer: review.answer}] : [])];
 const faq = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
-  mainEntity: page.faq.map((f) => ({
+  mainEntity: questions.map((f) => ({
     '@type': 'Question',
     name: f.question,
     acceptedAnswer: { '@type': 'Answer', text: f.answer },
@@ -41,6 +44,7 @@ const app = {
   <script type="application/ld+json" set:html={JSON.stringify(app).replace(/</g, '\\u003c')} />
   <section class="tool-heading">
     <p class="eyebrow">{t.eyebrow}</p>
+    <p class="quiet">Last reviewed: <time datetime="2026-10-21">21 October 2026</time></p>
     <h1>{page.title}</h1>
     <p class="lead">{page.intro}</p>
   </section>
@@ -50,6 +54,7 @@ const app = {
   </noscript>
   <AdSlot size="leaderboard" />
   <article class="tool-guide" data-guide>
+    {review && <section><h2>{review.heading}</h2>{review.paragraphs.map(p => <p>{p}</p>)}</section>}
     {page.sections.map((s) => (
       <section>
         <h2>{s.heading}</h2>
@@ -63,7 +68,7 @@ const app = {
       ))}
     </ol>
     <h2>{t.faq}</h2>
-    {page.faq.map((f) => (
+    {questions.map((f) => (
       <details>
         <summary>{f.question}</summary>
         <p>{f.answer}</p>

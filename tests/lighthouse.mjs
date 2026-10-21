@@ -11,7 +11,7 @@ try {
     '/tools/resize-image-kb/',
     '/resize-photo-signature-ssc/',
   ]) {
-    const result = await lighthouse(`http://127.0.0.1:4321${route}`, {
+    const result = await lighthouse(`${process.env.BASE_URL || 'http://127.0.0.1:4321'}${route}`, {
       port: chrome.port,
       output: 'json',
       onlyCategories: ['performance', 'accessibility', 'seo'],

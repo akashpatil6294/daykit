@@ -1,14 +1,20 @@
 ---
-{"title":"Prepare an Excel table for a readable PDF copy","summary":"Understand saved formula values, date formats, wide rows and the limits of a high-fidelity spreadsheet-to-PDF conversion.","author":"Daykit editorial","published":"2026-10-14","updated":"2026-10-14","faq":[{"question":"Does the converter recalculate my workbook?","answer":"It renders calculated results like the spreadsheet application does. Recalculate and save in your spreadsheet application first."},{"question":"What happens to the file I upload?","answer":"It is sent to the conversion service, converted, and deleted immediately after the response. It is not stored or logged."},{"question":"Should I convert the PDF back to Excel to verify it?","answer":"No. A second conversion is not an independent source of truth. Compare with the original saved workbook."}]}
+{"title":"Prepare an Excel table for a readable PDF copy","summary":"Understand saved formula values, date formats, wide rows and the limits of a high-fidelity spreadsheet-to-PDF conversion.","author":"Akash Patil","published":"2026-10-14","updated":"2026-10-21","faq":[{"question":"Does the converter recalculate my workbook?","answer":"It renders calculated results like the spreadsheet application does. Recalculate and save in your spreadsheet application first."},{"question":"What happens to the file I upload?","answer":"With your consent, it is uploaded to the conversion service, rendered in an isolated temporary directory, and scheduled for cleanup when processing finishes. Immediate deletion is not guaranteed, and server logs are managed separately."},{"question":"Should I convert the PDF back to Excel to verify it?","answer":"No. A second conversion is not an independent source of truth. Compare with the original saved workbook."}]}
 ---
+
+
+## Compare values and print layout separately
+
+Inspect a sheet containing dates, currency and long headings. A successful PDF can still wrap a heading or divide a wide table differently. Check the last populated row as well as the first page, then compare totals against the workbook rather than trusting only the preview.
+
 
 ## Decide whether you need values or a printed report
 
 A spreadsheet can be both a calculation model and a carefully designed report. The [Excel to PDF tool](/tools/excel-to-pdf/) uploads your workbook to a conversion service and renders each worksheet with a full Office layout engine. It is high-fidelity, not a pixel-perfect copy: column widths, page breaks and print scaling follow the converter's rendering, and charts or drawing objects may differ from Excel. If the report depends on those features, use the spreadsheet application's own PDF export. Decide that before spending time on conversion, because a technically valid PDF can still omit the visual explanation that makes a spreadsheet understandable.
 
-## Consent to the upload
+## Consent to the upload and service limits
 
-Conversion happens on a server, not in your browser. You must tick the consent checkbox — "This file is sent to our converter and deleted right after" — before converting. The service deletes your file immediately after the response and never logs file names or contents. Uploads are limited to 25 MB, and macro-enabled or password-encrypted workbooks are rejected. If the converter is unreachable, the tool shows an error instead of silently producing a lower-quality browser result.
+Conversion of spreadsheet files is handled by our conversion service, not inside browser workers. You must tick the consent checkbox — "This file is sent to our converter and cleaned up when processing finishes." — before the upload begins. The service renders the workbook in an isolated temporary directory and schedules file cleanup after processing finishes; system interruptions or container lifecycles can delay deletion, so no absolute erasure deadline is promised. Server infrastructure logs are managed separately from application code. Uploads are capped at 25 MB, and macro-enabled workbooks (.xlsm) or password-protected sheets are rejected. If the converter is unreachable or unconfigured, the tool displays a service notice rather than generating broken browser output.
 
 ## Recalculate and save the workbook first
 
@@ -40,4 +46,4 @@ Sometimes you only need to search a PDF report for a name or compare its wording
 
 ## Store a useful pair of final files
 
-Retain the reviewed PDF together with the source XLSX under distinct filenames. The PDF is convenient for reading; the workbook preserves editing and calculation context. Make sure you select the reviewed version rather than an earlier download when sharing. Anything you later email or upload follows that destination's privacy rules. The conversion service keeps no copy of your document, but the file on your device is yours to protect. Check every final page before relying on the PDF as a report.
+Retain the reviewed PDF together with the source XLSX under distinct filenames. The PDF is convenient for reading; the workbook preserves editing and calculation context. Make sure you select the reviewed version rather than an earlier download when sharing. Anything you later email or upload follows that destination's privacy rules. Stored copies on your personal computer remain under your administrative control. Check every final page before relying on the PDF as a report.

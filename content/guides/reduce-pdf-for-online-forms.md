@@ -1,6 +1,12 @@
 ---
-{"title":"Reduce a PDF for an online form while protecting readability","summary":"Choose between removing unnecessary pages and raster compression, understand the losses, and inspect the exact PDF you will upload.","author":"Daykit editorial","published":"2026-10-13","updated":"2026-10-13","faq":[{"question":"Can a thirty-page PDF always fit into 200 KB?","answer":"No. Page content and required clarity impose practical limits. A target that works for a clean one-page form may be unsuitable for a long, detailed scan."},{"question":"Why does compressed text stop being selectable?","answer":"This compressor renders pages as images and rebuilds the PDF. It does not retain the original text objects, links, forms or accessibility structure."},{"question":"What if the compressed file looks unclear?","answer":"Do not use it merely because the size fits. Try a cleaner original, remove pages only when permitted, or use a larger target if the official instructions allow it."}]}
+{"title":"Reduce a PDF for an online form while protecting readability","summary":"Choose between removing unnecessary pages and raster compression, understand the losses, and inspect the exact PDF you will upload.","author":"Akash Patil","published":"2026-10-13","updated":"2026-10-21","faq":[{"question":"Can a thirty-page PDF always fit into 200 KB?","answer":"No. Page content and required clarity impose practical limits. A target that works for a clean one-page form may be unsuitable for a long, detailed scan."},{"question":"Why does compressed text stop being selectable?","answer":"This compressor renders pages as images and rebuilds the PDF. It does not retain the original text objects, links, forms or accessibility structure."},{"question":"What if the compressed file looks unclear?","answer":"Do not use it merely because the size fits. Try a cleaner original, remove pages only when permitted, or use a larger target if the official instructions allow it."}]}
 ---
+
+
+## Check what compression removes
+
+The recorded scanned-form fixture went from 6,007,712 bytes to 155,328 bytes. That result belongs to the tested fixture. Raster compression changes pages into images, so check small text and remember that a successful reduction does not preserve searchable text or interactive fields.
+
 A strict upload limit creates a trade-off: the document must be small enough to transfer, but still clear enough to serve its purpose. The byte count is easy to measure. Readability requires inspection. A useful compression workflow checks both rather than treating a successful download as the end of the task.
 
 Start with the current instructions for the document field. Confirm its accepted format, maximum size and required contents. If the requirement is ambiguous, obtain the official clarification before removing or altering pages. A technically accepted attachment can still be incomplete if it omits part of the requested evidence.
@@ -9,7 +15,7 @@ Start with the current instructions for the document field. Confirm its accepted
 
 Some PDFs contain text and vector drawing instructions. Others are essentially photographs of pages. A document can also mix both kinds. Try selecting a line of text in a viewer, but do not treat that as a perfect classification: a scan may have an OCR layer over its image. Inspect both appearance and functionality.
 
-Raster compression is often useful for image-heavy scans, but it can be a poor choice for an already compact text document. It turns the visible page into pixels. Search, selection, links, interactive fields and accessibility tags are not preserved by Daykit’s raster compressor. Keep an original copy so that this change is reversible at the workflow level.
+Raster compression is often useful for image-heavy scans, but it can be a poor choice for an already compact text document. It turns the visible page into pixels. Search, selection, links, interactive fields and accessibility tags are not preserved by PDF Converter’s raster compressor. Keep an original copy so that this change is reversible at the workflow level.
 
 ## Remove only what the application does not need
 

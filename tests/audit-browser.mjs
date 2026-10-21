@@ -13,27 +13,11 @@ try {
   const page = await context.newPage();
   const errors = [];
   page.on('pageerror', (e) => errors.push({ url: page.url(), message: e.message }));
-  await page.addInitScript(() =>
-    localStorage.setItem(
-      'daykit:consent:v1',
-      JSON.stringify({ version: 1, optional: false, timestamp: Date.now() }),
-    ),
-  );
-  for (const route of [
-    '/',
-    '/tools/',
-    '/tools/compress-pdf/',
-    '/tools/resize-image-kb/',
-    '/resize-photo-signature-ssc/',
-    '/calculators/emi/',
-    '/guides/',
-    '/guides/understand-emi-amortization/',
-    '/privacy/',
-    '/hi/tools/compress-pdf/',
-    '/ta/guides/choose-image-format/',
-    '/bn/calculators/age/',
-  ]) {
-    await page.goto(`${base}${route}`, { waitUntil: 'networkidle' });
+  const routes = fs.readdirSync('dist',{recursive:true}).filter(f=>f.endsWith('index.html')).map(f=>'/'+f.replaceAll('\\','/').replace(/index\.html$/,''));
+  for (const route of routes) {
+    const response = await page.goto(`${base}${route}`, { waitUntil: 'networkidle' });
+    assert.equal(response.status(),200,route);
+    assert.equal(await page.locator('.consent,.ad-slot').count(),0);
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth > innerWidth);
     const axe = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
@@ -44,7 +28,9 @@ try {
       violations: axe.violations.map((v) => ({ id: v.id, nodes: v.nodes.map((n) => n.target) })),
     });
   }
-  await page.goto(`${base}/tools/resize-image-kb/`, { waitUntil: 'networkidle' });
+  for (const route of JSON.parse(fs.readFileSync('dist/publication.json','utf8')).excludedTools) {
+    const response=await page.goto(base+route); assert.equal(response.status(),404,route);
+  }
   await page.goto(base, { waitUntil: 'networkidle' });
   await page.locator('.menu-toggle').click();
   assert.equal(await page.locator('.menu-toggle').getAttribute('aria-expanded'), 'true');

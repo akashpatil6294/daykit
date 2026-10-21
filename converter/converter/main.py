@@ -1,4 +1,4 @@
-"""Daykit converter service.
+"""PDF Converter converter service.
 
 POST /convert (multipart: file, mode, fidelity) and GET /healthz.
 
@@ -54,9 +54,9 @@ from contextlib import asynccontextmanager
 async def lifespan(app: FastAPI):
     # Fail fast if LibreOffice is missing: Office -> PDF would 500 otherwise.
     if shutil.which('soffice') is None:
-        print('[daykit] WARNING: soffice not found -- word/powerpoint/excel to PDF will fail', flush=True)
+        print('[pdf-converter] WARNING: soffice not found -- word/powerpoint/excel to PDF will fail', flush=True)
     else:
-        print('[daykit] soffice available', flush=True)
+        print('[pdf-converter] soffice available', flush=True)
 
     async def sweep():
         while True:

@@ -1,6 +1,6 @@
-# Daykit converter service
+# PDF Converter converter service
 
-High-fidelity conversion behind one endpoint, used by the six Daykit
+High-fidelity conversion behind one endpoint, used by the six PDF Converter
 conversion tools (PDF→Word, PDF→PowerPoint, PDF→Excel, Word→PDF,
 PowerPoint→PDF, Excel→PDF). The static site calls it only after an
 explicit consent checkbox. Temporary job files are cleaned up after processing;

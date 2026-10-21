@@ -17,6 +17,7 @@ const email = operator.email;
   <article class="prose-page">
     <p class="eyebrow">{t.site.name}</p>
     <h1>{page.title}</h1>
+    <p class="quiet">Last reviewed: <time datetime="2026-10-21">21 October 2026</time></p>
     <p class="lead">{page.intro}</p>
     {import.meta.env.PUBLIC_CONVERTER_URL && ['about','privacy'].includes(key) && <aside class="notice"><h2>{pdfText.remote}</h2><p>{pdfText.remotePrivacy}</p></aside>}
     <section>
@@ -40,5 +41,6 @@ const email = operator.email;
         </section>
       ))
     )}
+    {key === 'privacy' && <section><h2>Advertising information</h2><p>Advertising is currently disabled. If Google AdSense is enabled later, third-party vendors including Google may use cookies to serve ads based on prior visits. We will update this policy and implement appropriate consent controls first.</p><p>You can manage personalization at <a class="inline-link" href="https://myadcenter.google.com/">Google Ad Settings</a> or learn about industry choices at <a class="inline-link" href="https://optout.aboutads.info/">aboutads.info</a>. See <a class="inline-link" href="https://policies.google.com/technologies/partner-sites">how Google uses information from sites and apps that use its services</a>.</p></section>}
   </article>
 </Layout>

@@ -1,14 +1,20 @@
 ---
-{"title":"When to use image slides instead of editable text","summary":"Choose a PDF-to-PowerPoint mode by the work you need to do, then check page proportions, legibility and missing presentation features.","author":"Daykit editorial","published":"2026-10-14","updated":"2026-10-14","faq":[{"question":"Which mode works for scanned pages?","answer":"Exact-look slides render the page’s visible appearance. Editable mode applies OCR first; review the recognized text."},{"question":"Does editable mode recover charts as editable charts?","answer":"No. It places positioned text boxes and images; chart data, diagram structure and original presentation objects are not recreated."},{"question":"What happens to the file I upload?","answer":"It is sent to the conversion service, converted, and deleted immediately after the response. It is not stored or logged."}]}
+{"title":"When to use image slides instead of editable text","summary":"Choose a PDF-to-PowerPoint mode by the work you need to do, then check page proportions, legibility and missing presentation features.","author":"Akash Patil","published":"2026-10-14","updated":"2026-10-21","faq":[{"question":"Which mode works for scanned pages?","answer":"Exact-look slides render the page’s visible appearance. Editable mode applies OCR first; review the recognized text."},{"question":"Does editable mode recover charts as editable charts?","answer":"No. It places positioned text boxes and images; chart data, diagram structure and original presentation objects are not recreated."},{"question":"What happens to the file I upload?","answer":"With your consent, it is uploaded to the conversion service, converted in an isolated temporary directory, and scheduled for cleanup when processing finishes. Immediate deletion is not guaranteed, and provider logs are managed separately."}]}
 ---
+
+
+## Choose the review target
+
+For a diagram, compare line positions and labels. For an editable paragraph, click into its text box and compare the reading order. A slide that looks right as a picture may not be editable, while extracted text can be editable without preserving the original design.
+
 
 ## Decide what you need to change
 
 The most useful question is not whether a PDF can become a presentation, but what you want to do with the presentation afterward. If you need to show an existing handout, a page image may be enough. If you need to rewrite sentences, editable text is more useful. The [PDF to PowerPoint converter](/tools/pdf-to-powerpoint/) offers both routes. Each selected PDF page becomes a slide, but the content placed on that slide depends on your choice. Neither route recreates the original authoring file with its theme, animation sequence or chart data. Keep the source PDF as a reference throughout the process.
 
-## Consent to the upload
+## Remote conversion and upload consent
 
-Conversion happens on a server, not in your browser. You must tick the consent checkbox — "This file is sent to our converter and deleted right after" — before converting. The service deletes your file immediately after the response and never logs file names or contents. Uploads are limited to 25 MB and 100 pages. If the converter is unreachable, the tool shows an error instead of silently producing a lower-quality result.
+Processing PDF pages into PowerPoint presentation files requires dedicated layout parsing on our conversion service. Before uploading, you must confirm your agreement by ticking the consent box — "This file is sent to our converter and cleaned up when processing finishes." The service performs slide generation inside a temporary folder and schedules cleanup after the job completes; unexpected process termination can delay removal. Upload payloads are limited to 25 MB and 100 pages, and encrypted PDFs are rejected upfront. If the converter is unavailable, the interface shows an explicit notice rather than attempting an incomplete client-side render.
 
 ## Exact look favors visible arrangement
 

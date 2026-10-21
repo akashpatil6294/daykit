@@ -1,12 +1,12 @@
 {
-  "name": "daykit",
+  "name": "pdf-converter",
   "version": "0.1.0",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "astro dev",
     "check": "astro check",
-    "build": "astro check && astro build && node scripts/converter-manifest.mjs && node scripts/localize.mjs",
+    "build": "node scripts/prepare-publication.mjs && astro check && astro build && node scripts/converter-manifest.mjs && node scripts/publish.mjs && node --test tests/publication.test.mjs",
     "translate": "node scripts/translate.mjs",
     "preview": "astro preview",
     "test": "node --test tests/*.test.mjs && vitest run",

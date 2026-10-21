@@ -1,6 +1,12 @@
 ---
-{"title":"Avoid common percentage and calendar-age calculation mistakes","summary":"Distinguish percentage of, percentage ratio and percentage change, then use a clear reference date when calculating calendar age for a form.","author":"Daykit editorial","published":"2026-10-13","updated":"2026-10-13","faq":[{"question":"Is percentage change defined from a zero starting amount?","answer":"The usual formula divides by the starting amount, so a zero base is undefined. The calculator shows an error rather than inventing a percentage."},{"question":"Does age in days determine official eligibility?","answer":"Not by itself. Eligibility depends on the official reference date and applicable rule. Calendar years, completed years and special conventions can matter differently."},{"question":"How is a 29 February birthday handled here?","answer":"The calculator treats it as 28 February in non-leap years for its calendar calculation. That disclosed convention is not a statement of every legal or administrative rule."}]}
+{"title":"Avoid common percentage and calendar-age calculation mistakes","summary":"Distinguish percentage of, percentage ratio and percentage change, then use a clear reference date when calculating calendar age for a form.","author":"Akash Patil","published":"2026-10-13","updated":"2026-10-21","faq":[{"question":"Is percentage change defined from a zero starting amount?","answer":"The usual formula divides by the starting amount, so a zero base is undefined. The calculator shows an error rather than inventing a percentage."},{"question":"Does age in days determine official eligibility?","answer":"Not by itself. Eligibility depends on the official reference date and applicable rule. Calendar years, completed years and special conventions can matter differently."},{"question":"How is a 29 February birthday handled here?","answer":"The calculator treats it as 28 February in non-leap years for its calendar calculation. That disclosed convention is not a statement of every legal or administrative rule."}]}
 ---
+
+
+## Write the question before calculating
+
+For percentage change from 80 to 100, the base is 80 and the change is 20, giving 25 percent. Reversing the direction changes the base. For age, supply actual calendar dates; dividing a day count by 365 is not equivalent around leap years and birthdays.
+
 Small calculations often fail because the question is phrased ambiguously rather than because the arithmetic is difficult. “What percentage is this?” needs a numerator and a base. “How old is this person?” needs a date on which age is being measured. Making those missing pieces explicit is the most useful first step.
 
 The [percentage calculator](/calculators/percentage/) offers three distinct modes, while the [age calculator](/calculators/age/) works with calendar dates. Both are helpers for a defined question. They do not interpret the administrative wording of an application or choose an official cutoff date for you.
@@ -15,7 +21,7 @@ Write the units next to a result. Thirty rupees, thirty kilobytes and thirty per
 
 For a positive starting amount, percentage change is (new − old) / old × 100. A move from 100 to 120 is a 20% increase. Returning from 120 to 100 is a decrease of about 16.67%, because the base is now 120. Equal absolute changes do not necessarily produce equal percentage changes.
 
-Daykit uses the absolute starting value in the denominator for its signed-input change mode. That convention is disclosed because percentage change with negative values can be interpreted differently in different contexts. If you need a specific reporting convention, establish it before using a generic calculator output.
+PDF Converter uses the absolute starting value in the denominator for its signed-input change mode. That convention is disclosed because percentage change with negative values can be interpreted differently in different contexts. If you need a specific reporting convention, establish it before using a generic calculator output.
 
 ## Recognize the zero-base problem
 

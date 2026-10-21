@@ -10,6 +10,7 @@ import type { WorkerRequest, WorkerReply, ImageSettings } from '../lib/image-pro
 import type { InputKind } from '../data/tools';
 let bitmap: ImageBitmap | null = null;
 let heicDecoder: typeof import('heic-to/next') | null = null;
+let activeJobId = 0;
 function send(message: WorkerReply) {
   self.postMessage(message);
 }
@@ -92,22 +93,29 @@ async function checkHeader(file: Blob, kind: InputKind) {
   }
   if (w * h > MAX_INPUT_PIXELS) fail('pixels');
 }
-async function load(file: File, kind: InputKind) {
-  bitmap?.close();
-  bitmap = null;
+async function load(jobId: number, file: File, kind: InputKind) {
+  if (jobId !== activeJobId) return;
   if (!file.size || file.size > MAX_FILE_BYTES) fail('fileSize');
   const actual = await detect(file);
+  if (jobId !== activeJobId) return;
   if ((kind !== 'any' && kind !== actual) || (kind === 'any' && actual === 'heic')) fail('format');
   await checkHeader(file, actual);
+  if (jobId !== activeJobId) return;
+  let nextBitmap: ImageBitmap;
   if (actual === 'heic') {
     if (!heicDecoder) fail('notReady');
-    bitmap = (await heicDecoder.heicTo({ blob: file, type: 'bitmap' })) as ImageBitmap;
-  } else bitmap = await createImageBitmap(file, { imageOrientation: 'from-image' });
-  if (bitmap.width * bitmap.height > MAX_INPUT_PIXELS) {
-    bitmap.close();
-    bitmap = null;
+    nextBitmap = (await heicDecoder.heicTo({ blob: file, type: 'bitmap' })) as ImageBitmap;
+  } else nextBitmap = await createImageBitmap(file, { imageOrientation: 'from-image' });
+  if (jobId !== activeJobId) {
+    nextBitmap.close();
+    return;
+  }
+  if (nextBitmap.width * nextBitmap.height > MAX_INPUT_PIXELS) {
+    nextBitmap.close();
     fail('pixels');
   }
+  bitmap?.close();
+  bitmap = nextBitmap;
   const { width, height } = bitmap;
   const factor = Math.min(1, 720 / Math.max(width, height));
   const { surface, context } = canvas(
@@ -118,9 +126,11 @@ async function load(file: File, kind: InputKind) {
   const preview = await surface.convertToBlob({ type: 'image/png' });
   surface.width = 1;
   surface.height = 1;
-  send({ type: 'loaded', width, height, preview });
+  if (jobId !== activeJobId) return;
+  send({ type: 'loaded', jobId, width, height, preview });
 }
-async function processImage(s: ImageSettings) {
+async function processImage(jobId: number, s: ImageSettings) {
+  if (jobId !== activeJobId) return;
   if (!bitmap) fail('notReady');
   if (!Number.isFinite(s.quality) || s.quality < 0.1 || s.quality > 1) fail('settings');
   let width =
@@ -205,20 +215,25 @@ async function processImage(s: ImageSettings) {
       let best: Blob | null = null;
       // Quality is searched at each resolution before dimensions are reduced.
       for (let step = 0; step < (s.mode === 'exam' ? 1 : 32); step++) {
-        send({ type: 'progress', value: Math.min(95, 10 + step * 3) });
+        if (jobId !== activeJobId) return;
+        send({ type: 'progress', jobId, value: Math.min(95, 10 + step * 3) });
         const high = await surface.convertToBlob({ type: mime, quality: 1 });
+        if (jobId !== activeJobId) return;
         if (high.size <= target) {
           best = high;
           break;
         }
         const low = await surface.convertToBlob({ type: mime, quality: 0.05 });
+        if (jobId !== activeJobId) return;
         if (low.size <= target) {
           best = low;
           let left = 0.05,
             right = 1;
           for (let trial = 0; trial < 12; trial++) {
+            if (jobId !== activeJobId) return;
             const middle = (left + right) / 2;
             const candidate = await surface.convertToBlob({ type: mime, quality: middle });
+            if (jobId !== activeJobId) return;
             if (candidate.size <= target) {
               if (candidate.size > best.size) best = candidate;
               left = middle;
@@ -232,36 +247,55 @@ async function processImage(s: ImageSettings) {
         height = Math.max(1, Math.floor(height * factor));
         paint();
       }
+      if (jobId !== activeJobId) return;
       if (!best) fail(s.mode === 'exam' ? 'constraints' : 'target');
       const minimum = s.mode === 'exam' ? Math.ceil(s.minKB! * 1024) : Math.ceil(target * 0.95);
       const fitted = await fitJpegRange(best, target, minimum);
+      if (jobId !== activeJobId) return;
       output = fitted.blob;
       padding = fitted.padding;
       if (output.size > target || output.size < minimum) fail('target');
-    } else output = await surface.convertToBlob({ type: mime, quality: s.quality });
+    } else {
+      output = await surface.convertToBlob({ type: mime, quality: s.quality });
+      if (jobId !== activeJobId) return;
+    }
     if (
       s.mode === 'exam' &&
       (output.size > Math.floor(s.targetKB * 1024) || output.size < Math.ceil(s.minKB! * 1024))
     )
       fail('constraints');
     if (output.type !== mime) fail('encode');
-    send({ type: 'result', blob: output, width, height, padding });
+    if (jobId !== activeJobId) return;
+    send({ type: 'result', jobId, blob: output, width, height, padding });
   } finally {
     surface.width = 1;
     surface.height = 1;
   }
 }
 self.onmessage = async (event: MessageEvent<WorkerRequest>) => {
+  const message = event.data;
+  const messageJobId = 'jobId' in message ? message.jobId : undefined;
   try {
-    const message = event.data;
     if (message.type === 'init') {
       if (typeof OffscreenCanvas === 'undefined' || typeof createImageBitmap === 'undefined')
         fail('unsupported');
       if (message.heic) heicDecoder = await import('heic-to/next');
       send({ type: 'ready' });
-    } else if (message.type === 'load') await load(message.file, message.kind);
-    else await processImage(message.settings);
+    } else if (message.type === 'cancel') {
+      if (!message.jobId || message.jobId === activeJobId) {
+        activeJobId++;
+        bitmap?.close();
+        bitmap = null;
+      }
+    } else if (message.type === 'load') {
+      activeJobId = message.jobId;
+      await load(message.jobId, message.file, message.kind);
+    } else if (message.type === 'process') {
+      activeJobId = message.jobId;
+      await processImage(message.jobId, message.settings);
+    }
   } catch (error) {
+    if (messageJobId && messageJobId !== activeJobId) return;
     const code = error instanceof Error ? error.message : 'decode';
     const known = [
       'unsupported',
@@ -275,6 +309,10 @@ self.onmessage = async (event: MessageEvent<WorkerRequest>) => {
       'encode',
       'constraints',
     ];
-    send({ type: 'error', code: known.includes(code) ? code : 'decode' });
+    if (message.type === 'init') {
+      send({ type: 'init-error', code: known.includes(code) ? code : 'decode' });
+    } else if (messageJobId !== undefined) {
+      send({ type: 'error', jobId: messageJobId, code: known.includes(code) ? code : 'decode' });
+    }
   }
 };

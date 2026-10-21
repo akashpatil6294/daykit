@@ -1,6 +1,12 @@
 ---
-{"title":"Why pixel dimensions and kilobytes are different image limits","summary":"Understand resolution, aspect ratio, encoding quality and file size so you can correct the right problem when an image upload is rejected.","author":"Daykit editorial","published":"2026-10-13","updated":"2026-10-13","faq":[{"question":"Will halving the width halve the file size?","answer":"No. If height also halves, the pixel count becomes one quarter, but encoded bytes still depend on image content, format and quality. Measure the result instead of assuming a fixed ratio."},{"question":"Can a larger file be less useful?","answer":"Yes. Extra metadata, an inefficient format or a larger canvas can increase bytes without making the subject clearer. Judge required dimensions and visible detail separately."},{"question":"Why did my target-size output shrink in pixels?","answer":"When JPEG quality changes cannot reach the requested byte target, the size tool can downscale dimensions. Check the final properties if your destination also requires exact pixels."}]}
+{"title":"Why pixel dimensions and kilobytes are different image limits","summary":"Understand resolution, aspect ratio, encoding quality and file size so you can correct the right problem when an image upload is rejected.","author":"Akash Patil","published":"2026-10-13","updated":"2026-10-21","faq":[{"question":"Will halving the width halve the file size?","answer":"No. If height also halves, the pixel count becomes one quarter, but encoded bytes still depend on image content, format and quality. Measure the result instead of assuming a fixed ratio."},{"question":"Can a larger file be less useful?","answer":"Yes. Extra metadata, an inefficient format or a larger canvas can increase bytes without making the subject clearer. Judge required dimensions and visible detail separately."},{"question":"Why did my target-size output shrink in pixels?","answer":"When JPEG quality changes cannot reach the requested byte target, the size tool can downscale dimensions. Check the final properties if your destination also requires exact pixels."}]}
 ---
+
+
+## Read an observed resizing result
+
+The stored image test took a 10,120,279-byte source to a 99,840-byte JPEG at 1,800 by 1,400 pixels. This demonstrates that dimensions and bytes can both change in a particular run. It does not imply that every image can reach those dimensions at the same visual quality.
+
 An image can satisfy a file-size limit and still fail a dimensions check. It can also have the correct dimensions while containing too many bytes. These are separate properties. Understanding their relationship makes it easier to choose a useful edit instead of trying random settings until the image becomes unclear.
 
 Imagine a hypothetical requirement for a particular width, height and maximum byte count. The width and height describe the grid of pixels. The byte count describes how that grid is stored in a file. Compression changes storage, and resizing changes the grid. The destination may test both. No single “small image” setting can represent every combination.
@@ -33,7 +39,7 @@ A [WebP-to-JPG conversion](/tools/webp-to-jpg/) can address an unsupported-forma
 
 If an original is 400 KB and an output is 100 KB under the same counting convention, the reduction is 300 KB, or 75% of the original. The remaining file is 25% of the original size. These are different percentages. The [percentage calculator](/calculators/percentage/) can help distinguish “reduced by” from “reduced to” when comparing exports.
 
-Use the same unit convention for both measurements. Daykit’s target tool treats one KB as 1,024 bytes. Another service may display rounded decimal values. A small margin below a strict maximum avoids unnecessary boundary confusion, but the final destination’s own requirements remain authoritative.
+Use the same unit convention for both measurements. PDF Converter’s target tool treats one KB as 1,024 bytes. Another service may display rounded decimal values. A small margin below a strict maximum avoids unnecessary boundary confusion, but the final destination’s own requirements remain authoritative.
 
 ## Inspect the final output at a useful scale
 

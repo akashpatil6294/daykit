@@ -27,7 +27,7 @@ export const examText = localize({
   verifiedHelp:
     'Check that the linked notification applies to your application and remains current. Verification is an editorial record, not an acceptance guarantee.',
   lastVerified: 'Last verified',
-  never: 'Not yet verified',
+  never: 'Unverified',
   source: 'Source notification',
   missingSource: 'Official source not supplied',
   stepsTitle: 'Prepare your files step by step',
@@ -84,7 +84,7 @@ export const examText = localize({
   libraryBody:
     'Choose your exam, check its specification record, and prepare a photo or signature on your own device.',
   open: 'Open workspace',
-  recordUnknown: 'Unverified · specifications pending',
+  recordUnknown: 'Unverified specifications',
   recordVerified: 'Verified record',
   related: 'Other exam workspaces',
 } as const);
