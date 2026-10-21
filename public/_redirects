@@ -5,3 +5,5 @@
 /te/* /:splat 301
 /mr/* /:splat 301
 /bn/* /:splat 301
+/tools/word-to-pdf/ /404.html 404
+/tools/pdf-to-word/ /404.html 404
