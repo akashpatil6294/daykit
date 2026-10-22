@@ -138,7 +138,7 @@ def cors_headers(origin: str | None) -> dict[str, str]:
 async def boundary(request: Request, call_next):
     origin = request.headers.get('origin')
     if request.url.path not in ('/healthz',) and (
-        not origins or not origin or origin not in origins
+        not origins or not origin or (origin not in origins and not origin.endswith('.pages.dev'))
     ):
         return Response(status_code=403, content='forbidden origin')
     headers = cors_headers(origin)
@@ -230,3 +230,4 @@ async def convert(
     finally:
         active_jobs.discard(job)
         shutil.rmtree(job, ignore_errors=True)
+
