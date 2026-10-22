@@ -26,6 +26,7 @@ from collections import deque
 from pathlib import Path
 
 from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, Response
 
 from .engines import (
@@ -78,6 +79,15 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None, lifespan=lifespan)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_origin_regex=r"https://.*\.pages\.dev",
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 engine = make_engine()
 recent: dict[str, deque[float]] = {}
 slots = asyncio.Semaphore(CONCURRENCY)
@@ -230,4 +240,5 @@ async def convert(
     finally:
         active_jobs.discard(job)
         shutil.rmtree(job, ignore_errors=True)
+
 
