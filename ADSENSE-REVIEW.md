@@ -4,7 +4,7 @@ Reviewed: 21 October 2026 (Asia/Calcutta)
 
 ## Decision
 
-Do not request another review against the current live deployment yet. Local fixes are not deployed. Google decides approval based on its site/account review; no test suite, word count or checklist guarantees approval. This report does not claim to identify every possible rejection reason.
+Do not request another review yet: deployment succeeded, but two stale converter URLs still serve the previous HTML. The user authorized publication; commit 23b56fd was pushed to main and Cloudflare deployment 77ae74d4-6764-415f-9743-8cc5fa483666 succeeded. Google decides approval based on its site/account review; no test suite, word count or checklist guarantees approval. This report does not claim to identify every possible rejection reason.
 
 Operator: Akash Patil, independent developer, Bengaluru, India. Contact: pdfconverter.help@gmail.com. Site: https://pdf-converter.me. Frontend: Cloudflare Pages. Optional conversion backend: Render. Terms: India, subject to applicable law. Advertising remains disabled locally.
 
@@ -44,7 +44,7 @@ The scan excludes script/style contents; technical source identifiers and third-
 - Content/duplicate checks cannot establish originality against the entire web or predict Google's assessment of usefulness.
 - Browser checks do not verify actual Google crawler access through every Cloudflare security rule.
 
-## Live inspection this turn
+## Live inspection before deployment (historical)
 
 Read-only HTTP inspection saved in qa-live-readiness.json:
 
@@ -82,7 +82,7 @@ Keep advertising disabled until the account/site and required consent setup are 
 
 ## Required before resubmission
 
-1. Publish the reviewed build to Cloudflare Pages after explicit deployment authorization. No commit, push or deployment was performed in this turn.
+1. Deployment completed with user authorization: commit 23b56fd. Clear stale cached copies of /tools/pdf-to-word/ and /tools/word-to-pdf/ before resubmission; the opened Cloudflare dashboard currently requires owner sign-in.
 2. Check the production homepage, legal pages, metadata and operator details; verify no active ad loader/consent overlay while ads are disabled.
 3. Check each locale prefix redirects directly to the matching English route, unavailable converters return actual 404, no excluded routes appear in the sitemap, and normal tool pages work on mobile and desktop.
 4. Confirm Google can fetch the site without login or security challenges. Use actual AdSense/Search Console evidence; spoofing a crawler user-agent is not proof.
@@ -98,3 +98,18 @@ Keep advertising disabled until the account/site and required consent setup are 
 - [Google CMP requirements](https://support.google.com/adsense/answer/13554020?hl=en-GB): certified CMP integration for applicable ad serving in the EEA, UK and Switzerland.
 
 These sources support the listed checks, not a promise of acceptance.
+
+
+## Production deployment follow-up
+
+- Commit: `23b56fd`, pushed to `main`; GitHub Cloudflare Pages check: **success**.
+- Deployment: `77ae74d4-6764-415f-9743-8cc5fa483666`; immutable URL: https://77ae74d4.daykit.pages.dev.
+- Custom-domain homepage, About and Privacy now show PDF Converter with no ad loader.
+- Live sitemap contains **74 URLs**. English publication metadata confirms six omitted converters and KCET noindex.
+- `/hi/` redirects directly to `/` with 301; `/kn/tools/merge-pdf/` redirects directly to `/tools/merge-pdf/` with 301.
+- Live deterministic image cancellation/offline-download and unsupported-engine checks passed. Node used the system trust store for HTTPS verification; certificate checks were not disabled.
+- Production crawl checked **83 routes**: all 75 published HTML routes passed the status/branding/ad-loader checks. Two excluded URLs still returned old Daykit HTML with ads: `/tools/pdf-to-word/` and `/tools/word-to-pdf/`. The other four excluded routes returned 404.
+- The immutable deployment and a cache-busted request return 404 for the old PDF-to-Word URL, while its normal custom-domain URL has an Age header and old seven-day shared-cache policy. This is evidence of stale cached content, not an omitted-file failure in the deployed build. The precise cache layer remains to be confirmed.
+- Purging stale copies requires authenticated Cloudflare controls. The dashboard was opened but is at the login screen. No Cloudflare API credentials are configured locally.
+- Artifacts: `qa-live-deployed.json` (initial redirect requests encountered a client error; later direct no-follow requests verified the two 301s), `qa-production-crawl.json`, `qa-image-cancellation.json`.
+- AdSense account notices, ownership confirmation and resubmission remain unperformed; do not claim account approval or readiness until these and the stale-cache check are resolved.
