@@ -10,14 +10,23 @@ import { pdfPages } from '../../i18n/pdf-pages';
 import { pdfText as t } from '../../i18n/pdf-tools';
 import '../../styles/image-tools.css';
 import '../../styles/pdf-tools.css';
+
 export function getStaticPaths() {
   return pdfSlugs.map((slug) => ({ params: { pdf: slug }, props: { slug } }));
 }
+
 const { slug } = Astro.props;
 const page = pdfPages[slug];
+
+// Safety check: if you haven't added text content for a tool in pdf-pages.ts, this will tell you exactly which one is missing.
+if (!page) {
+  throw new Error(`Missing translation content for "${slug}" in src/i18n/pdf-pages.ts`);
+}
+
 const legacy = ['merge-pdf','split-pdf','reorder-pdf','images-to-pdf','pdf-to-images','compress-pdf'].includes(slug);
 const review = (reviews as Record<string, { heading: string; paragraphs: string[]; question: string; answer: string }>)[slug];
 const questions = [...page.faq, ...(review ? [{question: review.question, answer: review.answer}] : [])];
+
 const faq = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
@@ -27,6 +36,7 @@ const faq = {
     acceptedAnswer: { '@type': 'Answer', text: f.answer },
   })),
 };
+
 const app = {
   '@context': 'https://schema.org',
   '@type': 'WebApplication',
@@ -42,17 +52,22 @@ const app = {
 <Layout title={page.title} description={page.description} breadcrumb={page.title}>
   <script type="application/ld+json" set:html={JSON.stringify(faq).replace(/</g, '\\u003c')} />
   <script type="application/ld+json" set:html={JSON.stringify(app).replace(/</g, '\\u003c')} />
+  
   <section class="tool-heading">
     <p class="eyebrow">{t.eyebrow}</p>
     <p class="quiet">Last reviewed: <time datetime="2026-10-21">21 October 2026</time></p>
     <h1>{page.title}</h1>
     <p class="lead">{page.intro}</p>
   </section>
+
   {legacy ? <PdfTool mode={slug} client:load /> : <DocumentTool mode={slug} client:load />}
+
   <noscript>
     <p>{t.noScript}</p>
   </noscript>
+
   <AdSlot size="leaderboard" />
+
   <article class="tool-guide" data-guide>
     {review && <section><h2>{review.heading}</h2>{review.paragraphs.map(p => <p>{p}</p>)}</section>}
     {page.sections.map((s) => (
@@ -75,6 +90,7 @@ const app = {
       </details>
     ))}
   </article>
+
   <section class="related-tools">
     <h2>{t.related}</h2>
     <ul>
@@ -82,10 +98,11 @@ const app = {
         .filter((s) => s !== slug)
         .map((s) => (
           <li>
-            <a href={`/tools/${s}/`}>{pdfPages[s].title}</a>
+            <a href={`/tools/${s}/`}>{pdfPages[s]?.title || s}</a>
           </li>
         ))}
     </ul>
   </section>
+
   <GuideLinks path={Astro.url.pathname} />
 </Layout>

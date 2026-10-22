@@ -38,7 +38,10 @@ export async function preparePublication(options = {}) {
   const env = options.env ?? { ...loadEnv('production', cwd, ''), ...process.env };
   const targetDir = options.targetDir ?? path.join(cwd, '.astro');
   const checkHealth = options.checkConverterHealth ?? checkConverterHealth;
-  const { remote, reason } = await checkHealth(env.PUBLIC_CONVERTER_URL, options);
+  
+  // FIX: Increased timeout to 60 seconds so Render's free tier has time to wake up
+  const { remote, reason } = await checkHealth(env.PUBLIC_CONVERTER_URL, { ...options, timeoutMs: 60000 });
+  
   fs.mkdirSync(targetDir, { recursive: true });
   fs.writeFileSync(
     path.join(targetDir, 'publication.json'),

@@ -1,4 +1,5 @@
 import type { ToolCopy } from './tool-pages';
+
 export const newPdfPages = {
   'pdf-to-word': {
     title: 'PDF to Word: high-fidelity conversion',
@@ -39,7 +40,7 @@ export const newPdfPages = {
       {
         question: 'What happens to my uploaded file?',
         answer:
-          'It is converted and scheduled for cleanup after processing finishes; interruptions can delay deletion. Temporary files are used during conversion; provider request logs are managed separately. The tool needs the conversion service, so it cannot work offline; the text-only extraction tools work in the browser instead.',
+          'Your uploaded PDF is sent to the converter and scheduled for cleanup after processing finishes. The temporary files used for DOCX generation are deleted, while provider request logs are managed separately. This tool requires the conversion service and cannot work offline.',
       },
     ],
   },
@@ -80,7 +81,7 @@ export const newPdfPages = {
       {
         question: 'What happens to my uploaded file?',
         answer:
-          'It is converted and scheduled for cleanup after processing finishes; interruptions can delay deletion. Temporary files are used during conversion; provider request logs are managed separately.',
+          'Your PDF is sent to the converter and scheduled for cleanup after processing finishes. The temporary files used to generate the PPTX are deleted, while provider request logs are managed separately by the hosting platform.',
       },
     ],
   },
@@ -96,7 +97,7 @@ export const newPdfPages = {
       },
       {
         heading: 'Upload, consent and deletion',
-        text: 'You must tick the consent checkbox before converting: it confirms you understand the file leaves your device for processing. The upload travels over an encrypted connection, is processed in an isolated temporary directory, and is scheduled for cleanup after processing finishes; interruptions can delay deletion. Temporary files are used during conversion; hosting request logs are managed separately. Uploads are limited to 25 MB and 100 pages, and password-protected PDFs are rejected before any processing starts. If the converter is unreachable or unconfigured, the tool shows an error instead of quietly producing a lower-quality result.',
+        text: 'You must tick the consent checkbox before converting: it confirms you understand the file leaves your device for processing. Your PDF travels over an encrypted connection, is processed in an isolated temporary directory, and is scheduled for cleanup after processing finishes; interruptions can delay deletion. Temporary files are required to extract the table data; hosting request logs are managed separately. Uploads are limited to 25 MB and 100 pages, and password-protected PDFs are rejected before any processing starts. If the converter is unreachable, the tool shows an error instead of quietly producing a lower-quality result.',
       },
       {
         heading: 'Check the recovered values',
@@ -121,7 +122,7 @@ export const newPdfPages = {
       {
         question: 'What happens to my uploaded file?',
         answer:
-          'It is converted and scheduled for cleanup after processing finishes; interruptions can delay deletion. Temporary files are used during conversion; provider request logs are managed separately.',
+          'Your uploaded PDF is sent to the converter and scheduled for cleanup after processing finishes. The temporary files used for table extraction are deleted, while provider request logs are managed separately by the hosting platform.',
       },
     ],
   },
@@ -162,7 +163,7 @@ export const newPdfPages = {
       {
         question: 'What happens to my uploaded file?',
         answer:
-          'It is converted and scheduled for cleanup after processing finishes; interruptions can delay deletion. Temporary files are used during conversion; provider request logs are managed separately.',
+          'Your uploaded DOCX is sent to the converter and scheduled for cleanup after processing finishes. The temporary files used for PDF rendering are deleted, while provider request logs are managed separately.',
       },
     ],
   },
@@ -203,7 +204,7 @@ export const newPdfPages = {
       {
         question: 'What happens to my uploaded file?',
         answer:
-          'It is converted and scheduled for cleanup after processing finishes; interruptions can delay deletion. Temporary files are used during conversion; provider request logs are managed separately.',
+          'Your uploaded PPTX is sent to the converter and scheduled for cleanup after processing finishes. The temporary files used for PDF rendering are deleted, while provider request logs are managed separately.',
       },
     ],
   },
@@ -220,7 +221,7 @@ export const newPdfPages = {
       },
       {
         heading: 'Upload, consent and deletion',
-        text: 'You must tick the consent checkbox before converting: it confirms you understand the file leaves your device for processing. The upload travels over an encrypted connection, is rendered in an isolated temporary directory, and is scheduled for cleanup after processing finishes; interruptions can delay deletion. Temporary files are used during conversion; hosting request logs are managed separately. Uploads are limited to 25 MB, and macro-enabled or password-encrypted workbooks are rejected before processing starts. If the converter is unreachable or unconfigured, the tool shows an error rather than silently producing a lower-quality result.',
+        text: 'You must tick the consent checkbox before converting: it confirms you understand the file leaves your device for processing. Your workbook travels over an encrypted connection, is rendered in an isolated temporary directory, and is scheduled for cleanup after processing finishes; interruptions can delay deletion. Temporary files are required to generate the PDF pages; hosting request logs are managed separately. Uploads are limited to 25 MB, and macro-enabled or password-encrypted workbooks are rejected before processing starts. If the converter is unreachable, the tool shows an error rather than silently producing a lower-quality result.',
       },
       {
         heading: 'Check values before submitting',
@@ -245,7 +246,7 @@ export const newPdfPages = {
       {
         question: 'What happens to my uploaded file?',
         answer:
-          'It is converted and scheduled for cleanup after processing finishes; interruptions can delay deletion. Temporary files are used during conversion; provider request logs are managed separately.',
+          'Your uploaded XLSX workbook is sent to the converter and scheduled for cleanup after processing finishes. The temporary files used to render the PDF are deleted, while provider request logs are managed separately.',
       },
     ],
   },
